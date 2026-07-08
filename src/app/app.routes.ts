@@ -12,18 +12,17 @@ import { ROUTE_PATHS } from './shared/constants/app.constants';
  * @see migration-plan.md modules #11-#18, #26
  */
 export const routes: Routes = [
-  // Default redirect — the first meaningful route will be added in a future module
-  { path: '', redirectTo: ROUTE_PATHS.INFO_OPERACION, pathMatch: 'full' },
-
-  // Placeholder routes — components will be added as each feature module is migrated.
+  // Routes will be activated as each feature component is migrated.
+  // All route paths use kebab-case constants from ROUTE_PATHS (migrated from PathConstantes.java).
   // Using lazy loading via loadComponent for optimal bundle splitting.
 
+  // TODO: Uncomment routes below as features are implemented (modules #11-#18, #26)
+
+  // { path: '',                                     redirectTo: ROUTE_PATHS.INFO_OPERACION, pathMatch: 'full' },
   // { path: ROUTE_PATHS.INFO_OPERACION,            loadComponent: () => import('./pages/info-operacion/info-operacion.component') },
   // { path: ROUTE_PATHS.INFO_OPERACION_GENERICA,   loadComponent: () => import('./pages/info-operacion-generica/info-operacion-generica.component') },
   // { path: ROUTE_PATHS.ENVIAR_OTP_COTITULAR,      loadComponent: () => import('./pages/acepta-cesion/acepta-cesion.component') },
   // { path: ROUTE_PATHS.ACEPTAR_COTITULAR,         loadComponent: () => import('./pages/acepta-cesion/acepta-cesion.component') },
   // { path: ROUTE_PATHS.ERROR,                     loadComponent: () => import('./pages/error/error.component') },
-
-  // Wildcard: any unmatched route → error page
-  // { path: '**', redirectTo: ROUTE_PATHS.ERROR },
+  // { path: '**',                                   redirectTo: ROUTE_PATHS.ERROR },
 ];
