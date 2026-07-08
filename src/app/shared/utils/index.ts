@@ -3,11 +3,14 @@
  *
  * Re-exports all utility functions from the utils module for convenient imports.
  *
- * Usage:
- * ```ts
- * import { formatCurrency, isValidNif, debounce } from '../../shared/utils';
- * ```
+ * AGENTS.md Import convention: "Local imports (relative paths, no barrel files)".
+ * This file exists for backwards compatibility but is deprecated.
+ * Import directly from the individual utils modules instead:
  *
+ *   import { formatCurrency } from './format.utils';
+ *   import { isValidNif } from './validation.utils';
+ *
+ * @deprecated Import directly from individual utility modules.
  * @module shared/utils
  */
 

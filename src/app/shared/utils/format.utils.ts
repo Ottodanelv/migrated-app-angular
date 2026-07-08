@@ -163,8 +163,6 @@ export function formatDate(
     return '';
   }
 
-  const formatPattern = DATE_FORMATS[format];
-
   // Map our format patterns to Intl.DateTimeFormatOptions
   const formatOptionsMap: Record<keyof typeof DATE_FORMATS, Intl.DateTimeFormatOptions> = {
     SHORT: { day: '2-digit', month: '2-digit', year: 'numeric' },
@@ -231,7 +229,7 @@ export function formatRelativeTime(
   }
 
   // Fallback: basic relative formatting
-  if (absDiffSeconds < 60) return diffSeconds >= 0 ? 'ahora' : 'ahora';
+  if (absDiffSeconds < 60) return diffSeconds >= 0 ? 'en unos segundos' : 'hace unos segundos';
   if (absDiffSeconds < 3600) {
     const m = Math.floor(absDiffSeconds / 60);
     return diffSeconds >= 0 ? `en ${m} min` : `hace ${m} min`;

@@ -27,7 +27,9 @@
  * ```
  */
 export function roundToCents(value: number): number {
-  return Math.round(value * 100) / 100;
+  // Use Number.EPSILON as a safeguard against floating-point precision issues.
+  // Without this, roundToCents(1.005) returns 1.00 because 1.005 * 100 = 100.499...
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
 /**
