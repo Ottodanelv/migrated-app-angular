@@ -24,12 +24,6 @@ const NIE_PREFIX_MAP: Record<string, string> = {
   Z: '2',
 } as const;
 
-/** Regex: valid NIF format — 8 digits + uppercase letter. */
-const NIF_REGEX = /^\d{8}[A-Z]$/;
-
-/** Regex: valid NIE format — X/Y/Z + 7 digits + uppercase letter. */
-const NIE_REGEX = /^[XYZ]\d{7}[A-Z]$/;
-
 /** Regex: valid NIF format (lowercase letter also allowed). */
 const NIF_REGEX_LOOSE = /^\d{8}[A-Za-z]$/;
 

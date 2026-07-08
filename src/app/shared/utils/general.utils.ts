@@ -14,13 +14,9 @@
 // Type Helpers
 // ---------------------------------------------------------------------------
 
-/** Generic function type for debounce. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyFunction = (...args: any[]) => any;
-
 /** A debounced function that also exposes a `cancel` method. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type DebouncedFunction<T extends (...args: any[]) => any> = ((...args: Parameters<T>) => void) & { cancel: () => void };
+type DebouncedFunction<T extends (...args: unknown[]) => unknown> =
+  ((...args: Parameters<T>) => void) & { cancel: () => void };
 
 // ---------------------------------------------------------------------------
 // Debounce
@@ -42,7 +38,7 @@ type DebouncedFunction<T extends (...args: any[]) => any> = ((...args: Parameter
  * debouncedLog.cancel(); // Cancel pending execution
  * ```
  */
-export function debounce<T extends AnyFunction>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   fn: T,
   ms: number,
 ): DebouncedFunction<T> {
@@ -142,11 +138,18 @@ export function isEqual(a: unknown, b: unknown): boolean {
     return a.source === b.source && a.flags === b.flags;
   }
 
-  // Handle Sets
+  // Handle Sets — uses recursive deep equality for object items
   if (a instanceof Set && b instanceof Set) {
     if (a.size !== b.size) return false;
-    for (const item of a) {
-      if (!b.has(item)) return false;
+    for (const itemA of a) {
+      let found = false;
+      for (const itemB of b) {
+        if (isEqual(itemA, itemB)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) return false;
     }
     return true;
   }
