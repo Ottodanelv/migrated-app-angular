@@ -81,7 +81,7 @@ This document defines the rules, conventions, and patterns for migrating **gesti
 | JSP `.jsp` files | Angular Component (`.ts` + `.html` + `.css`) | One component per JSP page view |
 | JSTL `<c:forEach>` | `@for` template syntax | Native Angular control flow |
 | JSTL `<c:if>`, `<c:choose>` | `@if` template syntax | Native Angular control flow |
-| `<spring:message code="...">` | Angular i18n `$localize` or custom translation service | i18n messages in `.properties` → JSON translation files |
+| `<spring:message code="...">` | Angular i18n `$localize` with XLIFF 1.2 translation files | i18n messages in `.properties` → XLIFF translation files (`messages.es.xlf`, `messages.en.xlf`) |
 | `<spring:form>` / `<form:form>` | Reactive Forms (`FormGroup`, `FormControl`) | Model-driven forms |
 | `<c:out>`, `<c:url>` | Angular template interpolation `{{ }}` | Auto-escaped |
 | `request.getParameter()` | `FormControl.value` or query param `ActivatedRoute.snapshot.queryParams` | Query string → Reactive Forms or Router state |
@@ -276,9 +276,10 @@ src/
 │       └── error/
 │
 ├── assets/
-│   ├── i18n/                           # Translation JSON files
-│   │   ├── es.json
-│   │   └── en.json
+│   ├── i18n/                           # Translation XLIFF 1.2 files (Angular native i18n)
+│   │   ├── messages.es.xlf
+│   │   ├── messages.en.xlf
+│   │   └── index.ts                    # Locale registry for custom lookups
 │   └── images/                         # Static images (legacy img/)
 │
 ├── styles.css                          # Global styles + Tailwind + theme vars
