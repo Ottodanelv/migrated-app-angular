@@ -2,15 +2,15 @@
 
 > **Module**: #28 — Image Assets Migration (GH-8)
 > **Migrated**: 2026-07-08
-> **Total**: 107 images (776 KB) across 4 directories
+> **Total**: 107 images (776 KB) across 3 image directories
 
 ## Directory Structure
 
 ```
 public/images/
-├── common/         50 images (427 KB) — Shared/default images for all societies
-├── cajamar/        52 images (315 KB) — Cajamar-branded variants (society 600/800)
-├── xfera/           5 images  (34 KB) — Xfera-specific branding (society 800/600)
+├── common/         50 images (427 KB) — Shared/default images for all societies (sociedad 400)
+├── cajamar/        52 images (315 KB) — Cajamar-branded variants (sociedad 800)
+├── xfera/           5 images  (34 KB) — Xfera-specific branding (sociedad 600)
 └── README.md                       — This inventory manifest
 ```
 
@@ -222,8 +222,13 @@ The legacy application used `cargando.gif` (10.2 KB animated GIF) as a loading i
 Create a service/method that returns the correct image path based on the current society:
 
 ```typescript
+/**
+ * Returns a root-relative image path safe for any Angular route depth.
+ * Leading `/` ensures correct resolution from the app root regardless
+ * of the current route nesting level.
+ */
 function getImagePath(imageName: string, society?: string): string {
-  const base = 'images';
+  const base = '/images';
   if (society === 'cajamar') return `${base}/cajamar/${imageName}`;
   if (society === 'xfera') return `${base}/xfera/${imageName}`;
   return `${base}/common/${imageName}`;
