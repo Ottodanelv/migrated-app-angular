@@ -7,6 +7,62 @@
 
 ---
 
+## MCP Protocol — MANDATORY TOOL USAGE
+
+**Every MetaAgent MUST actively use these three MCP tools throughout the migration lifecycle.** This is the first and most critical rule. No agent may skip or ignore these directives.
+
+### 1. `headroom` — Token Optimization (ACTIVE, not passive)
+
+| Directive | When | Why |
+|---|---|---|
+| **Compress large tool outputs** | After any tool returns >500 lines or large JSON | Preserves context window for reasoning |
+| **Use `headroom_compress`** | On legacy CSS/Java/JSP files, search results, long docs | Compresses content to ~10-20% of original size while preserving structure |
+| **Use `headroom_retrieve`** | When you need the full original content back | Retrieve by hash from compressed content |
+| **Use `headroom_stats`** | Periodically, every 5-10 tool calls | Monitor token savings and adjust strategy |
+
+**Rule**: If a file/response exceeds 200 lines, compress it with headroom BEFORE reasoning over it.
+
+### 2. `codebase-memory-mcp` — Legacy Code Search (REQUIRED)
+
+| Directive | When | Why |
+|---|---|---|
+| **Use `search_graph` / `search_code`** | When you need to find legacy Java classes, methods, patterns | Already indexed (784 nodes, 1818 edges) — faster and more precise than raw grep/read |
+| **Use `query_graph` (Cypher)** | For complex dependency analysis across legacy files | Multi-hop queries reveal relationships invisible to grep |
+| **Use `trace_path`** | To trace call chains from controllers → services → utilities | Understand data flow before migrating |
+| **Use `get_code_snippet`** | When exact source code of a legacy function is needed | Read specific function without opening whole files |
+| **DO NOT re-read legacy files directly** | Unless codebase-memory is insufficient | Wastes tokens — the graph has richer metadata |
+
+**Legacy project ID**: `C-Users-metaenlace-Documents-agnostic-agent-MetaContext-main-MetaContext-main-runtimes-root-repos-legacy-app`
+
+### 3. `context7` — Live Documentation (REQUIRED before writing code)
+
+| Directive | When | Why |
+|---|---|---|
+| **Use `resolve-library-id`** | Before querying docs for any library/framework | Must resolve to exact Context7 ID first |
+| **Use `query-docs`** | BEFORE writing any Angular, Tailwind, Vitest, or TypeScript code | Training data may be stale; Context7 has latest API |
+| **Query per concept** | One query per distinct topic (routing, forms, signals, theming, etc.) | Avoid broad queries that return irrelevant results |
+
+**Library IDs for this project**:
+
+| Library | Context7 ID |
+|---|---|
+| Angular (latest) | `/websites/angular_dev` |
+| Angular v22 | `/websites/angular_dev_v22` |
+| Tailwind CSS | `/tailwindlabs/tailwindcss.com` |
+| Vitest | `/vitest-dev/vitest` |
+| TypeScript | `/microsoft/typescript` |
+
+### MCP Protocol Enforcement
+
+- **MetaCoder**: Before writing ANY file, must show evidence of context7 query for the relevant tech.
+- **MetaTechPlanner**: Before writing ANY tech-plan, must show evidence of codebase-memory-mcp search on legacy source.
+- **MetaReviewer**: Must verify that headroom was used to optimize context during review.
+- **MetaPlanner**: Must reference codebase-memory-mcp index for module dependency analysis.
+
+**Violation of MCP Protocol = PR rejection by MetaReviewer.**
+
+---
+
 ## Overview
 
 This document defines the rules, conventions, and patterns for migrating **gestionWeb** (Cetelem financial token management webapp) from **Spring MVC JSP** to **Angular 22 standalone**.
@@ -25,7 +81,7 @@ This document defines the rules, conventions, and patterns for migrating **gesti
 | JSP `.jsp` files | Angular Component (`.ts` + `.html` + `.css`) | One component per JSP page view |
 | JSTL `<c:forEach>` | `@for` template syntax | Native Angular control flow |
 | JSTL `<c:if>`, `<c:choose>` | `@if` template syntax | Native Angular control flow |
-| `<spring:message code="...">` | Angular i18n `$localize` or custom translation service | i18n messages in `.properties` → JSON translation files |
+| `<spring:message code="...">` | Angular i18n `$localize` with XLIFF 1.2 translation files | i18n messages in `.properties` → XLIFF translation files (`messages.es.xlf`, `messages.en.xlf`) |
 | `<spring:form>` / `<form:form>` | Reactive Forms (`FormGroup`, `FormControl`) | Model-driven forms |
 | `<c:out>`, `<c:url>` | Angular template interpolation `{{ }}` | Auto-escaped |
 | `request.getParameter()` | `FormControl.value` or query param `ActivatedRoute.snapshot.queryParams` | Query string → Reactive Forms or Router state |
@@ -194,9 +250,19 @@ src/
 │   │   ├── consentimiento.ts
 │   │   └── token-response.ts
 │   │
+│   ├── shared/                         # Shared utilities, constants, types
+│   │   ├── constants/
+│   │   │   └── app.constants.ts         # Route paths, model attrs, society codes
+│   │   └── utils/                       # Pure TypeScript helpers (no jQuery)
+│   │       ├── format.utils.ts
+│   │       └── validation.utils.ts
+│   │
 │   ├── components/                     # Reusable shared components
 │   │   ├── header/
 │   │   ├── footer/
+│   │   ├── layout/
+│   │   ├── loading-overlay/
+│   │   ├── error-banner/
 │   │   ├── error-page/
 │   │   └── consentimiento-list/
 │   │
@@ -210,12 +276,17 @@ src/
 │       └── error/
 │
 ├── assets/
-│   ├── i18n/                           # Translation JSON files
-│   │   ├── es.json
-│   │   └── en.json
+│   ├── i18n/                           # Translation XLIFF 1.2 files (Angular native i18n)
+│   │   ├── messages.es.xlf
+│   │   ├── messages.en.xlf
+│   │   └── index.ts                    # Locale registry for custom lookups
 │   └── images/                         # Static images (legacy img/)
 │
 ├── styles.css                          # Global styles + Tailwind + theme vars
+├── environments/                       # Build-time environment configs
+│   ├── environment.interface.ts        # Type-safe AppEnvironment interface
+│   ├── environment.ts                  # Development/detault config
+│   └── environment.prod.ts            # Production config (fileReplacements)
 ├── main.ts                             # Bootstrap entry point
 └── index.html                          # SPA shell
 ```
@@ -362,16 +433,20 @@ Sigue las reglas definidas en AGENTS.md.
 ```
 Necesito el plan tecnico de la issue #<numero>.
 Se trata de migrar de Spring MVC JSP a Angular 22 + Tailwind CSS.
-Analiza el codigo origen en repos/legacy-app/ y genera tareas numeradas.
-El plan debe cumplir TODAS las reglas de AGENTS.md.
-Usa codebase-memory-mcp para consultar el codigo legacy indexado.
+Analiza el codigo origen usando codebase-memory-mcp (NO leas los archivos legacy directamente).
+Usa search_graph, search_code y trace_path para entender dependencias y flujos de datos.
+Genera tareas numeradas y cumple TODAS las reglas de AGENTS.md.
+Usa headroom para comprimir outputs grandes del analisis legacy.
+Usa context7 para verificar APIs actuales de Angular 22 y Tailwind CSS al escribir las tareas.
 ```
 
 ### Fase 3 — MetaCoder (Implementation)
 
 ```
 Implementa la migracion de la issue #<numero> segun el tech-plan.
-Usa context7 para la documentacion de Angular 22 y Tailwind CSS.
+ANTES de escribir codigo: consulta context7 para documentacion actualizada de Angular/Tailwind/Vitest.
+Usa codebase-memory-mcp para buscar codigo legacy cuando necesites entender la logica original.
+Usa headroom ACTIVAMENTE para comprimir archivos grandes (>200 lineas) y outputs de herramientas.
 Cumple estrictamente las reglas DO y DON'T de AGENTS.md.
 Los estilos deben ser Tailwind, NO Bootstrap.
 Las rutas deben ir en app.routes.ts.
@@ -381,7 +456,11 @@ Si encuentras un patron no cubierto por AGENTS.md, preguntame antes de implement
 ### Fase 4 — MetaReviewer (Review)
 
 ```
-Revisa la PR #<numero> contra las reglas de AGENTS.md.
+Revisa la PR #<numero> contra TODAS las reglas de AGENTS.md.
+Verifica que se cumplio el MCP Protocol:
+  - El codigo se escribio tras consultar context7
+  - Se uso codebase-memory-mcp en vez de leer archivos legacy directamente
+  - Se uso headroom para optimizar tokens durante la implementacion
 Flag any:
 - JSP/Taglib patterns in Angular code (DON'T rules)
 - Missing tests (check Testing Strategy)
@@ -389,6 +468,7 @@ Flag any:
 - jQuery usage
 - Server-side state patterns (HttpSession, request attrs)
 - Routes not configured in app.routes.ts
+- Violaciones del MCP Protocol
 ```
 
 ---
