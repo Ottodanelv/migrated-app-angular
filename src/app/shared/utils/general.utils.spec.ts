@@ -142,9 +142,19 @@ describe('isEqual', () => {
     expect(isEqual(new Date('2024-01-01'), new Date('2024-02-01'))).toBe(false);
   });
 
-  it('should compare Sets', () => {
+  it('should compare Sets with primitives', () => {
     expect(isEqual(new Set([1, 2, 3]), new Set([1, 2, 3]))).toBe(true);
     expect(isEqual(new Set([1, 2, 3]), new Set([1, 2, 4]))).toBe(false);
+  });
+
+  it('should compare Sets with objects using deep equality', () => {
+    const setA = new Set([{ id: 1 }, { id: 2 }]);
+    const setB = new Set([{ id: 1 }, { id: 2 }]);
+    expect(isEqual(setA, setB)).toBe(true);
+
+    const setC = new Set([{ id: 1 }, { id: 2 }]);
+    const setD = new Set([{ id: 1 }, { id: 3 }]);
+    expect(isEqual(setC, setD)).toBe(false);
   });
 
   it('should handle null and undefined', () => {

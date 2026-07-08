@@ -40,6 +40,13 @@ describe('roundToCents', () => {
     expect(roundToCents(0.005)).toBe(0.01);
   });
 
+  it('should handle floating-point precision edge cases', () => {
+    // 1.005 * 100 = 100.499... without Number.EPSILON safeguard
+    expect(roundToCents(1.005)).toBe(1.01);
+    expect(roundToCents(2.005)).toBe(2.01);
+    expect(roundToCents(3.005)).toBe(3.01);
+  });
+
   it('should handle negative values', () => {
     expect(roundToCents(-123.456)).toBe(-123.46);
   });
