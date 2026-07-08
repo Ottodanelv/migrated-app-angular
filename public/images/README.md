@@ -9,8 +9,8 @@
 ```
 public/images/
 ├── common/         50 images (427 KB) — Shared/default images for all societies (sociedad 400)
-├── cajamar/        52 images (315 KB) — Cajamar-branded variants (sociedad 800)
-├── xfera/           5 images  (34 KB) — Xfera-specific branding (sociedad 600)
+├── cajamar/        52 images (315 KB) — Cajamar-branded variants (sociedad 600)
+├── xfera/           5 images  (34 KB) — Xfera-specific branding (sociedad 800)
 └── README.md                       — This inventory manifest
 ```
 
