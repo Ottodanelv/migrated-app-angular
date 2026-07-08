@@ -1,1 +1,370 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   Tailwind CSS v4 — Custom Design Tokens from Legacy CSS
+   Source brands: Cetelem (400), CM Credit (600), Xfera (800)
+   ========================================================================== */
+
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+/* ==========================================================================
+   1. Design Tokens (@theme)
+   All legacy colors extracted from cajamar.css, style_xfera.css, cmcredit.css
+   and converted to oklch for Tailwind CSS v4 compatibility.
+   ========================================================================== */
+
+@theme {
+  /* ---- Font Families ---- */
+  --font-sans: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  --font-display: 'Arial Black', 'Arial', sans-serif;
+  --font-body: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+
+  /* ---- Font Sizes (Legacy Scale) ---- */
+  --text-xxs: 0.625rem;    /* 10px — legal/small text */
+  --text-xs: 0.6875rem;    /* 11px */
+  --text-sm: 0.75rem;      /* 12px — footer links */
+  --text-base: 0.8125rem;  /* 13px — body default */
+  --text-md: 0.875rem;     /* 14px — info text */
+  --text-lg: 0.9375rem;    /* 15px — body alt */
+  --text-xl: 1rem;         /* 16px — h5, headings */
+  --text-2xl: 1.125rem;    /* 18px — h2, large text */
+  --text-3xl: 1.1875rem;   /* 19px — h3 */
+  --text-4xl: 1.5625rem;   /* 25px — h1 */
+  --text-5xl: 1.625rem;    /* 26px — large heading */
+
+  /* ---- Border Radius ---- */
+  --radius-sm: 0.3125rem;    /* 5px */
+  --radius-md: 0.4375rem;    /* 7px */
+  --radius-lg: 0.5rem;       /* 8px */
+  --radius-xl: 1.0625rem;    /* 17px */
+  --radius-2xl: 1.25rem;     /* 20px */
+  --radius-full: 9999px;     /* round */
+
+  /* ---- Shadows ---- */
+  --shadow-soft: 0 5px 5px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 5px 5px 5px rgba(0, 0, 0, 0.22);
+  --shadow-button: 4px 4px #e0e0e0;
+
+  /* =======================================================================
+     1a. Default Brand Colors (Sociedad 400 — Cetelem/Default)
+     ======================================================================= */
+
+  /* Primary brand */
+  --color-brand-primary: oklch(0.58 0.20 145);          /* #1e9e3b — Cetelem green */
+  --color-brand-primary-light: oklch(0.68 0.20 145);   /* lighter green */
+  --color-brand-primary-dark: oklch(0.48 0.18 145);    /* darker green */
+
+  /* Secondary / accent */
+  --color-brand-secondary: oklch(0.38 0.25 325);       /* #831382 — Xfera purple */
+  --color-brand-secondary-light: oklch(0.48 0.25 325); /* #BD1CBA — hover purple */
+  --color-brand-secondary-dark: oklch(0.33 0.22 325);  /* #6E106C — dark purple */
+
+  /* Teal (CM Credit style) */
+  --color-brand-teal: oklch(0.52 0.14 195);            /* #008a9b — Cajamar teal */
+  --color-brand-teal-light: oklch(0.55 0.14 195);      /* #028C9D — cmcredit light */
+  --color-brand-teal-dark: oklch(0.44 0.13 195);       /* #006C79 — cmcredit dark */
+  --color-brand-teal-hover: oklch(0.42 0.12 195);      /* #00616d — hover teal */
+
+  /* Accent green (CM Credit) */
+  --color-brand-accent: oklch(0.68 0.20 130);          /* #79b51c */
+
+  /* Blue info */
+  --color-brand-info: oklch(0.55 0.18 255);            /* #009ee0 */
+
+  /* =======================================================================
+     1b. Neutral Palette (text, backgrounds, borders)
+     ======================================================================= */
+
+  /* Text colors */
+  --color-text-primary: oklch(0.38 0.01 0);            /* #505050 — body text */
+  --color-text-secondary: oklch(0.42 0.01 0);          /* #58585a — heavy text */
+  --color-text-muted: oklch(0.55 0.01 0);              /* #868889 — muted */
+  --color-text-light: oklch(0.70 0.01 0);              /* #b1b3b4 — light text */
+  --color-text-footer: oklch(0.55 0.01 0);             /* #898989 — footer links */
+
+  /* Background colors */
+  --color-bg-page: oklch(0.90 0.01 0);                 /* #e2e2e2 — outer bg */
+  --color-bg-section: oklch(0.94 0.01 0);              /* #EFEFEF — inner bg */
+  --color-bg-white: oklch(1 0 0);                      /* #ffffff — white */
+  --color-bg-hover: oklch(0.87 0.01 0);                /* #dbdbdb — table hover */
+  --color-bg-light-blue: oklch(0.96 0.02 210);         /* #e8edf1 — light blue */
+  --color-bg-info: oklch(0.98 0.01 210);               /* #ebf7fc — table cell */
+
+  /* Border colors */
+  --color-border-light: oklch(0.89 0.01 0);            /* #e1e1e2 */
+  --color-border-input: oklch(0.55 0.01 0);            /* #898989 -- input border */
+  --color-border-green: oklch(0.58 0.20 145);          /* #1e9e3b — green border */
+
+  /* =======================================================================
+     1c. Semantic Colors
+     ======================================================================= */
+
+  --color-error: oklch(0.50 0.22 30);                  /* #d0021b — errors */
+  --color-error-bright: oklch(0.53 0.22 30);           /* #E30000 — bright error */
+  --color-success: oklch(0.58 0.20 145);                /* #1e9e3b — success */
+
+  /* =======================================================================
+     1d. Overlays
+     ======================================================================= */
+
+  --color-overlay: oklch(0 0 0 / 0.3);                 /* modal backdrop */
+  --color-overlay-dark: oklch(0 0 0 / 0.5);            /* dark overlay */
+
+  /* =======================================================================
+     1e. Legacy Button Colors (moved from arbitrary classes)
+     ======================================================================= */
+
+  --color-button-bg: oklch(0.95 0.01 0);               /* #f2f2f2 — default button */
+  --color-button-bg-hover: oklch(0.98 0.01 0);         /* #fbfbfb — cont_gris button */
+}
+
+/* ==========================================================================
+   2. Multi-Brand Variants (@custom-variant)
+   Used by setting `data-sociedad` attribute on the root <html> element.
+   Sociedad 400 = Cetelem (default), 600 = CM Credit, 800 = Cajamar/Xfera
+   ========================================================================== */
+
+@custom-variant sociedad-400 (&:where([data-sociedad="400"], [data-sociedad="400"] *));
+@custom-variant sociedad-600 (&:where([data-sociedad="600"], [data-sociedad="600"] *));
+@custom-variant sociedad-800 (&:where([data-sociedad="800"], [data-sociedad="800"] *));
+
+/* ==========================================================================
+   3. Global Base Styles (@layer base)
+   ========================================================================== */
+
+@layer base {
+  /*
+    Body: matches legacy body from style_xfera.css
+    font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    background-color: #e2e2e2;
+    color: #505050;
+    line-height: normal;
+  */
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.4;
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /*
+    Headings: reset Bootstrap 3 overrides (style_xfera.css)
+    h1 { color: #831382; font-size: 25px; font-weight: bold; }
+  */
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-4xl);
+    color: var(--color-brand-secondary);
+    padding-bottom: 0.625rem;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: var(--text-2xl);
+    line-height: 1.375;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h3 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h5 {
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  /*
+    Links: from cmcredit.css
+    a { color: #006C79; transition: all ease-out 300ms; }
+    a:hover, a:focus { color: #028C9D; text-decoration: none; }
+    Overridden for Xfera: a, a:hover { text-decoration: underline; }
+  */
+  a {
+    color: var(--color-brand-teal-dark);
+    text-decoration: underline;
+    transition: all ease-out 300ms;
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--color-brand-teal-light);
+    text-decoration: underline;
+  }
+
+  /*
+    Labels (style_xfera.css):
+    label { font-weight: normal; display: block; color: black; }
+  */
+  label {
+    font-weight: 400;
+    display: block;
+    color: #000;
+  }
+
+  /*
+    Bold text (cmcredit.css):
+    b, strong { font-weight: 700; }
+  */
+  b,
+  strong {
+    font-weight: 700;
+  }
+
+  /*
+    Form inputs (style_xfera.css):
+    input { margin-bottom: 10px; border: 1px solid #898989; padding: 0 4px; font-size: 18px; }
+    Note: @tailwindcss/forms provides base reset — we extend here.
+  */
+  input,
+  textarea,
+  select {
+    margin-bottom: 0.625rem;
+    font-size: var(--text-2xl);
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  /* Generic focus outline reset */
+  *:focus {
+    outline: none;
+  }
+}
+
+/* ==========================================================================
+   4. Legacy CSS Overrides (for elements not covered by Tailwind utilities)
+   These classes match the old Bootstrap / custom classes so migration
+   can happen incrementally. New code should use Tailwind utilities directly.
+   ========================================================================== */
+
+/*
+  Buttons (style_xfera.css):
+  button { background: #f2f2f2; border: none; padding: 8px 18px;
+           border-radius: 20px; box-shadow: 4px 4px #e0e0e0; color: #6E106C; }
+  button.continuar { color: white; background: #831382; }
+  button.continuar:hover { background: #BD1CBA; }
+*/
+@layer components {
+  .btn-legacy {
+    background-color: var(--color-button-bg);
+    border: none;
+    padding: 0.5rem 1.125rem;
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-button);
+    width: 100%;
+    color: var(--color-brand-secondary-dark);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    transition: background-color 200ms ease;
+  }
+
+  .btn-legacy:hover {
+    background-color: var(--color-button-bg-hover);
+  }
+
+  .btn-legacy.continuar {
+    background-color: var(--color-brand-secondary);
+    color: white;
+  }
+
+  .btn-legacy.continuar:hover {
+    background-color: var(--color-brand-secondary-light);
+  }
+
+  .btn-legacy.volver {
+    color: var(--color-brand-secondary-dark);
+  }
+
+  .btn-legacy.desactivado {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* Legacy error block */
+  .error-block {
+    padding: 0.625rem 1.5625rem 1.25rem;
+    border: 1px solid var(--color-error-bright);
+    margin: 1.875rem 1.5625rem;
+    color: var(--color-error-bright);
+    font-weight: 700;
+  }
+
+  /* Legacy gray section */
+  .section-gray {
+    background-color: var(--color-bg-section);
+    padding-top: 0.9375rem;
+    padding-bottom: 0.9375rem;
+    overflow: hidden;
+  }
+
+  /* Legacy modal container */
+  .modal-overlay {
+    background: #000;
+    opacity: 0.3;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    z-index: 900;
+  }
+
+  .modal-content-legacy {
+    background-color: white;
+    width: 90%;
+    max-width: 850px;
+    border-radius: var(--radius-sm);
+    padding: 0.9375rem 1.25rem;
+    max-height: 90%;
+    overflow: auto;
+    z-index: 1000;
+    color: var(--color-text-primary);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--shadow-modal);
+  }
+}
+
+/* ==========================================================================
+   5. Animations & Transitions
+   ========================================================================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-fade-in {
+  animation: fadeIn 300ms ease-out;
+}
+
+@utility animate-slide-down {
+  animation: slideDown 300ms ease-out;
+}
