@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es" datatype="plaintext" original="ng2.template">
+    <body>
+      <!-- ================================================================
+           ERROR MESSAGES (error.properties)
+           ================================================================ -->
+      <group restype="x-error-messages">
+        <note priority="1" from="description">Error messages migrated from error.properties</note>
+
+        <trans-unit id="error.gestionToken.sms.financiero" datatype="html">
+          <source>Se ha producido un error al recuperar la información asociada al token.</source>
+          <target>Se ha producido un error al recuperar la información asociada al token.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">error.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="error.gestionToken.sms.financiero.no.valido" datatype="html">
+          <source>La información a la que está tratando de acceder ya no es válida (Token caducado).</source>
+          <target>La información a la que está tratando de acceder ya no es válida (Token caducado).</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">error.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="error.gestionToken.sms.generico" datatype="html">
+          <source>Se ha producido un error al recuperar la información asociada al token.</source>
+          <target>Se ha producido un error al recuperar la información asociada al token.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">error.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="error.gestionToken.sms.generico.no.valido" datatype="html">
+          <source>La información a la que está tratando de acceder ya no es válida (Token caducado).</source>
+          <target>La información a la que está tratando de acceder ya no es válida (Token caducado).</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">error.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           CETELEM — infoOperacion (CETELEM brand)
+           ================================================================ -->
+      <group restype="x-cetelem-info-operacion">
+        <note priority="1" from="description">CETELEM — Información de operación (messages.properties)</note>
+
+        <trans-unit id="infoOperacion.gestionToken.info1" datatype="html">
+          <source>Ha realizado una utilización de tarjeta por </source>
+          <target>Ha realizado una utilización de tarjeta por </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">Mensaje inicial: uso de tarjeta CETELEM. Continúa con importe en info2.</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info2" datatype="html">
+          <source>€ en modo de pago aplazado. A devolver en {0} cuotas mensuales de </source>
+          <target>€ en modo de pago aplazado. A devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info3" datatype="html">
+          <source>€. Se aplica una comisión de formalización de </source>
+          <target>€. Se aplica una comisión de formalización de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info4" datatype="html">
+          <source>€, a pagar junto con la primera mensualidad. TIN </source>
+          <target>€, a pagar junto con la primera mensualidad. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info5" datatype="html">
+          <source> TAE </source>
+          <target> TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info6" datatype="html">
+          <source>. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo </source>
+          <target>. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info7" datatype="html">
+          <source> se le cobrará su primer recibo. </source>
+          <target> se le cobrará su primer recibo. </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info8" datatype="html">
+          <source>En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.</source>
+          <target>En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info9" datatype="html">
+          <source>Consulte el plan de pagos de su utilización a través del <b>Espacio Cliente</b> de </source>
+          <target>Consulte el plan de pagos de su utilización a través del <b>Espacio Cliente</b> de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info10" datatype="html">
+          <source>cetelem.es</source>
+          <target>cetelem.es</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion.gestionToken.info11" datatype="html">
+          <source> o a través de la <b>App Cetelem Móvil</b>, donde podrá ver la cantidad exacta de cada una de las cuotas.</source>
+          <target> o a través de la <b>App Cetelem Móvil</b>, donde podrá ver la cantidad exacta de cada una de las cuotas.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           CETELEM — infoOperacionComPla (Compra a plazos)
+           ================================================================ -->
+      <group restype="x-cetelem-compra-plazos">
+        <note priority="1" from="description">CETELEM — Compra a plazos (messages.properties)</note>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info1" datatype="html">
+          <source>Importe a financiar </source>
+          <target>Importe a financiar </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info2" datatype="html">
+          <source>€ a devolver en {0} cuotas mensuales de </source>
+          <target>€ a devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info3" datatype="html">
+          <source>€. Comisión formalización aplicada </source>
+          <target>€. Comisión formalización aplicada </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info4" datatype="html">
+          <source>€ (1). Importe total adeudado es de </source>
+          <target>€ (1). Importe total adeudado es de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info5" datatype="html">
+          <source>€. TIN </source>
+          <target>€. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info6" datatype="html">
+          <source>, TAE </source>
+          <target>, TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info7" datatype="html">
+          <source>. El próximo </source>
+          <target>. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info8" datatype="html">
+          <source> se le enviará su primer recibo. Recibirá por correo ordinario el Cuadro de Amortización con el detalle.</source>
+          <target> se le enviará su primer recibo. Recibirá por correo ordinario el Cuadro de Amortización con el detalle.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info9" datatype="html">
+          <source>(1) Se aplicarán junto con la primera mensualidad.</source>
+          <target>(1) Se aplicarán junto con la primera mensualidad.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info10" datatype="html">
+          <source>Código de la operación: </source>
+          <target>Código de la operación: </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla.gestionToken.info11" datatype="html">
+          <source>Si quiere confirmar esta operación, mándenos un sms con la palabra APLAZA espacio 'Código de la operación' al 215234</source>
+          <target>Si quiere confirmar esta operación, mándenos un sms con la palabra APLAZA espacio 'Código de la operación' al 215234</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           CAJAMAR — infoOperacion1
+           ================================================================ -->
+      <group restype="x-cajamar-info-operacion">
+        <note priority="1" from="description">CAJAMAR — Información de operación (messages.properties)</note>
+
+        <trans-unit id="infoOperacion1.gestionToken.info1" datatype="html">
+          <source>Ha realizado una utilización de su Línea de crédito por </source>
+          <target>Ha realizado una utilización de su Línea de crédito por </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info2" datatype="html">
+          <source>€ en modo de pago aplazado, a devolver en {0} cuotas mensuales de  </source>
+          <target>€ en modo de pago aplazado, a devolver en {0} cuotas mensuales de  </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info3" datatype="html">
+          <source>€ cada una. Se ha aplicado una comisión de formalización de </source>
+          <target>€ cada una. Se ha aplicado una comisión de formalización de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info4" datatype="html">
+          <source>€ financiada junto al principal. TIN </source>
+          <target>€ financiada junto al principal. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info5" datatype="html">
+          <source> TAE </source>
+          <target> TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info6" datatype="html">
+          <source>. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo </source>
+          <target>. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info7" datatype="html">
+          <source> se le cobrará su primer recibo. </source>
+          <target> se le cobrará su primer recibo. </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion1.gestionToken.info8" datatype="html">
+          <source>Cualquier duda que le surja puede consultarla a través del teléfono de atención al cliente 91 048 30 30. </source>
+          <target>Cualquier duda que le surja puede consultarla a través del teléfono de atención al cliente 91 048 30 30. </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           CAJAMAR — infoOperacionComPla1 (Compra a plazos)
+           ================================================================ -->
+      <group restype="x-cajamar-compra-plazos">
+        <note priority="1" from="description">CAJAMAR — Compra a plazos (messages.properties)</note>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info1" datatype="html">
+          <source>Importe a financiar </source>
+          <target>Importe a financiar </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info2" datatype="html">
+          <source>€ a devolver en {0} cuotas mensuales de </source>
+          <target>€ a devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info3" datatype="html">
+          <source>€. Comisión formalización aplicada </source>
+          <target>€. Comisión formalización aplicada </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info4" datatype="html">
+          <source>€ (1). Importe total adeudado es de </source>
+          <target>€ (1). Importe total adeudado es de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info5" datatype="html">
+          <source>€. TIN </source>
+          <target>€. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info6" datatype="html">
+          <source>, TAE </source>
+          <target>, TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info7" datatype="html">
+          <source>. El próximo </source>
+          <target>. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info8" datatype="html">
+          <source> se le enviará su primer recibo. Recibirá por correo ordinario el Cuadro de Amortización con el detalle.</source>
+          <target> se le enviará su primer recibo. Recibirá por correo ordinario el Cuadro de Amortización con el detalle.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info9" datatype="html">
+          <source>(1) Se aplicarán junto con la primera mensualidad.</source>
+          <target>(1) Se aplicarán junto con la primera mensualidad.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info10" datatype="html">
+          <source>Código de la operación: </source>
+          <target>Código de la operación: </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla1.gestionToken.info11" datatype="html">
+          <source>Si quiere confirmar esta operación, mándenos un sms con la palabra APLAZA espacio 'Código de la operación' al 215234</source>
+          <target>Si quiere confirmar esta operación, mándenos un sms con la palabra APLAZA espacio 'Código de la operación' al 215234</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           PREAUTORIZADO — infoOperacionPreaut
+           ================================================================ -->
+      <group restype="x-preautorizado-info-operacion">
+        <note priority="1" from="description">Preautorizado — Información de operación (messages.properties)</note>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info1" datatype="html">
+          <source>Su utilización ha sido autorizada por </source>
+          <target>Su utilización ha sido autorizada por </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info2" datatype="html">
+          <source>€ a devolver en {0} cuotas mensuales de </source>
+          <target>€ a devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info3" datatype="html">
+          <source>€. Esta operación aplica </source>
+          <target>€. Esta operación aplica </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info4" datatype="html">
+          <source>€ de comisión de formalización junto con la primera mensualidad. TIN </source>
+          <target>€ de comisión de formalización junto con la primera mensualidad. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info5" datatype="html">
+          <source> TAE </source>
+          <target> TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info6" datatype="html">
+          <source>. El próximo </source>
+          <target>. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info7" datatype="html">
+          <source>* se le cobrará su primer recibo. Recibirá por correo ordinario el cuadro de amortización con todo el detalle, también puede consultarlo a través del Espacio Cliente de </source>
+          <target>* se le cobrará su primer recibo. Recibirá por correo ordinario el cuadro de amortización con todo el detalle, también puede consultarlo a través del Espacio Cliente de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info8" datatype="html">
+          <source>cetelem.es</source>
+          <target>cetelem.es</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut.gestionToken.info9" datatype="html">
+          <source>* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.</source>
+          <target>* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           XFERA — infoOperacion2
+           ================================================================ -->
+      <group restype="x-xfera-info-operacion">
+        <note priority="1" from="description">XFERA — Información de operación (messages.properties)</note>
+
+        <trans-unit id="infoOperacion2.gestionToken.info1" datatype="html">
+          <source>Ha realizado una utilización de tarjeta por </source>
+          <target>Ha realizado una utilización de tarjeta por </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info2" datatype="html">
+          <source>€ en modo de pago aplazado. A devolver en {0} cuotas mensuales de </source>
+          <target>€ en modo de pago aplazado. A devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info3" datatype="html">
+          <source>€. Se aplica una comisión de formalización de </source>
+          <target>€. Se aplica una comisión de formalización de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info4" datatype="html">
+          <source>€, a pagar junto con la primera mensualidad. TIN </source>
+          <target>€, a pagar junto con la primera mensualidad. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info5" datatype="html">
+          <source> TAE </source>
+          <target> TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info6" datatype="html">
+          <source>. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo </source>
+          <target>. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info7" datatype="html">
+          <source> se le cobrará su primer recibo. </source>
+          <target> se le cobrará su primer recibo. </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info8" datatype="html">
+          <source>En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.</source>
+          <target>En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info9" datatype="html">
+          <source>Consulte el plan de pagos de su utilización a través de la App </source>
+          <target>Consulte el plan de pagos de su utilización a través de la App </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info10" datatype="html">
+          <source>MoneyGO</source>
+          <target>MoneyGO</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacion2.gestionToken.info11" datatype="html">
+          <source>, donde podrá ver la cantidad exacta de cada una de las cuotas.</source>
+          <target>, donde podrá ver la cantidad exacta de cada una de las cuotas.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           XFERA — infoOperacionComPla2 (Compra a plazos)
+           ================================================================ -->
+      <group restype="x-xfera-compra-plazos">
+        <note priority="1" from="description">XFERA — Compra a plazos (messages.properties)</note>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info1" datatype="html">
+          <source>Importe a financiar </source>
+          <target>Importe a financiar </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info2" datatype="html">
+          <source>€ a devolver en {0} cuotas mensuales de </source>
+          <target>€ a devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info3" datatype="html">
+          <source>€. Comisión formalización aplicada </source>
+          <target>€. Comisión formalización aplicada </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info4" datatype="html">
+          <source>€ (1). Importe total adeudado es de </source>
+          <target>€ (1). Importe total adeudado es de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info5" datatype="html">
+          <source>€. TIN </source>
+          <target>€. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info6" datatype="html">
+          <source>, TAE </source>
+          <target>, TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info7" datatype="html">
+          <source>. El próximo </source>
+          <target>. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info8" datatype="html">
+          <source> se le enviará su primer recibo.</source>
+          <target> se le enviará su primer recibo.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info9" datatype="html">
+          <source>(1) Se aplicarán junto con la primera mensualidad.</source>
+          <target>(1) Se aplicarán junto con la primera mensualidad.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info10" datatype="html">
+          <source>Código de la operación: </source>
+          <target>Código de la operación: </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionComPla2.gestionToken.info11" datatype="html">
+          <source>Si quiere confirmar esta operación, mándenos un sms con la palabra APLAZA espacio 'Código de la operación' al 215234</source>
+          <target>Si quiere confirmar esta operación, mándenos un sms con la palabra APLAZA espacio 'Código de la operación' al 215234</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           XFERA — infoOperacionPreaut2 (Preautorizado)
+           ================================================================ -->
+      <group restype="x-xfera-preautorizado">
+        <note priority="1" from="description">XFERA — Preautorizado (messages.properties)</note>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info1" datatype="html">
+          <source>Su utilización ha sido autorizada por </source>
+          <target>Su utilización ha sido autorizada por </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info2" datatype="html">
+          <source>€ a devolver en {0} cuotas mensuales de </source>
+          <target>€ a devolver en {0} cuotas mensuales de </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">{0} = número de cuotas</note>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info3" datatype="html">
+          <source>€. Esta operación aplica </source>
+          <target>€. Esta operación aplica </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info4" datatype="html">
+          <source>€ de comisión de formalización junto con la primera mensualidad. TIN </source>
+          <target>€ de comisión de formalización junto con la primera mensualidad. TIN </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info5" datatype="html">
+          <source> TAE </source>
+          <target> TAE </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info6" datatype="html">
+          <source>. El próximo </source>
+          <target>. El próximo </target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info7" datatype="html">
+          <source>* se le cobrará su primer recibo.</source>
+          <target>* se le cobrará su primer recibo.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="infoOperacionPreaut2.gestionToken.info8" datatype="html">
+          <source>* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.</source>
+          <target>* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           CONSENTIMIENTOS
+           ================================================================ -->
+      <group restype="x-consentimientos">
+        <note priority="1" from="description">Consentimientos — Privacidad y autorización (messages.properties)</note>
+
+        <trans-unit id="consentimientos.titulo" datatype="html">
+          <source>Tu privacidad es importante para nosotros</source>
+          <target>Tu privacidad es importante para nosotros</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="consentimientos.leido" datatype="html">
+          <source>He leído y consiento todos los tratamientos descritos.</source>
+          <target>He leído y consiento todos los tratamientos descritos.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="consentimientos.masInfo" datatype="html">
+          <source> Más información.</source>
+          <target> Más información.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+          <note priority="1" from="description">Leading space + initial non-breaking space converted to regular space</note>
+        </trans-unit>
+
+        <trans-unit id="consentimientos.autorizacion2" datatype="html">
+          <source>Autorizo expresamente a GCC CONSUMO EFC, S.A. a que incorpore a un fichero de datos automatizados de la entidad, los datos facilitados de contacto y pueda comunicarse conmigo durante el proceso de contratación.</source>
+          <target>Autorizo expresamente a GCC CONSUMO EFC, S.A. a que incorpore a un fichero de datos automatizados de la entidad, los datos facilitados de contacto y pueda comunicarse conmigo durante el proceso de contratación.</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="consentimientos.aceptacion" datatype="html">
+          <source>Se ha enviado el mensaje correctamente</source>
+          <target>Se ha enviado el mensaje correctamente</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+      <!-- ================================================================
+           BOTONES
+           ================================================================ -->
+      <group restype="x-botones">
+        <note priority="1" from="description">Botones de acción (messages.properties)</note>
+
+        <trans-unit id="btnContinuar" datatype="html">
+          <source>Continuar</source>
+          <target>Continuar</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+
+        <trans-unit id="btnAceptar" datatype="html">
+          <source>Aceptar</source>
+          <target>Aceptar</target>
+          <context-group purpose="location">
+            <context context-type="sourcefile">messages.properties</context>
+          </context-group>
+        </trans-unit>
+      </group>
+
+    </body>
+  </file>
+</xliff>
