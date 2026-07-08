@@ -194,6 +194,10 @@ src/
 │   │   ├── consentimiento.ts
 │   │   └── token-response.ts
 │   │
+│   ├── shared/                         # Shared utilities, constants, types
+│   │   └── constants/
+│   │       └── app.constants.ts         # Route paths, model attrs, society codes
+│   │
 │   ├── components/                     # Reusable shared components
 │   │   ├── header/
 │   │   ├── footer/
@@ -216,6 +220,10 @@ src/
 │   └── images/                         # Static images (legacy img/)
 │
 ├── styles.css                          # Global styles + Tailwind + theme vars
+├── environments/                       # Build-time environment configs
+│   ├── environment.interface.ts        # Type-safe AppEnvironment interface
+│   ├── environment.ts                  # Development/detault config
+│   └── environment.prod.ts            # Production config (fileReplacements)
 ├── main.ts                             # Bootstrap entry point
 └── index.html                          # SPA shell
 ```
