@@ -771,7 +771,7 @@
         </trans-unit>
 
         <trans-unit id="consentimientos.masInfo" datatype="html">
-          <source> M\u00e1s informaci\u00f3n.</source>
+          <source> Más información.</source>
           <target> More information.</target>
           <context-group purpose="location">
             <context context-type="sourcefile">messages.properties</context>
@@ -780,7 +780,7 @@
         </trans-unit>
 
         <trans-unit id="consentimientos.autorizacion2" datatype="html">
-          <source>Autorizo expresamente a GCC CONSUMO EFC, S.A. a que incorpore a un fichero de datos automatizados de la entidad, los datos facilitados de contacto y pueda comunicarse conmigo durante el proceso de contrataci\u00f3n.</source>
+          <source>Autorizo expresamente a GCC CONSUMO EFC, S.A. a que incorpore a un fichero de datos automatizados de la entidad, los datos facilitados de contacto y pueda comunicarse conmigo durante el proceso de contratación.</source>
           <target>I expressly authorize GCC CONSUMO EFC, S.A. to incorporate the contact details provided into an automated data file of the entity and to communicate with me during the contracting process.</target>
           <context-group purpose="location">
             <context context-type="sourcefile">messages.properties</context>
