@@ -32,8 +32,8 @@ describe('ROUTE_PATHS', () => {
   });
 
   it('should have the correct number of routes migrated from PathConstantes', () => {
-    // 6 legacy paths + 1 new (error) = 7 route paths
-    expect(Object.keys(ROUTE_PATHS)).toHaveLength(7);
+    // 6 legacy paths + 1 consentimientos view + 1 new error route = 8 route paths
+    expect(Object.keys(ROUTE_PATHS)).toHaveLength(8);
   });
 
   it('should map legacy path constants to Angular routes', () => {
@@ -47,6 +47,8 @@ describe('ROUTE_PATHS', () => {
     expect(ROUTE_PATHS.ENVIAR_OTP_COTITULAR).toBe('enviar-otp-cotitular');
     // @source PATH_ACEPTACION_CESION_DATOS_COTITULAR = "/acepCot"
     expect(ROUTE_PATHS.ACEPTAR_COTITULAR).toBe('aceptar-cotitular');
+    // @source MODEL_LISTA_CONSENTIMIENTOS_CDAC = "lstConsentimientos"
+    expect(ROUTE_PATHS.CONSENTIMIENTOS).toBe('consentimientos');
   });
 
   it('should be deeply readonly (as const)', () => {

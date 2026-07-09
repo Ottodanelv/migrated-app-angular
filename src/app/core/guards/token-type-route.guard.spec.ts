@@ -1,0 +1,105 @@
+import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router, UrlTree, convertToParamMap } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+
+import { environment } from '../../../environments/environment';
+import { tokenTypeRouteGuard } from './token-type-route.guard';
+
+describe('tokenTypeRouteGuard', () => {
+  const apiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-financiero`;
+
+  let httpMock: HttpTestingController;
+  let router: Router;
+
+  beforeEach(() => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    });
+
+    httpMock = TestBed.inject(HttpTestingController);
+    router = TestBed.inject(Router);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  it('should allow navigation when the token query param is missing', () => {
+    const result = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard({ queryParamMap: convertToParamMap({}) } as any, {} as any),
+    );
+
+    expect(result).toBe(true);
+  });
+
+  it('should redirect COMBOCARD tokens to the preaut route', async () => {
+    const routerSpy = vi.spyOn(router, 'createUrlTree');
+
+    const result$ = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard(
+        { queryParamMap: convertToParamMap({ token: 'FIN-TOKEN-001' }) } as any,
+        {} as any,
+      ),
+    );
+
+    const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
+      (result$ as any).subscribe((value: boolean | UrlTree) => resolve(value));
+    });
+
+    httpMock
+      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-001')
+      .flush({ token: 'FIN-TOKEN-001', valido: true, tipoToken: 'COMBOCARD' });
+
+    const result = await resultPromise;
+
+    expect(routerSpy).toHaveBeenCalledWith(['/','info-operacion-preaut'], {
+      queryParams: { token: 'FIN-TOKEN-001' },
+    });
+    expect(result).toBeDefined();
+  });
+
+  it('should keep the default financial route for unknown token types', async () => {
+    const result$ = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard(
+        { queryParamMap: convertToParamMap({ token: 'FIN-TOKEN-002' }) } as any,
+        {} as any,
+      ),
+    );
+
+    const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
+      (result$ as any).subscribe((value: boolean | UrlTree) => resolve(value));
+    });
+
+    httpMock
+      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-002')
+      .flush({ token: 'FIN-TOKEN-002', valido: true, tipoToken: 'UNKNOWN_FUTURE_TYPE' });
+
+    await expect(resultPromise).resolves.toBe(true);
+  });
+
+  it('should allow navigation when the token lookup fails', async () => {
+    const result$ = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard(
+        { queryParamMap: convertToParamMap({ token: 'BROKEN-TOKEN' }) } as any,
+        {} as any,
+      ),
+    );
+
+    const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
+      (result$ as any).subscribe((value: boolean | UrlTree) => resolve(value));
+    });
+
+    httpMock
+      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'BROKEN-TOKEN')
+      .flush('error', { status: 500, statusText: 'Server Error' });
+
+    await expect(resultPromise).resolves.toBe(true);
+  });
+});

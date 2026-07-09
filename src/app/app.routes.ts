@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { tokenTypeRouteGuard } from './core/guards/token-type-route.guard';
 import { ROUTE_PATHS } from './shared/constants/app.constants';
 
 /**
@@ -22,6 +23,7 @@ export const routes: Routes = [
   // InfoOperacion — main financial operation detail page
   {
     path: ROUTE_PATHS.INFO_OPERACION,
+    canActivate: [tokenTypeRouteGuard],
     loadComponent: () =>
       import('./features/info-operacion/info-operacion.component').then(
         (m) => m.InfoOperacionComponent,
@@ -61,6 +63,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/aceptar-cotitular/aceptar-cotitular.component').then(
         (m) => m.AceptarCotitularComponent,
+      ),
+  },
+
+  // Consentimientos — consent management page
+  {
+    path: ROUTE_PATHS.CONSENTIMIENTOS,
+    loadComponent: () =>
+      import('./pages/consentimientos/consentimientos.component').then(
+        (m) => m.ConsentimientosComponent,
       ),
   },
 

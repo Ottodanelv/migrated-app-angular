@@ -31,6 +31,8 @@ export const ROUTE_PATHS = {
   ENVIAR_OTP_COTITULAR: 'enviar-otp-cotitular',
   /** @source PATH_ACEPTACION_CESION_DATOS_COTITULAR = "/acepCot" */
   ACEPTAR_COTITULAR: 'aceptar-cotitular',
+  /** @source MODEL_LISTA_CONSENTIMIENTOS_CDAC = "lstConsentimientos" */
+  CONSENTIMIENTOS: 'consentimientos',
   /** Error page (no legacy constant; derived from web.xml error-page mappings) */
   ERROR: 'error',
 } as const;
