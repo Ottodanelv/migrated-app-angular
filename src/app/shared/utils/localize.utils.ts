@@ -10,5 +10,8 @@ export function localize(
     return globalLocalize(messageParts, ...expressions);
   }
 
-  return String.raw(messageParts, ...expressions);
+  const rawMessage = String.raw(messageParts, ...expressions);
+  const metadataSeparator = rawMessage.lastIndexOf(':');
+
+  return metadataSeparator > 0 ? rawMessage.slice(metadataSeparator + 1) : rawMessage;
 }
