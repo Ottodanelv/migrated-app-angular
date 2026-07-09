@@ -46,6 +46,7 @@ export const routes: Routes = [
       ),
   },
 
+
   // Error page
   {
     path: ROUTE_PATHS.ERROR,
