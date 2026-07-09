@@ -28,6 +28,24 @@ export const routes: Routes = [
       ),
   },
 
+  // InfoOperacionCompraPlazos — installment purchase token view
+  {
+    path: ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS,
+    loadComponent: () =>
+      import('./features/info-operacion-compra-plazos/info-operacion-compra-plazos.component').then(
+        (m) => m.InfoOperacionCompraPlazosComponent,
+      ),
+  },
+
+  // InfoOperacionPreaut — COMBOCARD pre-authorization token view
+  {
+    path: ROUTE_PATHS.INFO_OPERACION_PREAUT,
+    loadComponent: () =>
+      import('./features/info-operacion-preaut/info-operacion-preaut.component').then(
+        (m) => m.InfoOperacionPreautComponent,
+      ),
+  },
+
   // Error page
   {
     path: ROUTE_PATHS.ERROR,
