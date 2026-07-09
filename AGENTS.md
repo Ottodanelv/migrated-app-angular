@@ -370,6 +370,14 @@ it('should display loading state', async () => {
 - [ ] No source anti-patterns detected (DON'T rules)
 - [ ] PR reviewed against this AGENTS.md
 
+### PR Lifecycle (MANDATORY)
+
+1. **Open implementation PRs as draft**: Any coding PR created during Fase 3 must start as `draft`, unless the user explicitly asks to bypass that state.
+2. **Run MetaReviewer before ready**: Fase 4 review must happen while the PR is still draft.
+3. **Resolve blocking findings first**: If MetaReviewer flags AGENTS.md violations, test gaps, or MCP Protocol issues, keep the PR in draft until they are fixed.
+4. **Manual transition only**: Moving a PR from `draft` to `ready for review` is a manual author action after review findings are resolved. Reviewer approval does **not** automatically promote the PR.
+5. **Do not open directly as ready**: Opening a feature PR directly as non-draft skips the expected review gate and should be treated as process drift.
+
 ---
 
 ## Context7 Library Reference

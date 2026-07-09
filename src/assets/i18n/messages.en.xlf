@@ -41,6 +41,140 @@
         </trans-unit>
       </group>
 
+      <group restype="x-shared-shell-components">
+        <note priority="1" from="description">Shared shell components introduced in Batch 3</note>
+
+        <trans-unit id="shared.errorBanner.title" datatype="html">
+          <source>No hemos podido completar la solicitud</source>
+          <target>We could not complete your request</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorBanner.generic" datatype="html">
+          <source>Se ha producido un error inesperado.</source>
+          <target>An unexpected error occurred.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorBanner.smsFinancieroNoValido" datatype="html">
+          <source>El token financiero no es válido o ha caducado.</source>
+          <target>The financial token is invalid or has expired.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorBanner.smsGenericoNoValido" datatype="html">
+          <source>No se ha podido validar el token genérico.</source>
+          <target>The generic token could not be validated.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorBanner.tokenCaducado" datatype="html">
+          <source>El token ha caducado. Solicite uno nuevo.</source>
+          <target>The token has expired. Please request a new one.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorBanner.tokenCotitular" datatype="html">
+          <source>No se ha podido completar la operación del cotitular.</source>
+          <target>The co-holder operation could not be completed.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.legal" datatype="html">
+          <source>Información legal</source>
+          <target>Legal information</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.privacy" datatype="html">
+          <source>Protección de datos</source>
+          <target>Data protection</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.publicInfo" datatype="html">
+          <source>Información pública</source>
+          <target>Public information</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.cookies" datatype="html">
+          <source>Política de cookies</source>
+          <target>Cookie policy</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.security" datatype="html">
+          <source>Seguridad</source>
+          <target>Security</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.copyright.xfera" datatype="html">
+          <source>© Xfera</source>
+          <target>© Xfera</target>
+        </trans-unit>
+
+        <trans-unit id="shared.footer.copyright.cetelem" datatype="html">
+          <source>© Banco Cetelem</source>
+          <target>© Banco Cetelem</target>
+        </trans-unit>
+
+        <trans-unit id="shared.header.portalSubtitle" datatype="html">
+          <source>Portal de gestión de operaciones</source>
+          <target>Operations management portal</target>
+        </trans-unit>
+
+        <trans-unit id="shared.header.secureZone" datatype="html">
+          <source>Zona Segura</source>
+          <target>Secure Zone</target>
+        </trans-unit>
+
+        <trans-unit id="shared.header.brandCajamar" datatype="html">
+          <source>CM Credit</source>
+          <target>CM Credit</target>
+        </trans-unit>
+
+        <trans-unit id="shared.header.brandXfera" datatype="html">
+          <source>Xfera</source>
+          <target>Xfera</target>
+        </trans-unit>
+
+        <trans-unit id="shared.header.brandCetelem" datatype="html">
+          <source>Cetelem</source>
+          <target>Cetelem</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.home" datatype="html">
+          <source>Volver al inicio</source>
+          <target>Back to home</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.title404" datatype="html">
+          <source>Página no encontrada</source>
+          <target>Page not found</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.title500" datatype="html">
+          <source>Incidencia inesperada</source>
+          <target>Unexpected incident</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.titleGeneric" datatype="html">
+          <source>Error</source>
+          <target>Error</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.description404" datatype="html">
+          <source>La ruta que intenta abrir no existe o ya no está disponible.</source>
+          <target>The route you are trying to open does not exist or is no longer available.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.description500" datatype="html">
+          <source>Se ha producido un error al procesar su solicitud.</source>
+          <target>An error occurred while processing your request.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.descriptionGeneric" datatype="html">
+          <source>Es posible que el enlace utilizado no sea válido o que la operación no se haya podido completar.</source>
+          <target>The link you used may be invalid or the operation could not be completed.</target>
+        </trans-unit>
+
+        <trans-unit id="shared.errorPage.bannerFallback" datatype="html">
+          <source>Revise el enlace recibido o vuelva a intentarlo más tarde.</source>
+          <target>Please review the received link or try again later.</target>
+        </trans-unit>
+      </group>
+
       <!-- ================================================================
            CETELEM — infoOperacion
            ================================================================ -->

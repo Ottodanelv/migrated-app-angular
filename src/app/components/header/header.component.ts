@@ -3,7 +3,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 import { SOCIETY_CODES, type SocietyCode } from '../../shared/constants/app.constants';
+import { localize } from '../../shared/utils/localize.utils';
 import { environment } from '../../../environments/environment';
+
+const HEADER_COPY = {
+  portalSubtitle: localize`:@@shared.header.portalSubtitle:Portal de gestión de operaciones`,
+  secureZone: localize`:@@shared.header.secureZone:Zona Segura`,
+  brandCajamar: localize`:@@shared.header.brandCajamar:CM Credit`,
+  brandXfera: localize`:@@shared.header.brandXfera:Xfera`,
+  brandCetelem: localize`:@@shared.header.brandCetelem:Cetelem`,
+} as const;
 
 @Component({
   selector: 'app-header',
@@ -29,7 +38,7 @@ import { environment } from '../../../environments/environment';
             <p class="truncate text-2xl font-black text-text-secondary">
               {{ brandName() }}
             </p>
-            <p class="text-sm text-text-muted">Portal de gestión de operaciones</p>
+            <p class="text-sm text-text-muted">{{ portalSubtitle }}</p>
           </div>
         </div>
 
@@ -46,18 +55,19 @@ import { environment } from '../../../environments/environment';
 export class HeaderComponent {
   protected readonly societyCodes = SOCIETY_CODES;
   protected readonly faLock = faLock;
+  protected readonly portalSubtitle = HEADER_COPY.portalSubtitle;
 
   readonly society = input<SocietyCode>(environment.society.default);
-  readonly secureZoneLabel = input('Zona Segura');
+  readonly secureZoneLabel = input(HEADER_COPY.secureZone);
 
   protected readonly brandName = computed(() => {
     switch (this.society()) {
       case SOCIETY_CODES.CAJAMAR:
-        return 'CM Credit';
+        return HEADER_COPY.brandCajamar;
       case SOCIETY_CODES.XFERA:
-        return 'Xfera';
+        return HEADER_COPY.brandXfera;
       default:
-        return 'Cetelem';
+        return HEADER_COPY.brandCetelem;
     }
   });
 

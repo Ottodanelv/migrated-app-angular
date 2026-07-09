@@ -4,6 +4,18 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHouse, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 import { ErrorBannerComponent } from '../../components/error-banner/error-banner.component';
+import { localize } from '../../shared/utils/localize.utils';
+
+const ERROR_PAGE_COPY = {
+  home: localize`:@@shared.errorPage.home:Volver al inicio`,
+  title404: localize`:@@shared.errorPage.title404:Página no encontrada`,
+  title500: localize`:@@shared.errorPage.title500:Incidencia inesperada`,
+  titleGeneric: localize`:@@shared.errorPage.titleGeneric:Error`,
+  description404: localize`:@@shared.errorPage.description404:La ruta que intenta abrir no existe o ya no está disponible.`,
+  description500: localize`:@@shared.errorPage.description500:Se ha producido un error al procesar su solicitud.`,
+  descriptionGeneric: localize`:@@shared.errorPage.descriptionGeneric:Es posible que el enlace utilizado no sea válido o que la operación no se haya podido completar.`,
+  bannerFallback: localize`:@@shared.errorPage.bannerFallback:Revise el enlace recibido o vuelva a intentarlo más tarde.`,
+} as const;
 
 @Component({
   selector: 'app-error',
@@ -31,7 +43,7 @@ import { ErrorBannerComponent } from '../../components/error-banner/error-banner
             class="inline-flex items-center gap-2 text-sm font-bold text-brand-primary underline"
           >
             <fa-icon [icon]="faHouse" />
-            Volver al inicio
+            {{ homeLabel }}
           </a>
         </div>
       </div>
@@ -41,6 +53,7 @@ import { ErrorBannerComponent } from '../../components/error-banner/error-banner
 export class ErrorComponent {
   protected readonly faHouse = faHouse;
   protected readonly faTriangleExclamation = faTriangleExclamation;
+  protected readonly homeLabel = ERROR_PAGE_COPY.home;
 
   readonly code = input<'404' | '500' | 'generic'>('generic');
   readonly message = input<string | null>(null);
@@ -48,26 +61,26 @@ export class ErrorComponent {
   protected readonly title = computed(() => {
     switch (this.code()) {
       case '404':
-        return 'Página no encontrada';
+        return ERROR_PAGE_COPY.title404;
       case '500':
-        return 'Incidencia inesperada';
+        return ERROR_PAGE_COPY.title500;
       default:
-        return 'Error';
+        return ERROR_PAGE_COPY.titleGeneric;
     }
   });
 
   protected readonly description = computed(() => {
     switch (this.code()) {
       case '404':
-        return 'La ruta que intenta abrir no existe o ya no está disponible.';
+        return ERROR_PAGE_COPY.description404;
       case '500':
-        return 'Se ha producido un error al procesar su solicitud.';
+        return ERROR_PAGE_COPY.description500;
       default:
-        return 'Es posible que el enlace utilizado no sea válido o que la operación no se haya podido completar.';
+        return ERROR_PAGE_COPY.descriptionGeneric;
     }
   });
 
   protected readonly bannerMessage = computed(
-    () => this.message() ?? 'Revise el enlace recibido o vuelva a intentarlo más tarde.',
+    () => this.message() ?? ERROR_PAGE_COPY.bannerFallback,
   );
 }
