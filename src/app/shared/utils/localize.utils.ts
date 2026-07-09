@@ -11,7 +11,7 @@ export function localize(
   }
 
   const rawMessage = String.raw(messageParts, ...expressions);
-  const metadataSeparator = rawMessage.lastIndexOf(':');
+  const metadataSeparator = rawMessage.startsWith(':') ? rawMessage.indexOf(':', 1) : -1;
 
   return metadataSeparator > 0 ? rawMessage.slice(metadataSeparator + 1) : rawMessage;
 }
