@@ -1,5 +1,6 @@
 import {
   ApplicationConfig,
+  ErrorHandler,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -8,6 +9,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { cspInterceptor } from './core/interceptors/csp.interceptor';
+import { GlobalErrorHandler } from './core/services/error-handler.service';
 
 /**
  * Application configuration providers.
@@ -33,5 +35,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([cspInterceptor, errorInterceptor]),
     ),
     provideRouter(routes, withComponentInputBinding()),
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
 };
