@@ -32,13 +32,15 @@ describe('ROUTE_PATHS', () => {
   });
 
   it('should have the correct number of routes migrated from PathConstantes', () => {
-    // 4 legacy paths + 1 new (error) = 5 route paths
-    expect(Object.keys(ROUTE_PATHS)).toHaveLength(5);
+    // 5 legacy paths (including compra-plazos) + 1 new (error) = 6 route paths
+    expect(Object.keys(ROUTE_PATHS)).toHaveLength(6);
   });
 
   it('should map legacy path constants to Angular routes', () => {
     // @source PATH_INFO_OPERACION_VALIDAR_TOKEN = "/infoOperacion"
     expect(ROUTE_PATHS.INFO_OPERACION).toBe('info-operacion');
+    // @source PATH_INFO_OPERACION_COMPRA_PLAZOS = "gestion/gestionToken/infoOperacionCompraPlazos"
+    expect(ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS).toBe('info-operacion-compra-plazos');
     // @source PATH_INFO_OPERACION_VALIDAR_TOKEN_GENERICO = "/infoOperacionGenerica"
     expect(ROUTE_PATHS.INFO_OPERACION_GENERICA).toBe('info-operacion-generica');
     // @source PATH_ENVIAR_OTP_COTITULAR = "/enviarOtpCotitular"

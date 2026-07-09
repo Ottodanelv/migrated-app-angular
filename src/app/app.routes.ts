@@ -28,6 +28,15 @@ export const routes: Routes = [
       ),
   },
 
+  // InfoOperacionCompraPlazos — installment purchase token view
+  {
+    path: ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS,
+    loadComponent: () =>
+      import('./features/info-operacion-compra-plazos/info-operacion-compra-plazos.component').then(
+        (m) => m.InfoOperacionCompraPlazosComponent,
+      ),
+  },
+
   // Error page
   {
     path: ROUTE_PATHS.ERROR,

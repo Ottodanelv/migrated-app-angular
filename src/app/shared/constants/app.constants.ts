@@ -21,6 +21,8 @@
 export const ROUTE_PATHS = {
   /** @source PATH_INFO_OPERACION_VALIDAR_TOKEN = "/infoOperacion" */
   INFO_OPERACION: 'info-operacion',
+  /** @source PATH_INFO_OPERACION_COMPRA_PLAZOS = "gestion/gestionToken/infoOperacionCompraPlazos" */
+  INFO_OPERACION_COMPRA_PLAZOS: 'info-operacion-compra-plazos',
   /** @source PATH_INFO_OPERACION_VALIDAR_TOKEN_GENERICO = "/infoOperacionGenerica" */
   INFO_OPERACION_GENERICA: 'info-operacion-generica',
   /** @source PATH_ENVIAR_OTP_COTITULAR = "/enviarOtpCotitular" */
