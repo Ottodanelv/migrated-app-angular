@@ -38,6 +38,12 @@ export interface SmsOtpRequest {
   readonly sociedad: string;
   /** Token identifier */
   readonly token: string;
+  /** Legacy aplicacion FK used by cotitular flow */
+  readonly aplicacion?: string;
+  /** Legacy tipoAutenticacion FK used by cotitular flow */
+  readonly tipoAutenticacion?: string;
+  /** Legacy codigoNotif FK used by cotitular flow */
+  readonly codigoNotif?: string;
   /** Additional parameters as key-value pairs */
   readonly parametros?: Record<string, string>;
 }

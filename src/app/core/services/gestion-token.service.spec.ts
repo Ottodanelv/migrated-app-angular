@@ -19,6 +19,7 @@ import {
 import { GestionTokenService } from './gestion-token.service';
 import { environment } from '../../../environments/environment';
 import type { OperacionFinanciera } from '../../models/operacion-financiera';
+import type { OperacionGenerica } from '../../models/operacion-generica';
 
 describe('GestionTokenService', () => {
   let service: GestionTokenService;
@@ -39,6 +40,18 @@ describe('GestionTokenService', () => {
   };
 
   const apiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-financiero`;
+  const genericApiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-generico`;
+  const mockOperacionGenerica: OperacionGenerica = {
+    token: 'GEN-TOKEN-001',
+    nif: '12345678A',
+    telefono: '600123123',
+    aplicacionFk: 'APP01',
+    codigoNotifFk: 'ALERT_CDAT_COT',
+    cadenaFk: 'CAD01',
+    tipoToken: 'ALERT_CDAT_COT',
+    tipoAutenticacionFk: 'SMS',
+    valido: true,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -119,6 +132,26 @@ describe('GestionTokenService', () => {
 
       const error = await errorPromise;
       expect(error).toBe('Not Found');
+    });
+  });
+
+  describe('utilizarInfoSmsGenerico', () => {
+    it('should return generic operation data for a valid token', async () => {
+      const result$ = service.utilizarInfoSmsGenerico('GEN-TOKEN-001');
+      const resultPromise = new Promise<OperacionGenerica>((resolve) => {
+        result$.subscribe((data) => resolve(data));
+      });
+
+      const req = httpMock.expectOne(
+        (r) =>
+          r.url === genericApiUrl && r.params.get('token') === 'GEN-TOKEN-001',
+      );
+      expect(req.request.method).toBe('GET');
+      req.flush(mockOperacionGenerica);
+
+      const result = await resultPromise;
+      expect(result.tipoToken).toBe('ALERT_CDAT_COT');
+      expect(result.telefono).toBe('600123123');
     });
   });
 });

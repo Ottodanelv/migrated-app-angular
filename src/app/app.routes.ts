@@ -46,6 +46,24 @@ export const routes: Routes = [
       ),
   },
 
+  // InfoOperacionGenerica — cotitular consent token view
+  {
+    path: ROUTE_PATHS.INFO_OPERACION_GENERICA,
+    loadComponent: () =>
+      import('./pages/info-operacion-generica/info-operacion-generica.component').then(
+        (m) => m.InfoOperacionGenericaComponent,
+      ),
+  },
+
+  // AceptarCotitular — SMS OTP confirmation flow for cotitular consent
+  {
+    path: ROUTE_PATHS.ACEPTAR_COTITULAR,
+    loadComponent: () =>
+      import('./pages/aceptar-cotitular/aceptar-cotitular.component').then(
+        (m) => m.AceptarCotitularComponent,
+      ),
+  },
+
 
   // Error page
   {

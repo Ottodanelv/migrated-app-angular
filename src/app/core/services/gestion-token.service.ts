@@ -18,9 +18,12 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import type { OperacionFinanciera } from '../../models/operacion-financiera';
+import type { OperacionGenerica } from '../../models/operacion-generica';
 
 /** API path for the financial SMS info endpoint. */
 const INFO_SMS_FINANCIERO_PATH = 'gestion-token/info-sms-financiero';
+/** API path for the generic SMS info endpoint. */
+const INFO_SMS_GENERICO_PATH = 'gestion-token/info-sms-generico';
 
 /**
  * Service that provides financial token lookup operations.
@@ -58,6 +61,21 @@ export class GestionTokenService {
 
     return this.http.get<OperacionFinanciera>(
       `${environment.apiBaseUrl}/${INFO_SMS_FINANCIERO_PATH}`,
+      { params },
+    );
+  }
+
+  /**
+   * Retrieves generic operation data for a given SMS token.
+   *
+   * Equivalent to legacy:
+   *   `GestionTokenBusiness.utilizarInfoSmsGenerico(token)`
+   */
+  utilizarInfoSmsGenerico(token: string): Observable<OperacionGenerica> {
+    const params = new HttpParams().set('token', token);
+
+    return this.http.get<OperacionGenerica>(
+      `${environment.apiBaseUrl}/${INFO_SMS_GENERICO_PATH}`,
       { params },
     );
   }
