@@ -37,6 +37,16 @@ export const routes: Routes = [
       ),
   },
 
+  // InfoOperacionPreaut — COMBOCARD pre-authorization token view
+  {
+    path: ROUTE_PATHS.INFO_OPERACION_PREAUT,
+    loadComponent: () =>
+      import('./features/info-operacion-preaut/info-operacion-preaut.component').then(
+        (m) => m.InfoOperacionPreautComponent,
+      ),
+  },
+
+
   // Error page
   {
     path: ROUTE_PATHS.ERROR,

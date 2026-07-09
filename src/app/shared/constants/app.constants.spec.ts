@@ -32,8 +32,8 @@ describe('ROUTE_PATHS', () => {
   });
 
   it('should have the correct number of routes migrated from PathConstantes', () => {
-    // 5 legacy paths (including compra-plazos) + 1 new (error) = 6 route paths
-    expect(Object.keys(ROUTE_PATHS)).toHaveLength(6);
+    // 6 legacy paths + 1 new (error) = 7 route paths
+    expect(Object.keys(ROUTE_PATHS)).toHaveLength(7);
   });
 
   it('should map legacy path constants to Angular routes', () => {
