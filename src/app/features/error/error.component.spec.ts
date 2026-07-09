@@ -36,4 +36,11 @@ describe('ErrorComponent', () => {
     const link = compiled.querySelector('a');
     expect(link?.textContent).toContain('Volver al inicio');
   });
+
+  it('should render the fallback banner message', () => {
+    const fixture = TestBed.createComponent(ErrorComponent);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Revise el enlace recibido');
+  });
 });

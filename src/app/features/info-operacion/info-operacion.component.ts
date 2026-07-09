@@ -19,6 +19,8 @@ import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 
+import { ErrorBannerComponent } from '../../components/error-banner/error-banner.component';
+import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { GestionTokenService } from '../../core/services/gestion-token.service';
 import type { OperacionFinanciera } from '../../models/operacion-financiera';
 import { QUERY_PARAMS } from '../../shared/constants/app.constants';
@@ -26,26 +28,14 @@ import { QUERY_PARAMS } from '../../shared/constants/app.constants';
 @Component({
   selector: 'app-info-operacion',
   standalone: true,
-  imports: [RouterLink, DecimalPipe],
+  imports: [RouterLink, DecimalPipe, LoadingOverlayComponent, ErrorBannerComponent],
   template: `
     <div class="animate-fade-in">
-      <!-- Loading state -->
-      @if (loading()) {
-        <div class="loading-overlay">
-          <div class="flex flex-col items-center gap-4">
-            <div class="loading-spinner loading-spinner--lg"></div>
-            <p class="text-text-secondary text-md font-bold">
-              Cargando datos de la operación...
-            </p>
-          </div>
-        </div>
-      }
+      <app-loading-overlay [visible]="loading()" />
 
       <!-- Error state -->
       @if (errorMessage(); as msg) {
-        <div class="error-block">
-          <p>{{ msg }}</p>
-        </div>
+        <app-error-banner [message]="msg" />
         <div class="text-center mt-4">
           <a routerLink="/" class="text-brand-primary underline text-sm">
             Volver al inicio
@@ -134,11 +124,7 @@ import { QUERY_PARAMS } from '../../shared/constants/app.constants';
             </dl>
           </div>
         } @else {
-          <div class="error-block">
-            <p>
-              El token proporcionado no es válido o ha caducado.
-            </p>
-          </div>
+          <app-error-banner message="El token proporcionado no es válido o ha caducado." />
         }
 
         <div class="text-center mt-6">
