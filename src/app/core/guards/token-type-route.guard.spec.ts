@@ -1,6 +1,13 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router, UrlTree, convertToParamMap } from '@angular/router';
+import {
+  provideRouter,
+  Router,
+  UrlTree,
+  convertToParamMap,
+  type ActivatedRouteSnapshot,
+  type RouterStateSnapshot,
+} from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
@@ -31,9 +38,17 @@ describe('tokenTypeRouteGuard', () => {
     httpMock.verify();
   });
 
+  function createRouteSnapshot(token?: string): Partial<ActivatedRouteSnapshot> {
+    return {
+      queryParamMap: convertToParamMap(token ? { token } : {}),
+    };
+  }
+
+  const routerStateSnapshot = {} as RouterStateSnapshot;
+
   it('should allow navigation when the token query param is missing', () => {
     const result = TestBed.runInInjectionContext(() =>
-      tokenTypeRouteGuard({ queryParamMap: convertToParamMap({}) } as any, {} as any),
+      tokenTypeRouteGuard(createRouteSnapshot() as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
     expect(result).toBe(true);
@@ -43,10 +58,7 @@ describe('tokenTypeRouteGuard', () => {
     const routerSpy = vi.spyOn(router, 'createUrlTree');
 
     const result$ = TestBed.runInInjectionContext(() =>
-      tokenTypeRouteGuard(
-        { queryParamMap: convertToParamMap({ token: 'FIN-TOKEN-001' }) } as any,
-        {} as any,
-      ),
+      tokenTypeRouteGuard(createRouteSnapshot('FIN-TOKEN-001') as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
     const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
@@ -67,10 +79,7 @@ describe('tokenTypeRouteGuard', () => {
 
   it('should keep the default financial route for unknown token types', async () => {
     const result$ = TestBed.runInInjectionContext(() =>
-      tokenTypeRouteGuard(
-        { queryParamMap: convertToParamMap({ token: 'FIN-TOKEN-002' }) } as any,
-        {} as any,
-      ),
+      tokenTypeRouteGuard(createRouteSnapshot('FIN-TOKEN-002') as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
     const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
@@ -86,10 +95,7 @@ describe('tokenTypeRouteGuard', () => {
 
   it('should allow navigation when the token lookup fails', async () => {
     const result$ = TestBed.runInInjectionContext(() =>
-      tokenTypeRouteGuard(
-        { queryParamMap: convertToParamMap({ token: 'BROKEN-TOKEN' }) } as any,
-        {} as any,
-      ),
+      tokenTypeRouteGuard(createRouteSnapshot('BROKEN-TOKEN') as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
     const resultPromise = new Promise<boolean | UrlTree>((resolve) => {

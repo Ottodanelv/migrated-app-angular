@@ -6,7 +6,6 @@ import { ErrorBannerComponent } from '../../components/error-banner/error-banner
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { ConsentimientoService } from '../../core/services/consentimiento.service';
 import type { Consentimiento } from '../../models/consentimiento';
-import { ROUTE_PATHS } from '../../shared/constants/app.constants';
 import { ConsentimientosModalComponent } from '../../features/modals/consentimientos-modal.component';
 
 @Component({
