@@ -1,71 +1,36 @@
-/**
- * Application shell layout component.
- *
- * Provides the header, main content area (via router-outlet),
- * and footer consistent across all pages.
- *
- * Migrated from the legacy JSP layouts (head.jsp, footer.jsp)
- * used across all views.
- */
-
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, effect, inject, input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
+import { type SocietyCode } from '../../shared/constants/app.constants';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   template: `
-    <div class="min-h-screen flex flex-col">
-      <!-- Header -->
-      <header
-        class="bg-white mx-auto w-full max-w-[984px] h-[120px] px-[30px] py-5 flex items-center"
-      >
-        <div class="flex-1">
-          <div
-            class="w-[175px] h-full bg-contain bg-no-repeat bg-left"
-            role="img"
-            aria-label="Logo"
-          ></div>
-        </div>
-        <div class="flex items-center gap-4">
-          <span class="text-brand-primary text-sm font-bold no-underline">
-            Zona Segura
-          </span>
-        </div>
-      </header>
+    <div class="flex min-h-screen flex-col bg-bg-page">
+      <app-header [society]="society()" />
 
-      <!-- Main Content -->
-      <main
-        class="mx-auto w-full max-w-[984px] bg-white px-[15px] overflow-hidden flex-1"
-      >
+      <main class="mx-auto flex w-full max-w-[984px] flex-1 flex-col bg-white px-[15px] py-6 shadow-soft">
         <router-outlet />
       </main>
 
-      <!-- Footer -->
-      <footer class="text-center my-5">
-        <nav class="flex justify-center gap-10">
-          <a
-            href="#"
-            class="text-text-footer text-xs leading-5 no-underline hover:underline"
-          >
-            Aviso Legal
-          </a>
-          <a
-            href="#"
-            class="text-text-footer text-xs leading-5 no-underline hover:underline"
-          >
-            Política de Privacidad
-          </a>
-          <a
-            href="#"
-            class="text-text-footer text-xs leading-5 no-underline hover:underline"
-          >
-            Contacto
-          </a>
-        </nav>
-      </footer>
+      <app-footer [society]="society()" />
     </div>
   `,
 })
-export class LayoutComponent {}
+export class LayoutComponent {
+  private readonly document = inject(DOCUMENT);
+
+  readonly society = input<SocietyCode>(environment.society.default);
+
+  constructor() {
+    effect(() => {
+      this.document.documentElement.dataset['sociedad'] = this.society();
+    });
+  }
+}
