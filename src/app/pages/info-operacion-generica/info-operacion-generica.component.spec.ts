@@ -78,25 +78,25 @@ describe('InfoOperacionGenericaComponent', () => {
   it('should show error when token is missing', () => {
     mockRoute.snapshot.queryParamMap._token = null;
     const fixture = TestBed.createComponent(InfoOperacionGenericaComponent);
-    const ctx = fixture.componentInstance as any;
-    ctx.ngOnInit();
+    const component = fixture.componentInstance;
+    component.ngOnInit();
 
-    expect(ctx.loading()).toBe(false);
-    expect(ctx.errorMessage()).toContain('token genérico');
+    expect(component['loading']()).toBe(false);
+    expect(component['errorMessage']()).toContain('token genérico');
   });
 
   it('should load generic operation and consentimientos', () => {
     mockRoute.snapshot.queryParamMap._token = 'GEN-TOKEN-001';
     const fixture = TestBed.createComponent(InfoOperacionGenericaComponent);
-    const ctx = fixture.componentInstance as any;
-    ctx.ngOnInit();
+    const component = fixture.componentInstance;
+    component.ngOnInit();
 
     httpMock.expectOne((r) => r.url === genericApiUrl).flush(mockOperacion);
     httpMock.expectOne((r) => r.url === consentimientosApiUrl).flush(mockConsentimientos);
 
-    expect(ctx.loading()).toBe(false);
-    expect(ctx.errorMessage()).toBeNull();
-    expect(ctx.operacion()?.tipoToken).toBe('ALERT_CDAT_COT');
-    expect(ctx.consentimientos().length).toBe(1);
+    expect(component['loading']()).toBe(false);
+    expect(component['errorMessage']()).toBeNull();
+    expect(component['operacion']()?.tipoToken).toBe('ALERT_CDAT_COT');
+    expect(component['consentimientos']().length).toBe(1);
   });
 });

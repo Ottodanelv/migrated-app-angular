@@ -65,24 +65,38 @@ describe('AceptarCotitularComponent', () => {
 
   it('should hydrate the form from state on init', () => {
     const fixture = TestBed.createComponent(AceptarCotitularComponent);
-    const ctx = fixture.componentInstance as any;
-    ctx.ngOnInit();
+    const component = fixture.componentInstance;
+    component.ngOnInit();
 
-    expect(ctx.operacion()?.telefono).toBe('600123123');
-    expect(ctx.form.getRawValue().telefono).toBe('600123123');
+    expect(component['operacion']()?.telefono).toBe('600123123');
+    expect(component['form'].getRawValue().telefono).toBe('600123123');
   });
 
   it('should open success modal when SMS is sent', () => {
     const fixture = TestBed.createComponent(AceptarCotitularComponent);
-    const ctx = fixture.componentInstance as any;
-    ctx.ngOnInit();
-    ctx.enviarSms();
+    const component = fixture.componentInstance;
+    component.ngOnInit();
+    component['enviarSms']();
 
     const req = httpMock.expectOne((r) => r.url === smsApiUrl);
     expect(req.request.method).toBe('POST');
     req.flush({ enviado: true });
 
-    expect(ctx.showSuccessModal()).toBe(true);
-    expect(ctx.errorMessage()).toBeNull();
+    expect(component['showSuccessModal']()).toBe(true);
+    expect(component['errorMessage']()).toBeNull();
+  });
+
+  it('should show error when SMS request fails', () => {
+    const fixture = TestBed.createComponent(AceptarCotitularComponent);
+    const component = fixture.componentInstance;
+    component.ngOnInit();
+    component['enviarSms']();
+
+    const req = httpMock.expectOne((r) => r.url === smsApiUrl);
+    expect(req.request.method).toBe('POST');
+    req.flush('server error', { status: 500, statusText: 'Server Error' });
+
+    expect(component['showSuccessModal']()).toBe(false);
+    expect(component['errorMessage']()).toContain('No se ha podido enviar el SMS OTP');
   });
 });

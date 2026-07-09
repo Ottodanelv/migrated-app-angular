@@ -10,7 +10,7 @@ import { OperacionGenericaStateService } from '../../core/services/operacion-gen
 import { SmsService } from '../../core/services/sms.service';
 import type { OperacionGenerica } from '../../models/operacion-generica';
 import { QUERY_PARAMS, ROUTE_PATHS, SOCIETY_CODES } from '../../shared/constants/app.constants';
-import { AceptaCesionOkModalComponent } from '../modals/acepta-cesion-ok-modal.component';
+import { AceptaCesionOkModalComponent } from '../../features/modals/acepta-cesion-ok-modal.component';
 
 @Component({
   selector: 'app-aceptar-cotitular',
@@ -159,9 +159,17 @@ export class AceptarCotitularComponent implements OnInit, OnDestroy {
       })
       .pipe(
         takeUntil(this.destroy$),
+        catchError(() => {
+          this.errorMessage.set('No se ha podido enviar el SMS OTP al cotitular.');
+          return of(null);
+        }),
         finalize(() => this.loading.set(false)),
       )
       .subscribe((enviado) => {
+        if (enviado === null) {
+          return;
+        }
+
         if (!enviado) {
           this.errorMessage.set('No se ha podido enviar el SMS OTP al cotitular.');
           return;

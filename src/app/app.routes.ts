@@ -50,7 +50,7 @@ export const routes: Routes = [
   {
     path: ROUTE_PATHS.INFO_OPERACION_GENERICA,
     loadComponent: () =>
-      import('./features/info-operacion-generica/info-operacion-generica.component').then(
+      import('./pages/info-operacion-generica/info-operacion-generica.component').then(
         (m) => m.InfoOperacionGenericaComponent,
       ),
   },
@@ -59,7 +59,7 @@ export const routes: Routes = [
   {
     path: ROUTE_PATHS.ACEPTAR_COTITULAR,
     loadComponent: () =>
-      import('./features/aceptar-cotitular/aceptar-cotitular.component').then(
+      import('./pages/aceptar-cotitular/aceptar-cotitular.component').then(
         (m) => m.AceptarCotitularComponent,
       ),
   },
