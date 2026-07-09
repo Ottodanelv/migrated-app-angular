@@ -402,10 +402,10 @@ The legacy app supports 3 brands via `sociedad` model attribute. In Angular:
   /* ... shared tokens */
 }
 
-/* Sociedad 800 - Cajamar (primary today) */
+/* Sociedad 800 - Xfera */
 @custom-variant sociedad-800 (&:where([data-sociedad="800"], [data-sociedad="800"] *));
 
-/* Sociedad 600 - Xfera */
+/* Sociedad 600 - Cajamar */
 @custom-variant sociedad-600 (&:where([data-sociedad="600"], [data-sociedad="600"] *));
 
 /* Sociedad 400 - Default */
