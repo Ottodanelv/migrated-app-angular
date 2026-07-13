@@ -92,10 +92,19 @@ export const handlers = [
       );
     }
 
-    if (!MOCK_GENERIC_TOKENS[body.token]) {
+    const tokenData = MOCK_GENERIC_TOKENS[body.token];
+
+    if (!tokenData) {
       return HttpResponse.json(
         { error: 'Unknown generic token', code: 'TOKEN_NOT_FOUND' },
         { status: 404 },
+      );
+    }
+
+    if (!tokenData.valido) {
+      return HttpResponse.json(
+        { error: 'Generic token is not valid', code: 'TOKEN_INVALID' },
+        { status: 409 },
       );
     }
 

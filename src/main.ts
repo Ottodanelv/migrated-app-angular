@@ -8,7 +8,7 @@ async function bootstrap(): Promise<void> {
   if (!environment.production && environment.mocks.api) {
     const { worker } = await import('./mocks/browser');
 
-    await worker.start({ onUnhandledRequest: 'bypass' });
+    await worker.start({ onUnhandledRequest: 'error' });
   }
 
   await bootstrapApplication(App, appConfig);
