@@ -48,8 +48,13 @@ describe('InfoOperacionComponent', () => {
     snapshot: {
       queryParamMap: {
         _token: null as string | null,
+        _sociedad: null as string | null,
         get(key: string): string | null {
-          return key === 'token' ? this._token : null;
+          if (key === 'token') {
+            return this._token;
+          }
+
+          return key === 'sociedad' ? this._sociedad : null;
         },
       },
     },
@@ -127,6 +132,22 @@ describe('InfoOperacionComponent', () => {
     expect(ctx.operacion()!.token).toBe('FIN-TOKEN-001');
     expect(ctx.operacion()!.importe).toBe(12500.0);
     expect(ctx.operacion()!.valido).toBe(true);
+  });
+
+  it('should render the legacy narrative copy for the default society', () => {
+    mockRoute.snapshot.queryParamMap._token = 'FIN-TOKEN-001';
+    const fixture = TestBed.createComponent(InfoOperacionComponent);
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne((r) => r.url === apiUrl);
+    req.flush(mockOperacion);
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Información');
+    expect(text).toContain('Ha realizado una utilización de tarjeta');
+    expect(text).toContain('Espacio Cliente');
+    expect(text).toContain('Ir a cetelem.es');
   });
 
   it('should set error message on HTTP 404', () => {
