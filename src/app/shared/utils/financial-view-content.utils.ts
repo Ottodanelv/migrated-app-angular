@@ -1,5 +1,6 @@
 import type { OperacionFinanciera } from '../../models/operacion-financiera';
 import { SOCIETY_CODES, type SocietyCode } from '../constants/app.constants';
+import { getSocietyTheme } from '../theme/society-theme';
 
 export type FinancialViewVariant = 'base' | 'compra-plazos' | 'preaut';
 
@@ -20,21 +21,6 @@ export interface FinancialViewContent {
   readonly ctaLabel: string;
   readonly ctaHref: string;
 }
-
-const CTA_BY_SOCIETY: Record<SocietyCode, { label: string; href: string }> = {
-  [SOCIETY_CODES.DEFAULT]: {
-    label: 'Ir a cetelem.es',
-    href: 'https://www.cetelem.es',
-  },
-  [SOCIETY_CODES.CAJAMAR]: {
-    label: 'Ir a cetelem.es',
-    href: 'https://www.cetelem.es',
-  },
-  [SOCIETY_CODES.XFERA]: {
-    label: 'Ir a cajamarconsumo.es',
-    href: 'https://www.cajamarconsumo.es',
-  },
-};
 
 function formatAmount(value: number): string {
   return new Intl.NumberFormat('es-ES', {
@@ -95,7 +81,7 @@ function getBaseParagraphs(operacion: OperacionFinanciera, society: SocietyCode)
   const tin = formatPercent(operacion.tin);
   const tae = formatPercent(operacion.tae);
   const fecha = formatDate(operacion.fchProximoRecibo);
-  const cta = CTA_BY_SOCIETY[society];
+  const cta = getSocietyTheme(society);
 
   switch (society) {
     case SOCIETY_CODES.XFERA:
@@ -123,7 +109,7 @@ function getBaseParagraphs(operacion: OperacionFinanciera, society: SocietyCode)
           text('Consulte el plan de pagos de su utilización a través del '),
           strong('Espacio Cliente'),
           text(' de '),
-          link('cetelem.es', cta.href),
+          link('cetelem.es', cta.portalUrl),
           text(' o a través de la '),
           strong('App Cetelem Móvil'),
           text(', donde podrá ver la cantidad exacta de cada una de las cuotas.'),
@@ -161,7 +147,7 @@ function getPreautParagraphs(operacion: OperacionFinanciera, society: SocietyCod
   const tin = formatPercent(operacion.tin);
   const tae = formatPercent(operacion.tae);
   const fecha = formatDate(operacion.fchProximoRecibo);
-  const cta = CTA_BY_SOCIETY[society];
+  const cta = getSocietyTheme(society);
 
   const firstParagraphBase = `Su utilización ha sido autorizada por ${importe} € a devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} €. Esta operación aplica ${comision} € de comisión de formalización junto con la primera mensualidad. TIN ${tin}, TAE ${tae}. El próximo ${fecha}`;
 
@@ -175,7 +161,7 @@ function getPreautParagraphs(operacion: OperacionFinanciera, society: SocietyCod
       return [
         paragraph(
           text(`${firstParagraphBase} * se le cobrará su primer recibo. Recibirá por correo ordinario el cuadro de amortización con todo el detalle; también puede consultarlo a través del Espacio Cliente de `),
-          link(cta.href.includes('cajamar') ? 'cajamarconsumo.es' : 'cetelem.es', cta.href),
+          link(cta.portalUrl.includes('cajamar') ? 'cajamarconsumo.es' : 'cetelem.es', cta.portalUrl),
           text('.'),
         ),
         smallParagraph(text('* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.')),
@@ -199,29 +185,30 @@ export function getFinancialViewContent(
   operacion: OperacionFinanciera,
   society: SocietyCode,
 ): FinancialViewContent {
-  const cta = CTA_BY_SOCIETY[society];
+  const cta = getSocietyTheme(society);
 
   switch (variant) {
     case 'compra-plazos':
       return {
         title: 'Datos de la operación',
         paragraphs: getCompraPlazosParagraphs(operacion, society),
-        ctaLabel: cta.label,
-        ctaHref: cta.href,
+        ctaLabel: cta.portalLabel,
+        ctaHref: cta.portalUrl,
       };
     case 'preaut':
       return {
         title: 'Información',
         paragraphs: getPreautParagraphs(operacion, society),
-        ctaLabel: cta.label,
-        ctaHref: cta.href,
+        ctaLabel: cta.portalLabel,
+        ctaHref: cta.portalUrl,
       };
     default:
       return {
         title: 'Información',
         paragraphs: getBaseParagraphs(operacion, society),
-        ctaLabel: cta.label,
-        ctaHref: cta.href,
+        ctaLabel: cta.portalLabel,
+        ctaHref: cta.portalUrl,
       };
   }
 }
+

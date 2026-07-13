@@ -16,7 +16,7 @@ import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants'
   standalone: true,
   imports: [RouterLink, LoadingOverlayComponent, ErrorBannerComponent],
   template: `
-    <section class="animate-fade-in" data-sociedad="800">
+    <section class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
 
       @if (errorMessage(); as msg) {
@@ -29,7 +29,7 @@ import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants'
           <p class="text-sm font-bold uppercase tracking-wide text-brand-secondary">
             Cesión de datos cotitular
           </p>
-          <h1 class="mt-2 text-4xl font-bold text-text-strong">
+          <h1 class="mt-2 text-4xl font-bold text-brand-primary">
             Información del token genérico
           </h1>
           <p class="mt-3 text-md text-text-muted">

@@ -43,7 +43,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
           <div class="flex h-14 w-14 items-center justify-center rounded-full bg-success-bg text-success-text">
             <fa-icon [icon]="faCheck" class="text-2xl" />
           </div>
-          <h2 id="modal-acepta-cesion-ok-title" class="mt-5 text-2xl font-bold text-text-strong">
+           <h2 id="modal-acepta-cesion-ok-title" class="mt-5 text-2xl font-bold text-brand-primary">
             Aceptación de cesión
           </h2>
           <p class="mt-3 text-md leading-7 text-text-muted">

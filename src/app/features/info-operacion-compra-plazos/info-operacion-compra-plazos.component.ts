@@ -57,7 +57,7 @@ import {
         @if (op.valido) {
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h1 class="text-4xl font-bold text-text-strong">{{ viewContent().title }}</h1>
+              <h1 class="text-4xl font-bold text-brand-primary">{{ viewContent().title }}</h1>
               <p class="mt-3 max-w-2xl text-md text-text-muted">
                 Resumen claro de la financiación, inspirado en el contenido secuencial del legacy pero convertido en datos fáciles de consultar.
               </p>

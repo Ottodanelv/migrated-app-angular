@@ -23,7 +23,7 @@ import { AceptaCesionOkModalComponent } from '../../features/modals/acepta-cesio
     AceptaCesionOkModalComponent,
   ],
   template: `
-    <section class="animate-fade-in" data-sociedad="800">
+    <section class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
 
       @if (errorMessage(); as msg) {
@@ -34,7 +34,7 @@ import { AceptaCesionOkModalComponent } from '../../features/modals/acepta-cesio
         <!-- Header -->
         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 class="text-4xl font-bold text-text-strong">Enviar OTP al cotitular</h1>
+            <h1 class="text-4xl font-bold text-brand-primary">Enviar OTP al cotitular</h1>
             <p class="mt-3 text-md text-text-muted">
               Usaremos el teléfono asociado al token para continuar el flujo. La pantalla debe sentirse corta y muy clara.
             </p>

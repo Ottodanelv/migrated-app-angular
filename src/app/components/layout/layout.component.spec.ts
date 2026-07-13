@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { LayoutComponent } from './layout.component';
 
@@ -23,5 +23,16 @@ describe('LayoutComponent', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Zona Segura');
     expect(fixture.nativeElement.textContent).toContain('Información legal');
+  });
+
+  it('should resolve the society from the query string', async () => {
+    const fixture = TestBed.createComponent(LayoutComponent);
+    const router = TestBed.inject(Router);
+
+    await router.navigateByUrl('/?sociedad=800');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Xfera');
+    expect(document.documentElement.dataset['sociedad']).toBe('800');
   });
 });

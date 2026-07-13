@@ -21,4 +21,14 @@ describe('HeaderComponent', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Zona Segura');
   });
+
+  it('should render the society-specific logo and name', () => {
+    const fixture = TestBed.createComponent(HeaderComponent);
+    fixture.componentRef.setInput('society', '800');
+    fixture.detectChanges();
+
+    const logo = fixture.nativeElement.querySelector('img');
+    expect(logo?.getAttribute('src')).toBe('/images/xfera/logo.png');
+    expect(fixture.nativeElement.textContent).toContain('Xfera');
+  });
 });
