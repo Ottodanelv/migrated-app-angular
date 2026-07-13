@@ -81,6 +81,17 @@ export interface AppEnvironment {
   };
 
   /**
+   * Local development mocking toggles.
+   *
+   * Module #30 uses MSW for end-to-end style integration flows so the app can
+   * run without a live backend during migration.
+   */
+  mocks: {
+    /** Enable browser-side API mocking with MSW. */
+    api: boolean;
+  };
+
+  /**
    * Logging configuration.
    * @source logback.xml (not directly migrated; simplified)
    */
