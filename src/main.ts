@@ -3,17 +3,8 @@ import { isCommonAssetRequest } from 'msw';
 
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
+import { isMockedApiRequest } from './app/shared/utils/msw.utils';
 import { environment } from './environments/environment';
-
-function isMockedApiRequest(requestUrl: string): boolean {
-  const resolvedApiBaseUrl = new URL(environment.apiBaseUrl, window.location.origin);
-  const resolvedRequestUrl = new URL(requestUrl, window.location.origin);
-
-  return (
-    resolvedRequestUrl.origin === resolvedApiBaseUrl.origin &&
-    resolvedRequestUrl.pathname.startsWith(resolvedApiBaseUrl.pathname)
-  );
-}
 
 async function bootstrap(): Promise<void> {
   if (!environment.production && environment.mocks.api) {
@@ -21,7 +12,13 @@ async function bootstrap(): Promise<void> {
 
     await worker.start({
       onUnhandledRequest(request, print) {
-        if (isMockedApiRequest(request.url)) {
+        if (
+          isMockedApiRequest(
+            request.url,
+            environment.apiBaseUrl,
+            window.location.origin,
+          )
+        ) {
           print.error();
           return;
         }
