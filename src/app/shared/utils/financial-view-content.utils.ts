@@ -13,15 +13,15 @@ export interface FinancialViewContent {
 const CTA_BY_SOCIETY: Record<SocietyCode, { label: string; href: string }> = {
   [SOCIETY_CODES.DEFAULT]: {
     label: 'Ir a cetelem.es',
-    href: 'http://www.cetelem.es',
+    href: 'https://www.cetelem.es',
   },
   [SOCIETY_CODES.CAJAMAR]: {
     label: 'Ir a cetelem.es',
-    href: 'http://www.cetelem.es',
+    href: 'https://www.cetelem.es',
   },
   [SOCIETY_CODES.XFERA]: {
     label: 'Ir a cajamarconsumo.es',
-    href: 'http://www.cajamarconsumo.es',
+    href: 'https://www.cajamarconsumo.es',
   },
 };
 

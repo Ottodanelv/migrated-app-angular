@@ -49,7 +49,7 @@ describe('financial-view-content utils', () => {
     const content = getFinancialViewContent('preaut', mockOperacion, SOCIETY_CODES.XFERA);
 
     expect(content.paragraphs[0]).toContain('cajamarconsumo.es');
-    expect(content.ctaHref).toBe('http://www.cajamarconsumo.es');
+    expect(content.ctaHref).toBe('https://www.cajamarconsumo.es');
     expect(content.ctaLabel).toBe('Ir a cajamarconsumo.es');
   });
 
