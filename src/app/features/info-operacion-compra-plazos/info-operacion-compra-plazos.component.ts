@@ -19,8 +19,7 @@
  *   - Token routing: ViewsUtils.vistaPorTipoToken() → COMPRA_PLAZO_TARJ
  */
 
-import { DecimalPipe } from '@angular/common';
-import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed, inject, signal, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 
@@ -29,11 +28,15 @@ import { LoadingOverlayComponent } from '../../components/loading-overlay/loadin
 import { GestionTokenService } from '../../core/services/gestion-token.service';
 import type { OperacionFinanciera } from '../../models/operacion-financiera';
 import { QUERY_PARAMS } from '../../shared/constants/app.constants';
+import {
+  getFinancialViewContent,
+  resolveSocietyCode,
+} from '../../shared/utils/financial-view-content.utils';
 
 @Component({
   selector: 'app-info-operacion-compra-plazos',
   standalone: true,
-  imports: [RouterLink, DecimalPipe, LoadingOverlayComponent, ErrorBannerComponent],
+  imports: [RouterLink, LoadingOverlayComponent, ErrorBannerComponent],
   template: `
     <div class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
@@ -51,73 +54,32 @@ import { QUERY_PARAMS } from '../../shared/constants/app.constants';
       <!-- Success state -->
       @if (operacion(); as op) {
         @if (op.valido) {
-          <h1>Compra a Plazos</h1>
+          <h1 class="text-3xl font-bold text-text-secondary">{{ viewContent().title }}</h1>
 
-          <div class="section-gray rounded-sm p-4 mb-4">
-            <h2 class="text-2xl font-bold text-text-secondary mb-4">
-              Datos de la Compra a Plazos
-            </h2>
+          <div class="mt-6 rounded-2xl border border-border-light bg-bg-section p-6 shadow-soft">
+            @for (paragraph of viewContent().paragraphs; track $index) {
+              <p class="text-sm leading-7 text-text-secondary" [class.mt-4]="$index > 0">
+                @for (segment of paragraph.segments; track $index) {
+                  @if (segment.kind === 'strong') {
+                    <strong>{{ segment.value }}</strong>
+                  } @else if (segment.kind === 'link') {
+                    <a [href]="segment.href" class="font-semibold underline">{{ segment.value }}</a>
+                  } @else {
+                    <span>{{ segment.value }}</span>
+                  }
+                }
+              </p>
+            }
 
-            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <dt class="text-text-muted text-sm font-bold">Token</dt>
-                <dd class="text-text-secondary text-md">{{ op.token }}</dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">Importe</dt>
-                <dd class="text-text-secondary text-md">
-                  {{ op.importe | number: '1.2-2' }} €
-                </dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">Mensualidad</dt>
-                <dd class="text-text-secondary text-md">
-                  {{ op.mensualidad | number: '1.2-2' }} €
-                </dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">Meses</dt>
-                <dd class="text-text-secondary text-md">{{ op.meses }}</dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">Comisión</dt>
-                <dd class="text-text-secondary text-md">
-                  {{ op.comision | number: '1.2-2' }} €
-                </dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">TIN</dt>
-                <dd class="text-text-secondary text-md">{{ op.tin }} %</dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">TAE</dt>
-                <dd class="text-text-secondary text-md">{{ op.tae }} %</dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">
-                  Próximo Recibo
-                </dt>
-                <dd class="text-text-secondary text-md">
-                  {{ op.fchProximoRecibo }}
-                </dd>
-              </div>
-
-              <div>
-                <dt class="text-text-muted text-sm font-bold">
-                  Tipo de Token
-                </dt>
-                <dd class="text-text-secondary text-md">
-                  {{ op.tipoToken }}
-                </dd>
-              </div>
-            </dl>
+            <div class="mt-8 flex justify-center">
+              <a
+                class="inline-flex min-w-52 items-center justify-center rounded-full bg-brand-primary px-6 py-3 text-sm font-bold text-white transition hover:opacity-90"
+                [href]="viewContent().ctaHref"
+                target="_self"
+              >
+                {{ viewContent().ctaLabel }}
+              </a>
+            </div>
           </div>
         } @else {
           <app-error-banner message="El token proporcionado no es válido o ha caducado." />
@@ -139,11 +101,18 @@ export class InfoOperacionCompraPlazosComponent implements OnInit, OnDestroy {
   protected readonly operacion = signal<OperacionFinanciera | null>(null);
   protected readonly loading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly society = signal(resolveSocietyCode(null));
+  protected readonly viewContent = computed(() =>
+    getFinancialViewContent('compra-plazos', this.operacion() ?? EMPTY_OPERACION, this.society()),
+  );
 
   private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     const token = this.route.snapshot.queryParamMap.get(QUERY_PARAMS.TOKEN);
+    this.society.set(
+      resolveSocietyCode(this.route.snapshot.queryParamMap.get(QUERY_PARAMS.SOCIEDAD)),
+    );
 
     if (!token) {
       this.loading.set(false);
@@ -186,3 +155,17 @@ export class InfoOperacionCompraPlazosComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
+
+const EMPTY_OPERACION: OperacionFinanciera = {
+  token: '',
+  importe: 0,
+  mensualidad: 0,
+  meses: 0,
+  impTotalAdeudado: 0,
+  comision: 0,
+  fchProximoRecibo: '',
+  tin: 0,
+  tae: 0,
+  valido: false,
+  tipoToken: 'COMPRA_PLAZO_TARJ',
+};

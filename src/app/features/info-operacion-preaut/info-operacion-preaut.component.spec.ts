@@ -48,8 +48,13 @@ describe('InfoOperacionPreautComponent', () => {
     snapshot: {
       queryParamMap: {
         _token: null as string | null,
+        _sociedad: null as string | null,
         get(key: string): string | null {
-          return key === 'token' ? this._token : null;
+          if (key === 'token') {
+            return this._token;
+          }
+
+          return key === 'sociedad' ? this._sociedad : null;
         },
       },
     },
@@ -128,6 +133,22 @@ describe('InfoOperacionPreautComponent', () => {
     expect(ctx.operacion()!.importe).toBe(8000.0);
     expect(ctx.operacion()!.valido).toBe(true);
     expect(ctx.operacion()!.tipoToken).toBe('COMBOCARD');
+  });
+
+  it('should render the cajamarconsumo variant when society 800 is requested', () => {
+    mockRoute.snapshot.queryParamMap._token = 'COMBO-TOKEN-001';
+    mockRoute.snapshot.queryParamMap._sociedad = '800';
+    const fixture = TestBed.createComponent(InfoOperacionPreautComponent);
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne((r) => r.url === apiUrl);
+    req.flush(mockOperacion);
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Información');
+    expect(text).toContain('cajamarconsumo.es');
+    expect(text).toContain('Ir a cajamarconsumo.es');
   });
 
   it('should set error message on HTTP 404', () => {

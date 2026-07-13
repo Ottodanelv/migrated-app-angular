@@ -103,6 +103,29 @@
   --color-success: oklch(0.58 0.20 145);                /* #1e9e3b — success */
 
   /* =======================================================================
+     1c2. OpenPencil Design Tokens (panel variants, status colors)
+     Source: migrated-app-visual-base.fig → build-visual-base.js
+     ======================================================================= */
+
+  /* Panel backgrounds */
+  --color-panel-muted: oklch(0.97 0.005 240);           /* #F6F7F9 — stat cards, muted sections */
+  --color-panel-soft: oklch(0.95 0.01 220);             /* #EFF2F5 — summary banners, soft panels */
+
+  /* Text — strong (headings, field values) */
+  --color-text-strong: oklch(0.22 0.02 250);            /* #1B2330 — primary headings, field values */
+
+  /* Success status */
+  --color-success-bg: oklch(0.95 0.06 145);             /* #EAF7EE — accepted badge bg */
+  --color-success-text: oklch(0.45 0.15 145);           /* #177E3D — accepted badge text */
+
+  /* Pending status */
+  --color-pending-bg: oklch(0.96 0.06 80);              /* #FFF4DD — pending badge bg */
+  --color-pending-text: oklch(0.55 0.15 65);            /* #A46000 — pending badge text */
+
+  /* Brand 800 light (for badges) */
+  --color-brand-800-light: oklch(0.95 0.04 325);        /* #F2E8F8 — sociedad 800 badge bg */
+
+  /* =======================================================================
      1d. Overlays
      ======================================================================= */
 

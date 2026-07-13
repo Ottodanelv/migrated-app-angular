@@ -48,8 +48,13 @@ describe('InfoOperacionCompraPlazosComponent', () => {
     snapshot: {
       queryParamMap: {
         _token: null as string | null,
+        _sociedad: null as string | null,
         get(key: string): string | null {
-          return key === 'token' ? this._token : null;
+          if (key === 'token') {
+            return this._token;
+          }
+
+          return key === 'sociedad' ? this._sociedad : null;
         },
       },
     },
@@ -128,6 +133,21 @@ describe('InfoOperacionCompraPlazosComponent', () => {
     expect(ctx.operacion()!.importe).toBe(5000.0);
     expect(ctx.operacion()!.valido).toBe(true);
     expect(ctx.operacion()!.tipoToken).toBe('COMPRA_PLAZO_TARJ');
+  });
+
+  it('should render the operation code and SMS confirmation narrative', () => {
+    mockRoute.snapshot.queryParamMap._token = 'COMPRA-TOKEN-001';
+    const fixture = TestBed.createComponent(InfoOperacionCompraPlazosComponent);
+    fixture.detectChanges();
+
+    const req = httpMock.expectOne((r) => r.url === apiUrl);
+    req.flush(mockOperacion);
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Datos de la operación');
+    expect(text).toContain('Código de la operación');
+    expect(text).toContain('APLAZA');
   });
 
   it('should set error message on HTTP 404', () => {
