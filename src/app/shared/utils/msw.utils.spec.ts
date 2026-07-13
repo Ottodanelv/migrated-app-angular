@@ -31,4 +31,10 @@ describe('isMockedApiRequest', () => {
       isMockedApiRequest('http://localhost:4200/error', apiBaseUrl, origin),
     ).toBe(false);
   });
+
+  it('should not match sibling paths that only share the same prefix', () => {
+    expect(
+      isMockedApiRequest('http://localhost:8080/apiary/status', apiBaseUrl, origin),
+    ).toBe(false);
+  });
 });
