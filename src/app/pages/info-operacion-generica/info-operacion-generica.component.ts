@@ -25,84 +25,83 @@ import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants'
 
       @if (operacion(); as op) {
         @if (op.valido) {
-          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-wide text-sky-700">
-              Cesión de datos cotitular
+          <!-- Header -->
+          <p class="text-sm font-bold uppercase tracking-wide text-brand-secondary">
+            Cesión de datos cotitular
+          </p>
+          <h1 class="mt-2 text-4xl font-bold text-text-strong">
+            Información del token genérico
+          </h1>
+          <p class="mt-3 text-md text-text-muted">
+            Hemos validado el token y cargado los consentimientos asociados. El usuario necesita contexto, no ruido visual.
+          </p>
+
+          <!-- Field cards -->
+          <div class="mt-6 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-[18px] border border-border-light bg-white p-5">
+              <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Token</p>
+              <p class="mt-2 text-xl font-bold text-text-strong">{{ op.token }}</p>
+            </div>
+            <div class="rounded-[18px] border border-border-light bg-white p-5">
+              <p class="text-xs font-bold uppercase tracking-wide text-text-muted">NIF</p>
+              <p class="mt-2 text-xl font-bold text-text-strong">{{ op.nif }}</p>
+            </div>
+            <div class="rounded-[18px] border border-border-light bg-white p-5">
+              <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Teléfono</p>
+              <p class="mt-2 text-xl font-bold text-text-strong">{{ op.telefono }}</p>
+            </div>
+          </div>
+
+          <!-- Consentimientos section -->
+          <div class="mt-8">
+            <h2 class="text-2xl font-bold text-text-strong">Consentimientos CDAC</h2>
+            <p class="mt-2 text-md text-text-muted">
+              El texto legal sigue mandando. Los badges solo ayudan a leer estados.
             </p>
-            <h1 class="mt-2 text-2xl font-bold text-slate-900">
-              Información del token genérico
-            </h1>
-            <p class="mt-2 text-sm text-slate-600">
-              Hemos validado el token y cargado los consentimientos asociados.
-            </p>
 
-            <dl class="mt-6 grid gap-4 md:grid-cols-2">
-              <div class="rounded-xl bg-slate-50 p-4">
-                <dt class="text-xs font-semibold uppercase text-slate-500">Token</dt>
-                <dd class="mt-1 text-sm text-slate-900">{{ op.token }}</dd>
-              </div>
-              <div class="rounded-xl bg-slate-50 p-4">
-                <dt class="text-xs font-semibold uppercase text-slate-500">NIF</dt>
-                <dd class="mt-1 text-sm text-slate-900">{{ op.nif }}</dd>
-              </div>
-              <div class="rounded-xl bg-slate-50 p-4">
-                <dt class="text-xs font-semibold uppercase text-slate-500">Teléfono</dt>
-                <dd class="mt-1 text-sm text-slate-900">{{ op.telefono }}</dd>
-              </div>
-              <div class="rounded-xl bg-slate-50 p-4">
-                <dt class="text-xs font-semibold uppercase text-slate-500">Tipo token</dt>
-                <dd class="mt-1 text-sm text-slate-900">{{ op.tipoToken }}</dd>
-              </div>
-            </dl>
-
-            <div class="mt-8">
-              <h2 class="text-lg font-semibold text-slate-900">Consentimientos CDAC</h2>
-              <p class="mt-1 text-sm text-slate-600">
-                Estos consentimientos se cargan desde el flujo legacy cargarConsentimientosCDAC().
-              </p>
-
-              @if (consentimientos().length) {
-                <ul class="mt-4 space-y-3">
-                  @for (consentimiento of consentimientos(); track consentimiento.tipoConsentimiento) {
-                    <li class="rounded-xl border border-slate-200 p-4">
-                      <div class="flex items-start justify-between gap-4">
-                        <div>
-                          <p class="font-medium text-slate-900">{{ consentimiento.tipoConsentimiento }}</p>
-                          <p class="mt-1 text-sm text-slate-600">{{ consentimiento.textoLegal }}</p>
-                        </div>
-                        <span class="rounded-full px-2.5 py-1 text-xs font-semibold"
-                          [class.bg-emerald-100]="consentimiento.aceptado"
-                          [class.text-emerald-700]="consentimiento.aceptado"
-                          [class.bg-amber-100]="!consentimiento.aceptado"
-                          [class.text-amber-700]="!consentimiento.aceptado"
-                        >
-                          {{ consentimiento.aceptado ? 'Aceptado' : 'Pendiente' }}
-                        </span>
+            @if (consentimientos().length) {
+              <ul class="mt-4 space-y-4">
+                @for (consentimiento of consentimientos(); track consentimiento.tipoConsentimiento) {
+                  <li class="rounded-[20px] border border-border-light bg-white p-5">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div class="min-w-0 flex-1">
+                        <p class="text-lg font-bold text-text-strong">{{ consentimiento.tipoConsentimiento }}</p>
+                        <p class="mt-2 text-md text-text-muted">{{ consentimiento.textoLegal }}</p>
                       </div>
-                    </li>
-                  }
-                </ul>
-              } @else {
-                <p class="mt-4 text-sm text-slate-500">No se han recibido consentimientos para este token.</p>
-              }
-            </div>
+                      <span
+                        class="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-bold"
+                        [class.bg-success-bg]="consentimiento.aceptado"
+                        [class.text-success-text]="consentimiento.aceptado"
+                        [class.bg-pending-bg]="!consentimiento.aceptado"
+                        [class.text-pending-text]="!consentimiento.aceptado"
+                      >
+                        {{ consentimiento.aceptado ? 'Aceptado' : 'Pendiente' }}
+                      </span>
+                    </div>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="mt-4 text-md text-text-muted">No se han recibido consentimientos para este token.</p>
+            }
+          </div>
 
-            <div class="mt-8 flex flex-wrap gap-3">
-              <a
-                [routerLink]="['/', ROUTE_PATHS.ACEPTAR_COTITULAR]"
-                [queryParams]="{ token: op.token }"
-                class="inline-flex items-center rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800"
-              >
-                Continuar con aceptación
-              </a>
+          <!-- Actions -->
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a
+              [routerLink]="['/', ROUTE_PATHS.ACEPTAR_COTITULAR]"
+              [queryParams]="{ token: op.token }"
+              class="inline-flex items-center justify-center rounded-[14px] bg-brand-secondary px-6 py-3 text-md font-bold text-white transition hover:opacity-90"
+            >
+              Continuar con aceptación
+            </a>
 
-              <a
-                routerLink="/"
-                class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Volver al inicio
-              </a>
-            </div>
+            <a
+              routerLink="/"
+              class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
+            >
+              Volver al inicio
+            </a>
           </div>
         } @else {
           <app-error-banner message="El token proporcionado no es válido o ha caducado." />

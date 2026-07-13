@@ -21,27 +21,40 @@ import type { Consentimiento } from '../../models/consentimiento';
   template: `
     @if (visible()) {
       <div
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-overlay-dark"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-consentimientos-title"
         (click)="onBackdropClick($event)"
       >
         <div
-          class="mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white shadow-lg"
+          class="mx-4 max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-[28px] bg-white shadow-modal"
           (click)="$event.stopPropagation()"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-            <h2
-              id="modal-consentimientos-title"
-              class="text-lg font-bold text-gray-900"
-            >
-              Detalles del Consentimiento
-            </h2>
+          <div class="flex items-center justify-between border-b border-border-light px-6 py-5">
+            <div class="flex items-center gap-3">
+              <h2
+                id="modal-consentimientos-title"
+                class="text-2xl font-bold text-text-strong"
+              >
+                Detalle legal
+              </h2>
+              @if (consentimiento(); as c) {
+                <span
+                  class="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold"
+                  [class.bg-success-bg]="c.aceptado"
+                  [class.text-success-text]="c.aceptado"
+                  [class.bg-pending-bg]="!c.aceptado"
+                  [class.text-pending-text]="!c.aceptado"
+                >
+                  {{ c.aceptado ? 'Aceptado' : 'Pendiente' }}
+                </span>
+              }
+            </div>
             <button
               type="button"
-              class="text-gray-400 hover:text-gray-600"
+              class="text-text-muted hover:text-text-strong"
               aria-label="Cerrar"
               (click)="close.emit()"
             >
@@ -53,24 +66,36 @@ import type { Consentimiento } from '../../models/consentimiento';
 
           <!-- Body -->
           @if (consentimiento(); as c) {
-            <div class="px-6 py-4">
-              <dl class="space-y-4">
-                <!-- Tipo Consentimiento -->
+            <div class="px-6 py-5">
+              <p class="text-md text-text-muted">
+                Modal centrado, legal y accionable. El texto tiene más peso que el decorado y debe respirarse bien.
+              </p>
+
+              <dl class="mt-5 space-y-5">
+                <!-- Tipo -->
                 <div>
-                  <dt class="text-sm font-semibold text-gray-500">Tipo de Consentimiento</dt>
-                  <dd class="mt-1 text-base text-gray-900">{{ c.tipoConsentimiento }}</dd>
+                  <dt class="text-xs font-bold uppercase tracking-wide text-text-muted">Tipo</dt>
+                  <dd class="mt-1 text-lg font-bold text-text-strong">{{ c.tipoConsentimiento }}</dd>
+                </div>
+
+                <!-- Texto Legal -->
+                <div>
+                  <dt class="text-xs font-bold uppercase tracking-wide text-text-muted">Texto legal</dt>
+                  <dd class="mt-1 text-md leading-relaxed text-text-muted">
+                    {{ c.textoLegal }}
+                  </dd>
                 </div>
 
                 <!-- Estado -->
                 <div>
-                  <dt class="text-sm font-semibold text-gray-500">Estado</dt>
+                  <dt class="text-xs font-bold uppercase tracking-wide text-text-muted">Estado</dt>
                   <dd class="mt-1">
                     @if (c.aceptado) {
-                      <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-medium text-green-800">
+                      <span class="inline-flex items-center rounded-full bg-success-bg px-3 py-1 text-xs font-bold text-success-text">
                         Aceptado
                       </span>
                     } @else {
-                      <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-sm font-medium text-red-800">
+                      <span class="inline-flex items-center rounded-full bg-pending-bg px-3 py-1 text-xs font-bold text-pending-text">
                         No aceptado
                       </span>
                     }
@@ -79,42 +104,34 @@ import type { Consentimiento } from '../../models/consentimiento';
 
                 <!-- Obligatorio -->
                 <div>
-                  <dt class="text-sm font-semibold text-gray-500">Obligatorio</dt>
-                  <dd class="mt-1 text-base text-gray-900">
+                  <dt class="text-xs font-bold uppercase tracking-wide text-text-muted">Obligatorio</dt>
+                  <dd class="mt-1 text-md text-text-strong">
                     {{ c.obligatorio ? 'Sí' : 'No' }}
                   </dd>
                 </div>
 
                 <!-- Fecha Notaria -->
                 <div>
-                  <dt class="text-sm font-semibold text-gray-500">Fecha de Notaría</dt>
-                  <dd class="mt-1 text-base text-gray-900">
+                  <dt class="text-xs font-bold uppercase tracking-wide text-text-muted">Fecha de notaría</dt>
+                  <dd class="mt-1 text-md text-text-strong">
                     {{ c.fchNotaria | date:'dd/MM/yyyy HH:mm' }}
                   </dd>
                 </div>
 
-                <!-- Texto Legal -->
-                <div>
-                  <dt class="text-sm font-semibold text-gray-500">Texto Legal</dt>
-                  <dd class="mt-1 text-sm leading-relaxed text-gray-700">
-                    {{ c.textoLegal }}
-                  </dd>
-                </div>
-
-                <!-- Texto Info (expandable) -->
+                <!-- Info adicional -->
                 @if (c.masInfo && c.textoInfo) {
                   <div>
-                    <dt class="text-sm font-semibold text-gray-500">Información Adicional</dt>
+                    <dt class="text-xs font-bold uppercase tracking-wide text-text-muted">Información adicional</dt>
                     <dd class="mt-1">
                       <button
                         type="button"
-                        class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                        class="text-md font-bold text-brand-teal-dark underline hover:text-brand-teal-light"
                         (click)="toggleInfo()"
                       >
                         {{ showInfo() ? 'Ocultar información' : 'Mostrar más información' }}
                       </button>
                       @if (showInfo()) {
-                        <p class="mt-2 text-sm leading-relaxed text-gray-700">
+                        <p class="mt-2 text-md leading-relaxed text-text-muted">
                           {{ c.textoInfo }}
                         </p>
                       }
@@ -124,16 +141,23 @@ import type { Consentimiento } from '../../models/consentimiento';
               </dl>
             </div>
           } @else {
-            <div class="px-6 py-8 text-center text-gray-500">
+            <div class="px-6 py-8 text-center text-text-muted">
               No hay datos de consentimiento para mostrar.
             </div>
           }
 
           <!-- Footer -->
-          <div class="flex justify-end border-t border-gray-200 px-6 py-4">
+          <div class="flex justify-end gap-3 border-t border-border-light px-6 py-5">
             <button
               type="button"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              class="rounded-[14px] bg-brand-secondary px-5 py-2.5 text-md font-bold text-white transition hover:opacity-90"
+              (click)="close.emit()"
+            >
+              Aceptar
+            </button>
+            <button
+              type="button"
+              class="rounded-[14px] border border-border-light bg-white px-5 py-2.5 text-md font-bold text-text-muted transition hover:bg-panel-muted"
               (click)="close.emit()"
             >
               Cerrar

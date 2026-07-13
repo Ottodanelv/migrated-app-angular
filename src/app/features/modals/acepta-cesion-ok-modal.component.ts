@@ -20,22 +20,22 @@ import { Component, output, input } from '@angular/core';
       >
         <!-- Backdrop -->
         <div
-          class="fixed inset-0 bg-black/50"
+          class="fixed inset-0 bg-overlay-dark"
           (click)="close.emit()"
           aria-hidden="true"
         ></div>
 
         <!-- Modal content -->
-        <div class="relative mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+        <div class="relative mx-4 w-full max-w-md rounded-[28px] bg-white p-6 shadow-modal">
           <h2
             id="modal-acepta-cesion-ok-title"
-            class="mb-4 text-lg font-semibold text-gray-900"
+            class="mb-4 text-2xl font-bold text-text-strong"
           >
             Aceptación de cesión
           </h2>
 
           <div class="mb-6">
-            <p class="text-sm text-gray-600">
+            <p class="text-md text-text-muted">
               La cesión se ha aceptado correctamente.
             </p>
           </div>
@@ -43,7 +43,7 @@ import { Component, output, input } from '@angular/core';
           <div class="flex justify-end">
             <button
               type="button"
-              class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              class="rounded-[14px] bg-brand-secondary px-5 py-2.5 text-md font-bold text-white transition hover:opacity-90"
               (click)="close.emit()"
             >
               Cerrar

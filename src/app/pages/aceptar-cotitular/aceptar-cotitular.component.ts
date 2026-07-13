@@ -31,49 +31,61 @@ import { AceptaCesionOkModalComponent } from '../../features/modals/acepta-cesio
       }
 
       @if (operacion(); as op) {
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p class="text-sm font-semibold uppercase tracking-wide text-sky-700">Aceptación de cesión</p>
-          <h1 class="mt-2 text-2xl font-bold text-slate-900">Enviar OTP al cotitular</h1>
-          <p class="mt-2 text-sm text-slate-600">
-            Usaremos el teléfono asociado al token {{ op.token }} para continuar el flujo.
-          </p>
-
-          <form [formGroup]="form" class="mt-6 space-y-5" (ngSubmit)="enviarSms()">
-            <div>
-              <label class="mb-2 block text-sm font-medium text-slate-700" for="telefono">Teléfono</label>
-              <input
-                id="telefono"
-                type="text"
-                formControlName="telefono"
-                readonly
-                class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-900"
-              />
-            </div>
-
-            <div class="rounded-xl bg-slate-50 p-4 text-sm text-slate-600">
-              <p><span class="font-semibold text-slate-900">NIF:</span> {{ op.nif }}</p>
-              <p class="mt-1"><span class="font-semibold text-slate-900">Tipo de autenticación:</span> {{ op.tipoAutenticacionFk }}</p>
-            </div>
-
-            <div class="flex flex-wrap gap-3">
-              <button
-                type="submit"
-                class="inline-flex items-center rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
-                [disabled]="loading() || form.invalid"
-              >
-                Enviar SMS
-              </button>
-
-              <a
-                [routerLink]="['/', ROUTE_PATHS.INFO_OPERACION_GENERICA]"
-                [queryParams]="{ token: op.token }"
-                class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Volver
-              </a>
-            </div>
-          </form>
+        <!-- Header -->
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 class="text-4xl font-bold text-text-strong">Enviar OTP al cotitular</h1>
+            <p class="mt-3 text-md text-text-muted">
+              Usaremos el teléfono asociado al token para continuar el flujo. La pantalla debe sentirse corta y muy clara.
+            </p>
+          </div>
+          <span class="inline-flex shrink-0 items-center rounded-full bg-brand-800-light px-3 py-1 text-xs font-bold text-brand-secondary">
+            Sociedad 800
+          </span>
         </div>
+
+        <!-- Phone field card -->
+        <div class="mt-6 rounded-[18px] border border-border-light bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Teléfono</p>
+          <p class="mt-2 text-xl font-bold text-text-strong">{{ op.telefono }}</p>
+        </div>
+
+        <!-- Support data -->
+        <div class="mt-4 rounded-[18px] bg-panel-muted p-5">
+          <p class="text-md font-bold text-text-strong">Datos de soporte</p>
+          <p class="mt-2 text-md text-text-muted">
+            NIF: {{ op.nif }} &nbsp;&middot;&nbsp; Tipo autenticación: {{ op.tipoAutenticacionFk }} &nbsp;&middot;&nbsp; Aplicación: {{ op.aplicacionFk }}
+          </p>
+        </div>
+
+        <!-- Error/success zone -->
+        <div class="mt-4 rounded-[18px] border border-error/20 bg-red-50/50 p-5">
+          <p class="text-md font-bold text-error">Zona preparada para error o success</p>
+          <p class="mt-2 text-md text-text-muted">
+            Este espacio admite un estado inline y un modal de éxito simple sin romper la composición.
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="form" class="mt-6" (ngSubmit)="enviarSms()">
+          <div class="flex flex-wrap gap-3">
+            <button
+              type="submit"
+              class="inline-flex items-center justify-center rounded-[14px] bg-brand-secondary px-6 py-3 text-md font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+              [disabled]="loading() || form.invalid"
+            >
+              Enviar SMS
+            </button>
+
+            <a
+              [routerLink]="['/', ROUTE_PATHS.INFO_OPERACION_GENERICA]"
+              [queryParams]="{ token: op.token }"
+              class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
+            >
+              Volver
+            </a>
+          </div>
+        </form>
       }
 
       <app-acepta-cesion-ok-modal
