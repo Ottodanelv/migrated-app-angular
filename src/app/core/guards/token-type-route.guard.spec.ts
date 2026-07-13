@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import {
   provideRouter,
@@ -10,6 +10,7 @@ import {
 } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { firstValueFrom, type Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { tokenTypeRouteGuard } from './token-type-route.guard';
@@ -61,9 +62,7 @@ describe('tokenTypeRouteGuard', () => {
       tokenTypeRouteGuard(createRouteSnapshot('FIN-TOKEN-001') as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
-    const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
-      (result$ as any).subscribe((value: boolean | UrlTree) => resolve(value));
-    });
+    const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
       .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-001')
@@ -82,9 +81,7 @@ describe('tokenTypeRouteGuard', () => {
       tokenTypeRouteGuard(createRouteSnapshot('FIN-TOKEN-002') as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
-    const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
-      (result$ as any).subscribe((value: boolean | UrlTree) => resolve(value));
-    });
+    const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
       .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-002')
@@ -98,9 +95,7 @@ describe('tokenTypeRouteGuard', () => {
       tokenTypeRouteGuard(createRouteSnapshot('BROKEN-TOKEN') as ActivatedRouteSnapshot, routerStateSnapshot),
     );
 
-    const resultPromise = new Promise<boolean | UrlTree>((resolve) => {
-      (result$ as any).subscribe((value: boolean | UrlTree) => resolve(value));
-    });
+    const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
       .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'BROKEN-TOKEN')
