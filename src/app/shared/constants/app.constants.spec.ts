@@ -10,6 +10,7 @@
 import { describe, it, expect } from 'vitest';
 
 import {
+  LEGACY_ROUTE_PATHS,
   ROUTE_PATHS,
   QUERY_PARAMS,
   MODEL_ATTRIBUTES,
@@ -55,6 +56,21 @@ describe('ROUTE_PATHS', () => {
     // TypeScript would catch mutation at compile time; verify shape at runtime
     expect(Object.isFrozen(ROUTE_PATHS)).toBe(false); // `as const` doesn't freeze at runtime
     expect(typeof ROUTE_PATHS.INFO_OPERACION).toBe('string');
+  });
+});
+
+describe('LEGACY_ROUTE_PATHS', () => {
+  it('should preserve the original camelCase Spring MVC entry URLs', () => {
+    expect(LEGACY_ROUTE_PATHS.INFO_OPERACION).toBe('infoOperacion');
+    expect(LEGACY_ROUTE_PATHS.INFO_OPERACION_GENERICA).toBe('infoOperacionGenerica');
+    expect(LEGACY_ROUTE_PATHS.ACEPTAR_COTITULAR).toBe('acepCot');
+    expect(LEGACY_ROUTE_PATHS.ENVIAR_OTP_COTITULAR).toBe('enviarOtpCotitular');
+  });
+
+  it('should not use leading slashes because Angular route definitions are segment-based', () => {
+    for (const path of Object.values(LEGACY_ROUTE_PATHS)) {
+      expect(path).not.toMatch(/^\//);
+    }
   });
 });
 
@@ -199,6 +215,7 @@ describe('Constants integrity', () => {
   });
 
   it('should export all expected constant groups', () => {
+    expect(LEGACY_ROUTE_PATHS).toBeDefined();
     expect(ROUTE_PATHS).toBeDefined();
     expect(QUERY_PARAMS).toBeDefined();
     expect(MODEL_ATTRIBUTES).toBeDefined();

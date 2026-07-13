@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { tokenTypeRouteGuard } from './core/guards/token-type-route.guard';
-import { ROUTE_PATHS } from './shared/constants/app.constants';
+import { LEGACY_ROUTE_PATHS, ROUTE_PATHS } from './shared/constants/app.constants';
 
 /**
  * Application route definitions.
@@ -17,6 +17,29 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: ROUTE_PATHS.INFO_OPERACION,
+    pathMatch: 'full',
+  },
+
+  // Legacy Spring MVC aliases → canonical Angular entry points.
+  // Query params such as `?token=` are preserved by router redirects.
+  {
+    path: LEGACY_ROUTE_PATHS.INFO_OPERACION,
+    redirectTo: ROUTE_PATHS.INFO_OPERACION,
+    pathMatch: 'full',
+  },
+  {
+    path: LEGACY_ROUTE_PATHS.INFO_OPERACION_GENERICA,
+    redirectTo: ROUTE_PATHS.INFO_OPERACION_GENERICA,
+    pathMatch: 'full',
+  },
+  {
+    path: LEGACY_ROUTE_PATHS.ACEPTAR_COTITULAR,
+    redirectTo: ROUTE_PATHS.ACEPTAR_COTITULAR,
+    pathMatch: 'full',
+  },
+  {
+    path: LEGACY_ROUTE_PATHS.ENVIAR_OTP_COTITULAR,
+    redirectTo: ROUTE_PATHS.ACEPTAR_COTITULAR,
     pathMatch: 'full',
   },
 
@@ -74,7 +97,6 @@ export const routes: Routes = [
         (m) => m.ConsentimientosComponent,
       ),
   },
-
 
   // Error page
   {

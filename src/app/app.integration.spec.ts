@@ -6,10 +6,10 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from
 import { http, HttpResponse } from 'msw';
 
 import { appConfig } from './app.config';
-import { ROUTE_PATHS } from './shared/constants/app.constants';
+import { LEGACY_ROUTE_PATHS, ROUTE_PATHS } from './shared/constants/app.constants';
 import { environment } from '../environments/environment';
 import { server } from '../mocks/node';
-import { MOCK_GENERIC_OPERATION } from '../mocks/mockData';
+import { MOCK_GENERIC_OPERATION, MOCK_VALID_TOKEN } from '../mocks/mockData';
 
 describe('App integration flows', () => {
   beforeAll(() => {
@@ -29,6 +29,72 @@ describe('App integration flows', () => {
 
   afterAll(() => {
     server.close();
+  });
+
+  it('should redirect the legacy /infoOperacion entry to the preaut Angular page for COMBOCARD tokens', async () => {
+    await RouterTestingHarness.create(
+      `/${LEGACY_ROUTE_PATHS.INFO_OPERACION}?token=${MOCK_VALID_TOKEN.token}`,
+    );
+
+    expect(TestBed.inject(Router).url).toBe(
+      `/${ROUTE_PATHS.INFO_OPERACION_PREAUT}?token=${MOCK_VALID_TOKEN.token}`,
+    );
+    expect(await screen.findByText('Pre-autorización COMBOCARD')).toBeTruthy();
+  });
+
+  it('should redirect the legacy /infoOperacion entry to the compra-plazos Angular page for installment tokens', async () => {
+    server.use(
+      http.get(`${environment.apiBaseUrl}/gestion-token/info-sms-financiero`, ({ request }) => {
+        const url = new URL(request.url);
+        const token = url.searchParams.get('token');
+
+        if (token === 'FIN-TOKEN-COMPRA') {
+          return HttpResponse.json({ token, valido: true, tipoToken: 'COMPRA_PLAZO_TARJ' });
+        }
+
+        return HttpResponse.json({ error: 'Token not found', code: 'TOKEN_NOT_FOUND' }, { status: 404 });
+      }),
+    );
+
+    await RouterTestingHarness.create(`/${LEGACY_ROUTE_PATHS.INFO_OPERACION}?token=FIN-TOKEN-COMPRA`);
+
+    expect(TestBed.inject(Router).url).toBe(
+      `/${ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS}?token=FIN-TOKEN-COMPRA`,
+    );
+    expect(await screen.findByText('Compra a Plazos')).toBeTruthy();
+  });
+
+  it('should redirect the legacy /infoOperacionGenerica alias to the canonical Angular route', async () => {
+    await RouterTestingHarness.create(
+      `/${LEGACY_ROUTE_PATHS.INFO_OPERACION_GENERICA}?token=${MOCK_GENERIC_OPERATION.token}`,
+    );
+
+    expect(TestBed.inject(Router).url).toBe(
+      `/${ROUTE_PATHS.INFO_OPERACION_GENERICA}?token=${MOCK_GENERIC_OPERATION.token}`,
+    );
+    expect(await screen.findByText('Información del token genérico')).toBeTruthy();
+  });
+
+  it('should redirect the legacy /acepCot alias to the canonical Angular route', async () => {
+    await RouterTestingHarness.create(
+      `/${LEGACY_ROUTE_PATHS.ACEPTAR_COTITULAR}?token=${MOCK_GENERIC_OPERATION.token}`,
+    );
+
+    expect(TestBed.inject(Router).url).toBe(
+      `/${ROUTE_PATHS.ACEPTAR_COTITULAR}?token=${MOCK_GENERIC_OPERATION.token}`,
+    );
+    expect(await screen.findByText('Enviar OTP al cotitular')).toBeTruthy();
+  });
+
+  it('should redirect the legacy /enviarOtpCotitular alias to the canonical Angular route', async () => {
+    await RouterTestingHarness.create(
+      `/${LEGACY_ROUTE_PATHS.ENVIAR_OTP_COTITULAR}?token=${MOCK_GENERIC_OPERATION.token}`,
+    );
+
+    expect(TestBed.inject(Router).url).toBe(
+      `/${ROUTE_PATHS.ACEPTAR_COTITULAR}?token=${MOCK_GENERIC_OPERATION.token}`,
+    );
+    expect(await screen.findByText('Enviar OTP al cotitular')).toBeTruthy();
   });
 
   it('should navigate through the generic token flow and submit the OTP form', async () => {

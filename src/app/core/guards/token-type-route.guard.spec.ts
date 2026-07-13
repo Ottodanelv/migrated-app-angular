@@ -14,6 +14,7 @@ import { firstValueFrom, type Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { tokenTypeRouteGuard } from './token-type-route.guard';
+import { ROUTE_PATHS } from '../../shared/constants/app.constants';
 
 describe('tokenTypeRouteGuard', () => {
   const apiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-financiero`;
@@ -70,10 +71,50 @@ describe('tokenTypeRouteGuard', () => {
 
     const result = await resultPromise;
 
-    expect(routerSpy).toHaveBeenCalledWith(['/','info-operacion-preaut'], {
+    expect(routerSpy).toHaveBeenCalledWith(['/', ROUTE_PATHS.INFO_OPERACION_PREAUT], {
       queryParams: { token: 'FIN-TOKEN-001' },
     });
     expect(result).toBeDefined();
+  });
+
+  it('should redirect COMPRA_PLAZO_TARJ tokens to the compra-plazos route', async () => {
+    const routerSpy = vi.spyOn(router, 'createUrlTree');
+
+    const result$ = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard(createRouteSnapshot('FIN-TOKEN-003') as ActivatedRouteSnapshot, routerStateSnapshot),
+    );
+
+    const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
+
+    httpMock
+      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-003')
+      .flush({ token: 'FIN-TOKEN-003', valido: true, tipoToken: 'COMPRA_PLAZO_TARJ' });
+
+    await resultPromise;
+
+    expect(routerSpy).toHaveBeenCalledWith(['/', ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS], {
+      queryParams: { token: 'FIN-TOKEN-003' },
+    });
+  });
+
+  it('should redirect ALERT_CDAT_COT tokens to the generic route', async () => {
+    const routerSpy = vi.spyOn(router, 'createUrlTree');
+
+    const result$ = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard(createRouteSnapshot('GEN-TOKEN-001') as ActivatedRouteSnapshot, routerStateSnapshot),
+    );
+
+    const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
+
+    httpMock
+      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'GEN-TOKEN-001')
+      .flush({ token: 'GEN-TOKEN-001', valido: true, tipoToken: 'ALERT_CDAT_COT' });
+
+    await resultPromise;
+
+    expect(routerSpy).toHaveBeenCalledWith(['/', ROUTE_PATHS.INFO_OPERACION_GENERICA], {
+      queryParams: { token: 'GEN-TOKEN-001' },
+    });
   });
 
   it('should keep the default financial route for unknown token types', async () => {
