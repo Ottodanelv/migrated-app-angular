@@ -7,6 +7,10 @@ import {
   resolveSocietyCode,
 } from './financial-view-content.utils';
 
+function paragraphText(content: ReturnType<typeof getFinancialViewContent>, index: number): string {
+  return content.paragraphs[index].segments.map((segment) => segment.value).join('');
+}
+
 const mockOperacion: OperacionFinanciera = {
   token: 'FIN-TOKEN-001',
   importe: 12500,
@@ -31,9 +35,9 @@ describe('financial-view-content utils', () => {
     const content = getFinancialViewContent('base', mockOperacion, SOCIETY_CODES.DEFAULT);
 
     expect(content.title).toBe('Información');
-    expect(content.paragraphs[0]).toContain('Ha realizado una utilización de tarjeta');
-    expect(content.paragraphs[1]).toContain('operación pre-autorizada en moneda extranjera');
-    expect(content.paragraphs[2]).toContain('Espacio Cliente');
+    expect(paragraphText(content, 0)).toContain('Ha realizado una utilización de tarjeta');
+    expect(paragraphText(content, 1)).toContain('operación pre-autorizada en moneda extranjera');
+    expect(paragraphText(content, 2)).toContain('Espacio Cliente');
     expect(content.ctaLabel).toBe('Ir a cetelem.es');
   });
 
@@ -41,14 +45,14 @@ describe('financial-view-content utils', () => {
     const content = getFinancialViewContent('compra-plazos', mockOperacion, SOCIETY_CODES.DEFAULT);
 
     expect(content.title).toBe('Datos de la operación');
-    expect(content.paragraphs[2]).toContain(mockOperacion.token);
-    expect(content.paragraphs[3]).toContain('APLAZA');
+    expect(paragraphText(content, 2)).toContain(mockOperacion.token);
+    expect(paragraphText(content, 3)).toContain('APLAZA');
   });
 
   it('should switch the CTA destination for xfera society variants', () => {
     const content = getFinancialViewContent('preaut', mockOperacion, SOCIETY_CODES.XFERA);
 
-    expect(content.paragraphs[0]).toContain('cajamarconsumo.es');
+    expect(paragraphText(content, 0)).toContain('cajamarconsumo.es');
     expect(content.ctaHref).toBe('https://www.cajamarconsumo.es');
     expect(content.ctaLabel).toBe('Ir a cajamarconsumo.es');
   });
@@ -56,7 +60,7 @@ describe('financial-view-content utils', () => {
   it('should keep the cajamar preaut copy without embedded customer portal link', () => {
     const content = getFinancialViewContent('preaut', mockOperacion, SOCIETY_CODES.CAJAMAR);
 
-    expect(content.paragraphs[0]).not.toContain('href=');
-    expect(content.paragraphs[1]).toContain('La fecha del primer recibo podrá desplazarse');
+    expect(paragraphText(content, 0)).not.toContain('href=');
+    expect(paragraphText(content, 1)).toContain('La fecha del primer recibo podrá desplazarse');
   });
 });

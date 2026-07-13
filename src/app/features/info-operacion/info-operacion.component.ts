@@ -53,11 +53,17 @@ import {
 
           <div class="mt-6 rounded-2xl border border-border-light bg-bg-section p-6 shadow-soft">
             @for (paragraph of viewContent().paragraphs; track $index) {
-              <p
-                class="justify text-sm leading-7 text-text-secondary"
-                [class.mt-4]="$index > 0"
-                [innerHTML]="paragraph"
-              ></p>
+              <p class="justify text-sm leading-7 text-text-secondary" [class.mt-4]="$index > 0">
+                @for (segment of paragraph.segments; track $index) {
+                  @if (segment.kind === 'strong') {
+                    <strong>{{ segment.value }}</strong>
+                  } @else if (segment.kind === 'link') {
+                    <a [href]="segment.href" class="font-semibold underline">{{ segment.value }}</a>
+                  } @else {
+                    <span>{{ segment.value }}</span>
+                  }
+                }
+              </p>
             }
 
             <div class="mt-8 flex justify-center">
