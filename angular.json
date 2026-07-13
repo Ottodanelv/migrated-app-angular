@@ -25,6 +25,8 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "outputMode": "static",
+            "outputPath": "dist/migrated-app",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -42,6 +44,9 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",

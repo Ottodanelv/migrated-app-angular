@@ -15,7 +15,8 @@ export const environment: AppEnvironment = {
 
   // -----------------------------------------------------------------------
   // API Configuration
-  // NOTE: Replace with the actual production API base URL before deploying.
+  // Served behind the same origin as the static Angular app.
+  // Production hosting must proxy /api/* requests to the backend service.
   // -----------------------------------------------------------------------
   apiBaseUrl: '/api',
   apiTimeout: 15000, // 15s — tighter timeout in production
