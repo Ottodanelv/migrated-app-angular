@@ -40,6 +40,26 @@ export const ROUTE_PATHS = {
 /** Type helper: union of all valid route paths. */
 export type RoutePath = (typeof ROUTE_PATHS)[keyof typeof ROUTE_PATHS];
 
+/**
+ * Legacy URL path segments preserved as compatibility aliases.
+ *
+ * These keep old Spring MVC entry points working while normalizing navigation
+ * into the canonical Angular routes defined in `ROUTE_PATHS`.
+ *
+ * REMOVED: the legacy `/enviarOtpCotitular` POST transport semantics do not
+ * exist in the SPA. Only deep-link compatibility via GET-style navigation is retained.
+ */
+export const LEGACY_ROUTE_PATHS = {
+  /** @source PATH_INFO_OPERACION_VALIDAR_TOKEN = "/infoOperacion" */
+  INFO_OPERACION: 'infoOperacion',
+  /** @source PATH_INFO_OPERACION_VALIDAR_TOKEN_GENERICO = "/infoOperacionGenerica" */
+  INFO_OPERACION_GENERICA: 'infoOperacionGenerica',
+  /** @source PATH_ACEPTACION_CESION_DATOS_COTITULAR = "/acepCot" */
+  ACEPTAR_COTITULAR: 'acepCot',
+  /** @source PATH_ENVIAR_OTP_COTITULAR = "/enviarOtpCotitular" */
+  ENVIAR_OTP_COTITULAR: 'enviarOtpCotitular',
+} as const;
+
 // ---------------------------------------------------------------------------
 // Query Parameter Keys
 // ---------------------------------------------------------------------------
