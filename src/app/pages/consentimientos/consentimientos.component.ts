@@ -18,7 +18,7 @@ import { ConsentimientosModalComponent } from '../../features/modals/consentimie
     ConsentimientosModalComponent,
   ],
   template: `
-    <section class="animate-fade-in" data-sociedad="800">
+    <section class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" label="Cargando consentimientos..." />
 
       @if (errorMessage(); as msg) {
@@ -28,7 +28,7 @@ import { ConsentimientosModalComponent } from '../../features/modals/consentimie
       <!-- Header -->
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 class="text-4xl font-bold text-text-strong">Gestión de consentimientos</h1>
+          <h1 class="text-4xl font-bold text-brand-primary">Gestión de consentimientos</h1>
           <p class="mt-3 text-md text-text-muted">
             Vista de gestión e inspirada en el flujo legal del legacy, pero más ordenada y escaneable.
           </p>

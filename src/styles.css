@@ -150,6 +150,117 @@
 @custom-variant sociedad-600 (&:where([data-sociedad="600"], [data-sociedad="600"] *));
 @custom-variant sociedad-800 (&:where([data-sociedad="800"], [data-sociedad="800"] *));
 
+/* ============================================================================
+   2a. Runtime society themes
+   LayoutComponent sets data-sociedad from ?sociedad=400|600|800. Tailwind
+   utilities resolve these variables at runtime, so one component tree can
+   render the three legacy brand families without duplicated templates.
+   ============================================================================ */
+
+html[data-sociedad="400"] {
+  --color-brand-primary: #1e9e3b;
+  --color-brand-primary-light: #43b95b;
+  --color-brand-primary-dark: #177e3d;
+  --color-brand-secondary: #177e3d;
+  --color-brand-secondary-light: #43b95b;
+  --color-brand-secondary-dark: #10632d;
+  --color-brand-teal-dark: #177e3d;
+  --color-brand-teal-light: #43b95b;
+  --color-brand-teal-hover: #10632d;
+  --color-border-green: #1e9e3b;
+  --color-success-bg: #eaf7ee;
+  --color-success-text: #177e3d;
+  --color-pending-bg: #fff4dd;
+  --color-pending-text: #a46000;
+  --color-bg-page: #e2e2e2;
+  --font-sans: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+html[data-sociedad="600"] {
+  --color-brand-primary: #008a9b;
+  --color-brand-primary-light: #028c9d;
+  --color-brand-primary-dark: #006c79;
+  --color-brand-secondary: #006c79;
+  --color-brand-secondary-light: #028c9d;
+  --color-brand-secondary-dark: #004f59;
+  --color-brand-teal-dark: #006c79;
+  --color-brand-teal-light: #028c9d;
+  --color-brand-teal-hover: #004f59;
+  --color-border-green: #008a9b;
+  --color-success-bg: #e8f7f8;
+  --color-success-text: #006c79;
+  --color-pending-bg: #edf7f8;
+  --color-pending-text: #006c79;
+  --color-bg-page: #e4eef0;
+  --font-sans: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+html[data-sociedad="800"] {
+  --color-brand-primary: #831382;
+  --color-brand-primary-light: #bd1cba;
+  --color-brand-primary-dark: #6e106c;
+  --color-brand-secondary: #6e106c;
+  --color-brand-secondary-light: #bd1cba;
+  --color-brand-secondary-dark: #4f0b4d;
+  --color-brand-teal-dark: #6e106c;
+  --color-brand-teal-light: #bd1cba;
+  --color-brand-teal-hover: #4f0b4d;
+  --color-border-green: #831382;
+  --color-success-bg: #f2e8f8;
+  --color-success-text: #6e106c;
+  --color-pending-bg: #f7edf8;
+  --color-pending-text: #6e106c;
+  --color-bg-page: #eee8ef;
+  --font-sans: Helvetica, Arial, sans-serif;
+  --font-display: Helvetica, Arial, sans-serif;
+}
+
+/* Brand-specific proportions preserve the legacy visual rhythm while keeping
+   one responsive component tree. */
+html[data-sociedad="400"] .society-logo {
+  max-height: 2.5rem;
+}
+
+html[data-sociedad="600"] .society-logo {
+  max-height: 3rem;
+  max-width: 9rem;
+}
+
+html[data-sociedad="800"] .society-logo {
+  max-height: 2.75rem;
+  max-width: 8rem;
+}
+
+html[data-sociedad="600"] .society-main {
+  box-shadow: 0 6px 18px rgb(0 108 121 / 0.08);
+}
+
+html[data-sociedad="800"] .society-main {
+  box-shadow: 0 8px 22px rgb(110 16 108 / 0.1);
+}
+
+html[data-sociedad="800"] .society-header-inner {
+  gap: 1rem;
+}
+
+html[data-sociedad="800"] .society-footer-logo {
+  max-height: 2.75rem;
+}
+
+@media (max-width: 640px) {
+  html[data-sociedad="600"] .society-header-inner,
+  html[data-sociedad="800"] .society-header-inner {
+    gap: 0.75rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  html[data-sociedad="800"] .society-main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* ==========================================================================
    3. Global Base Styles (@layer base)
    ========================================================================== */
@@ -181,7 +292,7 @@
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--text-4xl);
-    color: var(--color-brand-secondary);
+    color: var(--color-brand-primary);
     padding-bottom: 0.625rem;
     margin-top: 0;
     margin-bottom: 0;

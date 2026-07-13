@@ -1,4 +1,6 @@
-import { Component, output, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Modal de confirmación de éxito para la aceptación de cesión.
@@ -9,6 +11,7 @@ import { Component, output, input } from '@angular/core';
 @Component({
   selector: 'app-acepta-cesion-ok-modal',
   standalone: true,
+  imports: [FontAwesomeModule],
   template: `
     @if (visible()) {
       <div
@@ -26,21 +29,29 @@ import { Component, output, input } from '@angular/core';
         ></div>
 
         <!-- Modal content -->
-        <div class="relative mx-4 w-full max-w-md rounded-[28px] bg-white p-6 shadow-modal">
-          <h2
-            id="modal-acepta-cesion-ok-title"
-            class="mb-4 text-2xl font-bold text-text-strong"
+        <div class="relative mx-4 w-full max-w-md rounded-[28px] bg-white p-6 shadow-modal sm:p-8">
+          <button
+            type="button"
+            aria-label="Cerrar"
+            class="absolute right-5 top-5 text-xl text-text-muted transition hover:text-text-strong"
+            (click)="close.emit()"
           >
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Cerrar</span>
+          </button>
+
+          <div class="flex h-14 w-14 items-center justify-center rounded-full bg-success-bg text-success-text">
+            <fa-icon [icon]="faCheck" class="text-2xl" />
+          </div>
+           <h2 id="modal-acepta-cesion-ok-title" class="mt-5 text-2xl font-bold text-brand-primary">
             Aceptación de cesión
           </h2>
+          <p class="mt-3 text-md leading-7 text-text-muted">
+            <span>La cesión se ha aceptado correctamente.</span>
+            <span class="mt-2 block">Ya puede continuar con la operación.</span>
+          </p>
 
-          <div class="mb-6">
-            <p class="text-md text-text-muted">
-              La cesión se ha aceptado correctamente.
-            </p>
-          </div>
-
-          <div class="flex justify-end">
+          <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <button
               type="button"
               class="rounded-[14px] bg-brand-secondary px-5 py-2.5 text-md font-bold text-white transition hover:opacity-90"
@@ -55,6 +66,7 @@ import { Component, output, input } from '@angular/core';
   `,
 })
 export class AceptaCesionOkModalComponent {
+  protected readonly faCheck = faCheck;
   /** Controla la visibilidad del modal. */
   readonly visible = input(false);
 

@@ -1,10 +1,14 @@
-import { Component, computed, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faHouse, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { map } from 'rxjs';
 
 import { ErrorBannerComponent } from '../../components/error-banner/error-banner.component';
 import { localize } from '../../shared/utils/localize.utils';
+import { getSocietyTheme } from '../../shared/theme/society-theme';
+import { resolveSocietyCode } from '../../shared/utils/financial-view-content.utils';
 
 const ERROR_PAGE_COPY = {
   home: localize`:@@shared.errorPage.home:Volver al inicio`,
@@ -25,13 +29,13 @@ const ERROR_PAGE_COPY = {
     <div class="animate-fade-in py-8">
       <div class="mx-auto flex max-w-2xl flex-col gap-6 text-center">
         <div class="flex justify-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-error shadow-soft">
-            <fa-icon [icon]="faTriangleExclamation" class="text-4xl" />
+           <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 shadow-soft">
+             <img class="h-10 w-10 object-contain" [src]="brand().warningIconPath" alt="" />
           </div>
         </div>
 
         <div>
-          <h1>{{ title() }}</h1>
+           <h1 class="text-brand-primary">{{ title() }}</h1>
           <p class="mt-2 text-md text-text-secondary">{{ description() }}</p>
         </div>
 
@@ -51,9 +55,16 @@ const ERROR_PAGE_COPY = {
   `,
 })
 export class ErrorComponent {
+  private readonly route = inject(ActivatedRoute);
   protected readonly faHouse = faHouse;
-  protected readonly faTriangleExclamation = faTriangleExclamation;
   protected readonly homeLabel = ERROR_PAGE_COPY.home;
+  private readonly societyQuery = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('sociedad'))),
+    { initialValue: null },
+  );
+  protected readonly brand = computed(() =>
+    getSocietyTheme(resolveSocietyCode(this.societyQuery())),
+  );
 
   readonly code = input<'404' | '500' | 'generic'>('generic');
   readonly message = input<string | null>(null);
