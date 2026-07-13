@@ -20,6 +20,11 @@ The generated static output is written to `dist/migrated-app/browser/`.
 - `public/_redirects` — SPA fallback example for Netlify/static hosts.
 - `ops/nginx/migrated-app.conf` — nginx example with `try_files` SPA fallback and `/api/` reverse proxy.
 
+## API routing note
+
+The sample `_redirects` file only enables SPA fallback. It does **not** proxy `/api/*` on its own.
+When deploying to a static host, configure API proxying/rewrites in that platform's runtime settings so `/api/*` reaches the backend service.
+
 ## Angular build configuration
 
 - `outputMode: "static"` for fully static deployment output.
