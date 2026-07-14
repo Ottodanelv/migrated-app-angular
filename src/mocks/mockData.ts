@@ -57,11 +57,27 @@ export const MOCK_VALID_TOKEN_DEFAULT: OperacionFinanciera = {
   tipoToken: 'COMBOCARD',
 };
 
+/** Dedicated mock for the COMBOCARD pre-authorization route flow. */
+export const MOCK_PREAUT_TOKEN: OperacionFinanciera = {
+  ...MOCK_VALID_TOKEN,
+  token: 'FIN-TOKEN-PREAUT',
+  tipoToken: 'COMBOCARD',
+};
+
+/** Dedicated mock for the installment-purchase route flow. */
+export const MOCK_COMPRA_PLAZOS_TOKEN: OperacionFinanciera = {
+  ...MOCK_VALID_TOKEN,
+  token: 'FIN-TOKEN-COMPRA',
+  tipoToken: 'COMPRA_PLAZO_TARJ',
+};
+
 /** Maps mock tokens to their responses for quick lookup. */
 export const MOCK_TOKENS: Record<string, OperacionFinanciera> = {
   [MOCK_VALID_TOKEN.token]: MOCK_VALID_TOKEN,
   [MOCK_EXPIRED_TOKEN.token]: MOCK_EXPIRED_TOKEN,
   [MOCK_VALID_TOKEN_DEFAULT.token]: MOCK_VALID_TOKEN_DEFAULT,
+  [MOCK_PREAUT_TOKEN.token]: MOCK_PREAUT_TOKEN,
+  [MOCK_COMPRA_PLAZOS_TOKEN.token]: MOCK_COMPRA_PLAZOS_TOKEN,
 };
 
 /** Mock for the cotitular generic token flow. */
