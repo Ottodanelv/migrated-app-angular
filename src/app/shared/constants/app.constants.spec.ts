@@ -138,8 +138,8 @@ describe('SOCIETY_CODES', () => {
 
   it('should match legacy society values', () => {
     expect(SOCIETY_CODES.DEFAULT).toBe('400');
-    expect(SOCIETY_CODES.CAJAMAR).toBe('600');
-    expect(SOCIETY_CODES.XFERA).toBe('800');
+    expect(SOCIETY_CODES.CETELEM).toBe('600');
+    expect(SOCIETY_CODES.CAJAMAR).toBe('800');
   });
 
   it('should use numeric strings for society codes', () => {

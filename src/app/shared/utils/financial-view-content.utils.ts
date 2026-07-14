@@ -84,13 +84,6 @@ function getBaseParagraphs(operacion: OperacionFinanciera, society: SocietyCode)
   const cta = getSocietyTheme(society);
 
   switch (society) {
-    case SOCIETY_CODES.XFERA:
-      return [
-        paragraph(
-          text(`Ha realizado una utilización de su Línea de crédito por ${importe} € en modo de pago aplazado, a devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} € cada una. Se ha aplicado una comisión de formalización de ${comision} € financiada junto al principal. TIN ${tin}, TAE ${tae}. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo ${fecha} se le cobrará su primer recibo.`),
-        ),
-        paragraph(text('Cualquier duda que le surja puede consultarla a través del teléfono de atención al cliente 91 048 30 30.')),
-      ];
     case SOCIETY_CODES.CAJAMAR:
       return [
         paragraph(
@@ -173,8 +166,8 @@ export function resolveSocietyCode(value: string | null | undefined): SocietyCod
   switch (value) {
     case SOCIETY_CODES.CAJAMAR:
       return SOCIETY_CODES.CAJAMAR;
-    case SOCIETY_CODES.XFERA:
-      return SOCIETY_CODES.XFERA;
+    case SOCIETY_CODES.CETELEM:
+      return SOCIETY_CODES.CETELEM;
     default:
       return SOCIETY_CODES.DEFAULT;
   }

@@ -29,7 +29,7 @@ describe('FooterComponent', () => {
     fixture.detectChanges();
 
     const logo = fixture.nativeElement.querySelector('img');
-    expect(logo?.getAttribute('src')).toBe('/images/xfera/logo_footer.png');
-    expect(fixture.nativeElement.textContent).toContain('© Xfera');
+    expect(logo?.getAttribute('src')).toBe('/images/cajamar/logo.png');
+    expect(fixture.nativeElement.textContent).toContain('© CM Credit');
   });
 });
