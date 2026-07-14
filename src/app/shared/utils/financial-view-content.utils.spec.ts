@@ -49,10 +49,10 @@ describe('financial-view-content utils', () => {
     expect(paragraphText(content, 3)).toContain('APLAZA');
   });
 
-  it('should switch the CTA destination for xfera society variants', () => {
-    const content = getFinancialViewContent('preaut', mockOperacion, SOCIETY_CODES.XFERA);
+  it('should switch the CTA destination for the legacy 800 society', () => {
+    const content = getFinancialViewContent('preaut', mockOperacion, SOCIETY_CODES.CAJAMAR);
 
-    expect(paragraphText(content, 0)).toContain('cajamarconsumo.es');
+    expect(paragraphText(content, 0)).not.toContain('cajamarconsumo.es');
     expect(content.ctaHref).toBe('https://www.cajamarconsumo.es');
     expect(content.ctaLabel).toBe('Ir a cajamarconsumo.es');
   });

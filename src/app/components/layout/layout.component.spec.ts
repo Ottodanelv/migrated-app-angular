@@ -32,7 +32,7 @@ describe('LayoutComponent', () => {
     await router.navigateByUrl('/?sociedad=800');
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Xfera');
+    expect(fixture.nativeElement.textContent).toContain('CM Credit');
     expect(document.documentElement.dataset['sociedad']).toBe('800');
   });
 });

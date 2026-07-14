@@ -108,10 +108,10 @@ export const MODEL_ATTRIBUTES = {
 export const SOCIETY_CODES = {
   /** Default brand (Cetelem) */
   DEFAULT: '400',
-  /** Cajamar brand */
-  CAJAMAR: '600',
-  /** Xfera brand */
-  XFERA: '800',
+  /** Cetelem variant used by the legacy 600 views */
+  CETELEM: '600',
+  /** Cajamar / CM Credit brand used by the legacy 800 views */
+  CAJAMAR: '800',
 } as const;
 
 /** Type helper: valid society codes. */

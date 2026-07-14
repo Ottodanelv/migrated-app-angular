@@ -8,13 +8,14 @@ describe('society-theme', () => {
       portalUrl: 'https://www.cetelem.es',
     });
     expect(getSocietyTheme('600')).toMatchObject({
-      name: 'CM Credit',
-      logoPath: '/images/cajamar/logo.png',
+      name: 'Cetelem',
+      logoPath: '/images/common/logo.png',
+      portalUrl: 'https://www.cetelem.es',
     });
     expect(getSocietyTheme('800')).toMatchObject({
-      name: 'Xfera',
-      logoPath: '/images/xfera/logo.png',
-      footerLogoPath: '/images/xfera/logo_footer.png',
+      name: 'CM Credit',
+      logoPath: '/images/cajamar/logo.png',
+      footerLogoPath: '/images/cajamar/logo.png',
       portalUrl: 'https://www.cajamarconsumo.es',
     });
   });
