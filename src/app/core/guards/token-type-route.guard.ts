@@ -33,9 +33,12 @@ export const tokenTypeRouteGuard: CanActivateFn = (route) => {
         return true;
       }
 
-      return router.createUrlTree(['/', targetPath], {
-        queryParams: { [QUERY_PARAMS.TOKEN]: token },
-      });
+      const society = route.queryParamMap.get(QUERY_PARAMS.SOCIEDAD);
+      const queryParams = society
+        ? { [QUERY_PARAMS.TOKEN]: token, [QUERY_PARAMS.SOCIEDAD]: society }
+        : { [QUERY_PARAMS.TOKEN]: token };
+
+      return router.createUrlTree(['/', targetPath], { queryParams });
     }),
     catchError(() => of(true)),
   );

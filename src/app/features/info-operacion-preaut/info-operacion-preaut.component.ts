@@ -24,9 +24,9 @@ import { Component, computed, inject, signal, OnDestroy, OnInit } from '@angular
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 
-import { ErrorBannerComponent } from '../../components/error-banner/error-banner.component';
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { GestionTokenService } from '../../core/services/gestion-token.service';
+import { ErrorComponent } from '../error/error.component';
 import type { OperacionFinanciera } from '../../models/operacion-financiera';
 import { QUERY_PARAMS } from '../../shared/constants/app.constants';
 import {
@@ -37,19 +37,14 @@ import {
 @Component({
   selector: 'app-info-operacion-preaut',
   standalone: true,
-  imports: [RouterLink, LoadingOverlayComponent, ErrorBannerComponent, NgTemplateOutlet],
+  imports: [RouterLink, LoadingOverlayComponent, ErrorComponent, NgTemplateOutlet],
   template: `
     <div class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
 
       <!-- Error state -->
       @if (errorMessage(); as msg) {
-        <app-error-banner [message]="msg" />
-        <div class="text-center mt-4">
-          <a routerLink="/" class="text-brand-primary underline text-sm">
-            Volver al inicio
-          </a>
-        </div>
+        <app-error [message]="msg" />
       }
 
       <!-- Success state -->
@@ -115,14 +110,16 @@ import {
             </div>
           </div>
         } @else {
-          <app-error-banner message="El token proporcionado no es válido o ha caducado." />
+          <app-error message="El token proporcionado no es válido o ha caducado." />
         }
 
-        <div class="text-center mt-6">
-          <a routerLink="/" class="text-brand-primary underline text-sm">
-            Volver al inicio
-          </a>
-        </div>
+        @if (op.valido) {
+          <div class="text-center mt-6">
+            <a routerLink="/" queryParamsHandling="preserve" class="text-brand-primary underline text-sm">
+              Volver al inicio
+            </a>
+          </div>
+        }
       }
 
       <ng-template #field let-label="label" let-value="value">

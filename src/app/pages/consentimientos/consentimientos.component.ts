@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular
 import { RouterLink } from '@angular/router';
 import { Subject, catchError, finalize, of, takeUntil } from 'rxjs';
 
-import { ErrorBannerComponent } from '../../components/error-banner/error-banner.component';
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { ConsentimientoService } from '../../core/services/consentimiento.service';
 import type { Consentimiento } from '../../models/consentimiento';
+import { ErrorComponent } from '../../features/error/error.component';
 import { ConsentimientosModalComponent } from '../../features/modals/consentimientos-modal.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { ConsentimientosModalComponent } from '../../features/modals/consentimie
   imports: [
     RouterLink,
     LoadingOverlayComponent,
-    ErrorBannerComponent,
+    ErrorComponent,
     ConsentimientosModalComponent,
   ],
   template: `
@@ -22,11 +22,12 @@ import { ConsentimientosModalComponent } from '../../features/modals/consentimie
       <app-loading-overlay [visible]="loading()" label="Cargando consentimientos..." />
 
       @if (errorMessage(); as msg) {
-        <app-error-banner [message]="msg" />
+        <app-error [message]="msg" />
       }
 
-      <!-- Header -->
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      @if (!errorMessage()) {
+        <!-- Header -->
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 class="text-4xl font-bold text-brand-primary">Gestión de consentimientos</h1>
           <p class="mt-3 text-md text-text-muted">
@@ -45,10 +46,10 @@ import { ConsentimientosModalComponent } from '../../features/modals/consentimie
             <p class="mt-2 text-4xl font-bold text-success-text">{{ acceptedCount() }}</p>
           </div>
         </div>
-      </div>
+        </div>
 
-      <!-- Legal rows -->
-      @if (!loading() && consentimientos().length) {
+        <!-- Legal rows -->
+        @if (!loading() && consentimientos().length) {
         <ul class="mt-8 space-y-4">
           @for (consentimiento of consentimientos(); track consentimiento.tipoConsentimiento) {
             <li class="rounded-[20px] border border-border-light bg-white p-5 transition hover:border-brand-primary/30 hover:shadow-soft">
@@ -102,17 +103,19 @@ import { ConsentimientosModalComponent } from '../../features/modals/consentimie
         <div class="mt-8 rounded-2xl border-2 border-dashed border-border-light bg-panel-muted p-8 text-center text-text-muted">
           No hay consentimientos disponibles en este momento.
         </div>
-      }
+        }
 
-      <!-- Back button -->
-      <div class="mt-8">
+        <!-- Back button -->
+        <div class="mt-8">
         <a
           routerLink="/"
+          queryParamsHandling="preserve"
           class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
         >
           Volver al inicio
         </a>
-      </div>
+        </div>
+      }
 
       <app-consentimientos-modal
         [visible]="showModal()"

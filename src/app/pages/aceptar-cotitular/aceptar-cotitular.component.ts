@@ -80,6 +80,7 @@ import { AceptaCesionOkModalComponent } from '../../features/modals/acepta-cesio
             <a
               [routerLink]="['/', ROUTE_PATHS.INFO_OPERACION_GENERICA]"
               [queryParams]="{ token: op.token }"
+              queryParamsHandling="merge"
               class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
             >
               Volver

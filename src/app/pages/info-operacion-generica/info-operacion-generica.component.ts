@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, catchError, finalize, forkJoin, of, takeUntil } from 'rxjs';
 
-import { ErrorBannerComponent } from '../../components/error-banner/error-banner.component';
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
+import { ErrorComponent } from '../../features/error/error.component';
 import { ConsentimientoService } from '../../core/services/consentimiento.service';
 import { GestionTokenService } from '../../core/services/gestion-token.service';
 import { OperacionGenericaStateService } from '../../core/services/operacion-generica-state.service';
@@ -14,13 +14,13 @@ import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants'
 @Component({
   selector: 'app-info-operacion-generica',
   standalone: true,
-  imports: [RouterLink, LoadingOverlayComponent, ErrorBannerComponent],
+  imports: [RouterLink, LoadingOverlayComponent, ErrorComponent],
   template: `
     <section class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
 
       @if (errorMessage(); as msg) {
-        <app-error-banner [message]="msg" />
+        <app-error [message]="msg" />
       }
 
       @if (operacion(); as op) {
@@ -91,6 +91,7 @@ import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants'
             <a
               [routerLink]="['/', ROUTE_PATHS.ACEPTAR_COTITULAR]"
               [queryParams]="{ token: op.token }"
+              queryParamsHandling="merge"
               class="inline-flex items-center justify-center rounded-[14px] bg-brand-secondary px-6 py-3 text-md font-bold text-white transition hover:opacity-90"
             >
               Continuar con aceptación
@@ -98,13 +99,14 @@ import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants'
 
             <a
               routerLink="/"
+              queryParamsHandling="preserve"
               class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
             >
               Volver al inicio
             </a>
           </div>
         } @else {
-          <app-error-banner message="El token proporcionado no es válido o ha caducado." />
+          <app-error message="El token proporcionado no es válido o ha caducado." />
         }
       }
     </section>

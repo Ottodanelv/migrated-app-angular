@@ -44,6 +44,7 @@ const ERROR_PAGE_COPY = {
         <div class="mt-2">
           <a
             routerLink="/"
+            queryParamsHandling="preserve"
             class="inline-flex items-center gap-2 text-sm font-bold text-brand-primary underline"
           >
             <fa-icon [icon]="faHouse" />
