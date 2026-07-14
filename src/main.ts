@@ -1,5 +1,4 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { isCommonAssetRequest } from 'msw';
 
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
@@ -8,7 +7,10 @@ import { environment } from './environments/environment';
 
 async function bootstrap(): Promise<void> {
   if (!environment.production && environment.mocks.api) {
-    const { worker } = await import('./mocks/browser');
+    const [{ worker }, { isCommonAssetRequest }] = await Promise.all([
+      import('./mocks/browser'),
+      import('msw'),
+    ]);
 
     await worker.start({
       onUnhandledRequest(request, print) {

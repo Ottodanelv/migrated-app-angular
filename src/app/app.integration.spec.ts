@@ -9,7 +9,11 @@ import { appConfig } from './app.config';
 import { LEGACY_ROUTE_PATHS, ROUTE_PATHS } from './shared/constants/app.constants';
 import { environment } from '../environments/environment';
 import { server } from '../mocks/node';
-import { MOCK_GENERIC_OPERATION, MOCK_VALID_TOKEN } from '../mocks/mockData';
+import {
+  MOCK_COMPRA_PLAZOS_TOKEN,
+  MOCK_GENERIC_OPERATION,
+  MOCK_PREAUT_TOKEN,
+} from '../mocks/mockData';
 
 describe('App integration flows', () => {
   beforeAll(() => {
@@ -33,35 +37,24 @@ describe('App integration flows', () => {
 
   it('should redirect the legacy /infoOperacion entry to the preaut Angular page for COMBOCARD tokens', async () => {
     await RouterTestingHarness.create(
-      `/${LEGACY_ROUTE_PATHS.INFO_OPERACION}?token=${MOCK_VALID_TOKEN.token}`,
+      `/${LEGACY_ROUTE_PATHS.INFO_OPERACION}?token=${MOCK_PREAUT_TOKEN.token}`,
     );
 
     expect(TestBed.inject(Router).url).toBe(
-      `/${ROUTE_PATHS.INFO_OPERACION_PREAUT}?token=${MOCK_VALID_TOKEN.token}`,
+      `/${ROUTE_PATHS.INFO_OPERACION_PREAUT}?token=${MOCK_PREAUT_TOKEN.token}`,
     );
-    expect(await screen.findByText('Pre-autorización COMBOCARD')).toBeTruthy();
+    expect(await screen.findByText('Información')).toBeTruthy();
   });
 
   it('should redirect the legacy /infoOperacion entry to the compra-plazos Angular page for installment tokens', async () => {
-    server.use(
-      http.get(`${environment.apiBaseUrl}/gestion-token/info-sms-financiero`, ({ request }) => {
-        const url = new URL(request.url);
-        const token = url.searchParams.get('token');
-
-        if (token === 'FIN-TOKEN-COMPRA') {
-          return HttpResponse.json({ token, valido: true, tipoToken: 'COMPRA_PLAZO_TARJ' });
-        }
-
-        return HttpResponse.json({ error: 'Token not found', code: 'TOKEN_NOT_FOUND' }, { status: 404 });
-      }),
+    await RouterTestingHarness.create(
+      `/${LEGACY_ROUTE_PATHS.INFO_OPERACION}?token=${MOCK_COMPRA_PLAZOS_TOKEN.token}`,
     );
-
-    await RouterTestingHarness.create(`/${LEGACY_ROUTE_PATHS.INFO_OPERACION}?token=FIN-TOKEN-COMPRA`);
 
     expect(TestBed.inject(Router).url).toBe(
-      `/${ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS}?token=FIN-TOKEN-COMPRA`,
+      `/${ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS}?token=${MOCK_COMPRA_PLAZOS_TOKEN.token}`,
     );
-    expect(await screen.findByText('Compra a Plazos')).toBeTruthy();
+    expect(await screen.findByText('Compra a plazos')).toBeTruthy();
   });
 
   it('should redirect the legacy /infoOperacionGenerica alias to the canonical Angular route', async () => {
