@@ -32,6 +32,19 @@ export interface OperacionGenerica {
   /** Foreign key to the authentication type */
   readonly tipoAutenticacionFk: string;
 
-  /** Whether the token is valid (not expired). From BO layer. */
+  /**
+   * Whether the token is valid (not expired).
+   * Derived in the front from `fchFin` — the real backend
+   * (`TokenGenericoResponse`) does not send this boolean.
+   */
   readonly valido: boolean;
+
+  /** Token creation timestamp (ISO 8601). From `TokenGenericoResponse.fchInicio`. */
+  readonly fchInicio?: string;
+
+  /** Token expiry timestamp (ISO 8601) — source of truth for `valido`. */
+  readonly fchFin?: string;
+
+  /** Number of times the token has been used. From `TokenGenericoResponse.numUsos`. */
+  readonly numUsos?: number;
 }

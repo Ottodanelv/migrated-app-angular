@@ -55,6 +55,12 @@ export interface NormalizedError {
   timestamp: string;
   /** URL of the failed request */
   url: string;
+  /** Backend business error code (RFC 7807 `ProblemDetail.errorCode`) */
+  errorCode?: string;
+  /** Human-readable summary from `ProblemDetail.title` */
+  title?: string;
+  /** Human-readable detail from `ProblemDetail.detail` */
+  detail?: string;
 }
 
 /**
@@ -120,16 +126,19 @@ export function errorInterceptor(
       const timestamp = new Date().toISOString();
       const url = httpError.url ?? '';
 
-      // Legacy error code inspection — mirrors
-      // `GestionTokenBusiness.obtenerInfoSmsFinanciero()` which inspects
-      // `e.getFaultInfo().getCodigoError()` for `GES_TOK_SER_TKN`.
-      const codigoError: string | undefined =
-        (httpError.error as Record<string, unknown> | null)?.['codigoError'] as string | undefined ??
-        undefined;
+      // `errorCode` is the unified field name across the real backend
+      // (`GlobalExceptionHandler`'s RFC 7807 `ProblemDetail.errorCode`) and
+      // the MSW fixtures. Mirrors the legacy
+      // `GestionTokenBusiness.obtenerInfoSmsFinanciero()` inspection of
+      // `e.getFaultInfo().getCodigoError()` for codes like `GES_TOK_SER_TKN`.
+      const body = httpError.error as Record<string, unknown> | null;
+      const errorCode = body?.['errorCode'] as string | undefined;
+      const title = body?.['title'] as string | undefined;
+      const detail = body?.['detail'] as string | undefined;
 
-      if (codigoError !== undefined) {
+      if (errorCode !== undefined) {
         console.warn(
-          `[ErrorInterceptor] Legacy error code detected: ${codigoError}`,
+          `[ErrorInterceptor] Business error code detected: ${errorCode}`,
           { status, url },
         );
       }
@@ -140,6 +149,9 @@ export function errorInterceptor(
         originalMessage: httpError.message,
         timestamp,
         url,
+        ...(errorCode !== undefined ? { errorCode } : {}),
+        ...(title !== undefined ? { title } : {}),
+        ...(detail !== undefined ? { detail } : {}),
       };
 
       // Structured logging consistent with all error paths.
@@ -151,7 +163,7 @@ export function errorInterceptor(
           url,
           message: httpError.message,
           timestamp,
-          ...(codigoError !== undefined ? { codigoError } : {}),
+          ...(errorCode !== undefined ? { errorCode } : {}),
         },
       );
 

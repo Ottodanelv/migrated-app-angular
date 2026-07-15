@@ -15,8 +15,11 @@ export const environment: AppEnvironment = {
   // -----------------------------------------------------------------------
   // API Configuration
   // @source: SOAP WS endpoints in client-context.xml (now REST)
+  // Relative path so requests go through the Angular CLI dev-server, which
+  // proxies /api/* to the local backend via proxy.conf.json — avoids CORS
+  // without touching the backend.
   // -----------------------------------------------------------------------
-  apiBaseUrl: 'http://localhost:8080/api',
+  apiBaseUrl: '/api',
   apiTimeout: 30000, // 30s — generous for local dev
   apiDefaultContentType: 'application/json',
 

@@ -17,7 +17,15 @@ import { tokenTypeRouteGuard } from './token-type-route.guard';
 import { ROUTE_PATHS } from '../../shared/constants/app.constants';
 
 describe('tokenTypeRouteGuard', () => {
-  const apiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-financiero`;
+  const apiUrl = (token: string) =>
+    `${environment.apiBaseUrl}/token/financiero/${token}`;
+
+  /** Minimal raw `TokenFinancieroResponse`-shaped fixture with a given tipoToken. */
+  const apiResponse = (token: string, tipoToken: string) => ({
+    token,
+    tipoToken,
+    fchCaducidad: '2099-01-01T00:00:00Z',
+  });
 
   let httpMock: HttpTestingController;
   let router: Router;
@@ -69,8 +77,8 @@ describe('tokenTypeRouteGuard', () => {
     const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
-      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-001')
-      .flush({ token: 'FIN-TOKEN-001', valido: true, tipoToken: 'COMBOCARD' });
+      .expectOne((request) => request.url === apiUrl('FIN-TOKEN-001'))
+      .flush(apiResponse('FIN-TOKEN-001', 'COMBOCARD'));
 
     const result = await resultPromise;
 
@@ -90,8 +98,8 @@ describe('tokenTypeRouteGuard', () => {
     const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
-      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-003')
-      .flush({ token: 'FIN-TOKEN-003', valido: true, tipoToken: 'COMPRA_PLAZO_TARJ' });
+      .expectOne((request) => request.url === apiUrl('FIN-TOKEN-003'))
+      .flush(apiResponse('FIN-TOKEN-003', 'COMPRA_PLAZO_TARJ'));
 
     await resultPromise;
 
@@ -113,8 +121,8 @@ describe('tokenTypeRouteGuard', () => {
     const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
-      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-003')
-      .flush({ token: 'FIN-TOKEN-003', valido: true, tipoToken: 'COMPRA_PLAZO_TARJ' });
+      .expectOne((request) => request.url === apiUrl('FIN-TOKEN-003'))
+      .flush(apiResponse('FIN-TOKEN-003', 'COMPRA_PLAZO_TARJ'));
 
     await resultPromise;
 
@@ -133,8 +141,8 @@ describe('tokenTypeRouteGuard', () => {
     const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
-      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'GEN-TOKEN-001')
-      .flush({ token: 'GEN-TOKEN-001', valido: true, tipoToken: 'ALERT_CDAT_COT' });
+      .expectOne((request) => request.url === apiUrl('GEN-TOKEN-001'))
+      .flush(apiResponse('GEN-TOKEN-001', 'ALERT_CDAT_COT'));
 
     await resultPromise;
 
@@ -151,8 +159,8 @@ describe('tokenTypeRouteGuard', () => {
     const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
-      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-002')
-      .flush({ token: 'FIN-TOKEN-002', valido: true, tipoToken: 'UNKNOWN_FUTURE_TYPE' });
+      .expectOne((request) => request.url === apiUrl('FIN-TOKEN-002'))
+      .flush(apiResponse('FIN-TOKEN-002', 'UNKNOWN_FUTURE_TYPE'));
 
     await expect(resultPromise).resolves.toBe(true);
   });
@@ -165,7 +173,7 @@ describe('tokenTypeRouteGuard', () => {
     const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
 
     httpMock
-      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'BROKEN-TOKEN')
+      .expectOne((request) => request.url === apiUrl('BROKEN-TOKEN'))
       .flush('error', { status: 500, statusText: 'Server Error' });
 
     await expect(resultPromise).resolves.toBe(true);

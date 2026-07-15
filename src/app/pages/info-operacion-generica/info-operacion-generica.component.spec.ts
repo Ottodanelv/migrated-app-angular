@@ -7,22 +7,27 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { environment } from '../../../environments/environment';
 import { InfoOperacionGenericaComponent } from './info-operacion-generica.component';
 import type { Consentimiento } from '../../models/consentimiento';
-import type { OperacionGenerica } from '../../models/operacion-generica';
 
 describe('InfoOperacionGenericaComponent', () => {
-  const genericApiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-generico`;
+  const genericApiUrl = `${environment.apiBaseUrl}/token/generico/GEN-TOKEN-001`;
   const consentimientosApiUrl = `${environment.apiBaseUrl}/consentimientos`;
 
-  const mockOperacion: OperacionGenerica = {
+  /** Raw shape returned by the real backend's `TokenGenericoResponse`. */
+  const mockOperacion = {
     token: 'GEN-TOKEN-001',
+    sociedad: '800',
     nif: '12345678A',
     telefono: '600123123',
+    numUsos: 0,
+    fchInicio: '2026-01-01T00:00:00Z',
+    fchFin: '2099-01-01T00:00:00Z',
+    clienteFk: 'CLI01',
     aplicacionFk: 'APP01',
     codigoNotifFk: 'ALERT_CDAT_COT',
     cadenaFk: 'CAD01',
+    impDispMin: 0,
     tipoToken: 'ALERT_CDAT_COT',
     tipoAutenticacionFk: 'SMS',
-    valido: true,
   };
 
   const mockConsentimientos: Consentimiento[] = [

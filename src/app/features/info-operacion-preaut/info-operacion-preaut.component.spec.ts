@@ -22,11 +22,14 @@ import {
 
 import { InfoOperacionPreautComponent } from './info-operacion-preaut.component';
 import { environment } from '../../../environments/environment';
-import type { OperacionFinanciera } from '../../models/operacion-financiera';
 
 describe('InfoOperacionPreautComponent', () => {
-  const mockOperacion: OperacionFinanciera = {
+  /** Raw shape returned by the real backend's `TokenFinancieroResponse`. */
+  const mockOperacion = {
     token: 'COMBO-TOKEN-001',
+    sociedad: '400',
+    nif: '12345678A',
+    telefono: '600123123',
     importe: 8000.0,
     mensualidad: 333.33,
     meses: 24,
@@ -35,11 +38,14 @@ describe('InfoOperacionPreautComponent', () => {
     fchProximoRecibo: '2026-08-15',
     tin: 5.5,
     tae: 6.1,
-    valido: true,
     tipoToken: 'COMBOCARD',
+    fchAlta: '2026-01-01T00:00:00Z',
+    fchCaducidad: '2099-01-01T00:00:00Z',
+    numUsos: 0,
   };
 
-  const apiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-financiero`;
+  const apiUrl = (token: string) =>
+    `${environment.apiBaseUrl}/token/financiero/${token}`;
 
   let httpMock: HttpTestingController;
 
@@ -94,7 +100,7 @@ describe('InfoOperacionPreautComponent', () => {
     expect(ctx.errorMessage()).toBeNull();
 
     // Flush the pending request to avoid verify() failure
-    httpMock.expectOne((r) => r.url === apiUrl).flush(mockOperacion);
+    httpMock.expectOne((r) => r.url === apiUrl('COMBO-TOKEN-001')).flush(mockOperacion);
   });
 
   it('should show error state when token is missing', () => {
@@ -119,9 +125,7 @@ describe('InfoOperacionPreautComponent', () => {
     ctx.ngOnInit();
 
     const req = httpMock.expectOne(
-      (r) =>
-        r.url === apiUrl &&
-        r.params.get('token') === 'COMBO-TOKEN-001',
+      (r) => r.url === apiUrl('COMBO-TOKEN-001'),
     );
     expect(req.request.method).toBe('GET');
     req.flush(mockOperacion);
@@ -141,7 +145,7 @@ describe('InfoOperacionPreautComponent', () => {
     const fixture = TestBed.createComponent(InfoOperacionPreautComponent);
     fixture.detectChanges();
 
-    const req = httpMock.expectOne((r) => r.url === apiUrl);
+    const req = httpMock.expectOne((r) => r.url === apiUrl('COMBO-TOKEN-001'));
     req.flush(mockOperacion);
     fixture.detectChanges();
 
@@ -158,9 +162,7 @@ describe('InfoOperacionPreautComponent', () => {
     ctx.ngOnInit();
 
     const req = httpMock.expectOne(
-      (r) =>
-        r.url === apiUrl &&
-        r.params.get('token') === 'UNKNOWN-TOKEN',
+      (r) => r.url === apiUrl('UNKNOWN-TOKEN'),
     );
     req.flush('Not found', { status: 404, statusText: 'Not Found' });
 
@@ -176,9 +178,7 @@ describe('InfoOperacionPreautComponent', () => {
     ctx.ngOnInit();
 
     const req = httpMock.expectOne(
-      (r) =>
-        r.url === apiUrl &&
-        r.params.get('token') === 'COMBO-TOKEN-001',
+      (r) => r.url === apiUrl('COMBO-TOKEN-001'),
     );
     req.flush('Server error', {
       status: 500,

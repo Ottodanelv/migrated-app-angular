@@ -24,30 +24,24 @@ const API_BASE = environment.apiBaseUrl;
 /**
  * MSW handlers for the migrated integration flows.
  *
- * Endpoint: GET /api/gestion-token/info-sms-financiero?token=xxxx
+ * Endpoint: GET /api/token/financiero/{token}
  *
  * Returns:
- *   - 200 with OperacionFinanciera payload if token exists
- *   - 200 with valido:false if token is expired
- *   - 404 if token is unknown/missing
+ *   - 200 with the raw `TokenFinancieroResponse` shape if the token exists
+ *     (including an expired `fchCaducidad` for the expired-token fixture)
+ *   - 404 if the token is unknown
+ *
+ * Mirrors the real backend's `TokenController` (path-variable reads) so
+ * mocks and the real backend behave the same from the front's point of view.
  */
 export const handlers = [
-  http.get(`${API_BASE}/gestion-token/info-sms-financiero`, ({ request }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get('token');
-
-    if (!token) {
-      return HttpResponse.json(
-        { error: 'Token parameter is required', code: 'TOKEN_MISSING' },
-        { status: 400 },
-      );
-    }
-
+  http.get(`${API_BASE}/token/financiero/:token`, ({ params }) => {
+    const token = params['token'] as string;
     const mockData = MOCK_TOKENS[token];
 
     if (!mockData) {
       return HttpResponse.json(
-        { error: 'Token not found or invalid', code: 'TOKEN_NOT_FOUND' },
+        { detail: 'Token not found or invalid', errorCode: 'TOKEN_NOT_FOUND' },
         { status: 404 },
       );
     }
@@ -55,22 +49,13 @@ export const handlers = [
     return HttpResponse.json(mockData, { status: 200 });
   }),
 
-  http.get(`${API_BASE}/gestion-token/info-sms-generico`, ({ request }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get('token');
-
-    if (!token) {
-      return HttpResponse.json(
-        { error: 'Token parameter is required', code: 'TOKEN_MISSING' },
-        { status: 400 },
-      );
-    }
-
+  http.get(`${API_BASE}/token/generico/:token`, ({ params }) => {
+    const token = params['token'] as string;
     const mockData = MOCK_GENERIC_TOKENS[token];
 
     if (!mockData) {
       return HttpResponse.json(
-        { error: 'Generic token not found', code: 'TOKEN_NOT_FOUND' },
+        { detail: 'Generic token not found', errorCode: 'TOKEN_NOT_FOUND' },
         { status: 404 },
       );
     }
@@ -87,7 +72,7 @@ export const handlers = [
 
     if (!body.token || !body.telefono || !body.nif) {
       return HttpResponse.json(
-        { error: 'Missing SMS OTP request fields', code: 'SMS_REQUEST_INVALID' },
+        { detail: 'Missing SMS OTP request fields', errorCode: 'SMS_REQUEST_INVALID' },
         { status: 400 },
       );
     }
@@ -96,14 +81,14 @@ export const handlers = [
 
     if (!tokenData) {
       return HttpResponse.json(
-        { error: 'Unknown generic token', code: 'TOKEN_NOT_FOUND' },
+        { detail: 'Unknown generic token', errorCode: 'TOKEN_NOT_FOUND' },
         { status: 404 },
       );
     }
 
-    if (!tokenData.valido) {
+    if (new Date(tokenData.fchFin).getTime() <= Date.now()) {
       return HttpResponse.json(
-        { error: 'Generic token is not valid', code: 'TOKEN_INVALID' },
+        { detail: 'Generic token is not valid', errorCode: 'TOKEN_INVALID' },
         { status: 409 },
       );
     }

@@ -220,13 +220,13 @@ describe('errorInterceptor', () => {
     consoleSpy.mockRestore();
   });
 
-  it('should detect legacy codigoError from response body', async () => {
+  it('should detect errorCode from a ProblemDetail response body', async () => {
     // Arrange
     const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     // Act
-    const result$ = httpClient.get('/api/legacy-error');
+    const result$ = httpClient.get('/api/business-error');
     const errorPromise = new Promise<NormalizedError>((resolve) => {
       result$.subscribe({
         error: (err: NormalizedError) => resolve(err),
@@ -234,19 +234,29 @@ describe('errorInterceptor', () => {
     });
 
     // Assert
-    const req = httpMock.expectOne('/api/legacy-error');
+    const req = httpMock.expectOne('/api/business-error');
     req.flush(
-      { codigoError: 'GES_TOK_SER_TKN', mensaje: 'Token inválido' },
+      {
+        type: 'about:blank',
+        title: 'Token no válido',
+        status: 400,
+        detail: 'El token financiero ha caducado',
+        instance: '/api/business-error',
+        errorCode: 'GES_TOK_SER_TKN',
+      },
       { status: 400, statusText: 'Bad Request' },
     );
 
     const error = await errorPromise;
     expect(error.status).toBe(400);
     expect(error.i18nKey).toBe('error.client');
+    expect(error.errorCode).toBe('GES_TOK_SER_TKN');
+    expect(error.title).toBe('Token no válido');
+    expect(error.detail).toBe('El token financiero ha caducado');
 
-    // Verify legacy code warning
+    // Verify business error code warning
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      '[ErrorInterceptor] Legacy error code detected: GES_TOK_SER_TKN',
+      '[ErrorInterceptor] Business error code detected: GES_TOK_SER_TKN',
       expect.any(Object),
     );
 
