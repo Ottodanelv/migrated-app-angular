@@ -92,7 +92,7 @@ describe('App integration flows', () => {
 
   it('should navigate through the generic token flow and submit the OTP form', async () => {
     const harness = await RouterTestingHarness.create(
-      `/${ROUTE_PATHS.INFO_OPERACION_GENERICA}?token=${MOCK_GENERIC_OPERATION.token}`,
+      `/${ROUTE_PATHS.INFO_OPERACION_GENERICA}?token=${MOCK_GENERIC_OPERATION.token}&sociedad=800`,
     );
 
     expect(await screen.findByText('Información del token genérico')).toBeTruthy();
@@ -108,7 +108,9 @@ describe('App integration flows', () => {
     await harness.fixture.whenStable();
     harness.fixture.detectChanges();
 
-    expect(TestBed.inject(Router).url).toContain(ROUTE_PATHS.ACEPTAR_COTITULAR);
+    expect(TestBed.inject(Router).url).toBe(
+      `/${ROUTE_PATHS.ACEPTAR_COTITULAR}?token=${MOCK_GENERIC_OPERATION.token}&sociedad=800`,
+    );
     expect(await screen.findByText('Enviar OTP al cotitular')).toBeTruthy();
 
     const sendSmsButton = screen.getByRole('button', { name: 'Enviar SMS' });

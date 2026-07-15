@@ -40,9 +40,12 @@ describe('tokenTypeRouteGuard', () => {
     httpMock.verify();
   });
 
-  function createRouteSnapshot(token?: string): Partial<ActivatedRouteSnapshot> {
+  function createRouteSnapshot(token?: string, society?: string): Partial<ActivatedRouteSnapshot> {
     return {
-      queryParamMap: convertToParamMap(token ? { token } : {}),
+      queryParamMap: convertToParamMap({
+        ...(token ? { token } : {}),
+        ...(society ? { sociedad: society } : {}),
+      }),
     };
   }
 
@@ -94,6 +97,29 @@ describe('tokenTypeRouteGuard', () => {
 
     expect(routerSpy).toHaveBeenCalledWith(['/', ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS], {
       queryParams: { token: 'FIN-TOKEN-003' },
+    });
+  });
+
+  it('should preserve the society when redirecting by token type', async () => {
+    const routerSpy = vi.spyOn(router, 'createUrlTree');
+
+    const result$ = TestBed.runInInjectionContext(() =>
+      tokenTypeRouteGuard(
+        createRouteSnapshot('FIN-TOKEN-003', '800') as ActivatedRouteSnapshot,
+        routerStateSnapshot,
+      ),
+    );
+
+    const resultPromise = firstValueFrom(result$ as Observable<boolean | UrlTree>);
+
+    httpMock
+      .expectOne((request) => request.url === apiUrl && request.params.get('token') === 'FIN-TOKEN-003')
+      .flush({ token: 'FIN-TOKEN-003', valido: true, tipoToken: 'COMPRA_PLAZO_TARJ' });
+
+    await resultPromise;
+
+    expect(routerSpy).toHaveBeenCalledWith(['/', ROUTE_PATHS.INFO_OPERACION_COMPRA_PLAZOS], {
+      queryParams: { token: 'FIN-TOKEN-003', sociedad: '800' },
     });
   });
 
