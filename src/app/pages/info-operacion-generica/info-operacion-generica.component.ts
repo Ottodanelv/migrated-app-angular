@@ -9,7 +9,10 @@ import { GestionTokenService } from '../../core/services/gestion-token.service';
 import { OperacionGenericaStateService } from '../../core/services/operacion-generica-state.service';
 import type { Consentimiento } from '../../models/consentimiento';
 import type { OperacionGenerica } from '../../models/operacion-generica';
-import { QUERY_PARAMS, ROUTE_PATHS } from '../../shared/constants/app.constants';
+import { QUERY_PARAMS, ROUTE_PATHS, SOCIETY_CODES } from '../../shared/constants/app.constants';
+
+/** Consent types shown by this screen — mirrors legacy `LISTA_CONSENTIMIENTOS_CDAC`. */
+const CONSENTIMIENTOS_CDAC = ['CDAC'];
 
 @Component({
   selector: 'app-info-operacion-generica',
@@ -139,9 +142,11 @@ export class InfoOperacionGenericaComponent implements OnInit, OnDestroy {
     this.loading.set(true);
     this.errorMessage.set(null);
 
+    const sociedad = this.route.snapshot.queryParamMap.get(QUERY_PARAMS.SOCIEDAD) ?? SOCIETY_CODES.DEFAULT;
+
     forkJoin({
       operacion: this.gestionTokenService.utilizarInfoSmsGenerico(token),
-      consentimientos: this.consentimientoService.obtenerConsentimientos(),
+      consentimientos: this.consentimientoService.obtenerConsentimientos(CONSENTIMIENTOS_CDAC, sociedad),
     })
       .pipe(
         takeUntil(this.destroy$),

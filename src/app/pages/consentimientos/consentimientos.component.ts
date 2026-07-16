@@ -7,6 +7,7 @@ import { ConsentimientoService } from '../../core/services/consentimiento.servic
 import type { Consentimiento } from '../../models/consentimiento';
 import { ErrorComponent } from '../../features/error/error.component';
 import { ConsentimientosModalComponent } from '../../features/modals/consentimientos-modal.component';
+import { SOCIETY_CODES } from '../../shared/constants/app.constants';
 
 @Component({
   selector: 'app-consentimientos',
@@ -142,8 +143,13 @@ export class ConsentimientosComponent implements OnInit, OnDestroy {
     this.loading.set(true);
     this.errorMessage.set(null);
 
+    // Stopgap: this standalone screen has no token/route context to derive
+    // which consent types or society to request, unlike
+    // InfoOperacionGenericaComponent (which knows it needs 'CDAC' for the
+    // cotitular flow). Out of scope for the front-back integration until
+    // this screen's real access flow (navigation, auth, society) is defined.
     this.consentimientoService
-      .obtenerConsentimientos()
+      .obtenerConsentimientos(['CDAC', 'INTERCONEXION'], SOCIETY_CODES.DEFAULT)
       .pipe(
         takeUntil(this.destroy$),
         catchError(() => {

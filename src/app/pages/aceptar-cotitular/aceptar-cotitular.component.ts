@@ -163,12 +163,13 @@ export class AceptarCotitularComponent implements OnInit, OnDestroy {
     this.smsService
       .enviarSmsOtp({
         nif: operacion.nif,
-        telefono: operacion.telefono,
         sociedad: SOCIETY_CODES.CAJAMAR,
-        token: operacion.token,
-        aplicacion: operacion.aplicacionFk,
-        tipoAutenticacion: operacion.tipoAutenticacionFk,
-        codigoNotif: operacion.codigoNotifFk,
+        telefono: operacion.telefono,
+        aplicacionFk: operacion.aplicacionFk,
+        codigoNotifFk: operacion.codigoNotifFk,
+        cadenaFk: operacion.cadenaFk,
+        tipoToken: operacion.tipoToken,
+        tipoAutenticacionFk: operacion.tipoAutenticacionFk,
       })
       .pipe(
         takeUntil(this.destroy$),

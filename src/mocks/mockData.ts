@@ -8,7 +8,17 @@
  */
 
 import type { SmsOtpRequest } from '../app/core/services/sms.service';
-import type { Consentimiento } from '../app/models/consentimiento';
+
+/** Raw shape returned by the real backend's `ConsentimientoDto` (inside `POST /consentimientos`'s envelope). */
+export interface ConsentimientoApiMock {
+  idConsentimiento: string;
+  tipoConsentimiento: string;
+  ambito: string;
+  version: string;
+  textoLegal: string;
+  textoInfo: string;
+  fchNotaria: string;
+}
 
 /**
  * Raw shape returned by the real backend's `TokenFinancieroResponse`
@@ -150,26 +160,24 @@ export const MOCK_GENERIC_TOKENS: Record<string, TokenGenericoApiMock> = {
 };
 
 /** Consent data used by the generic and consent management flows. */
-export const MOCK_CONSENTIMIENTOS: Consentimiento[] = [
+export const MOCK_CONSENTIMIENTOS: ConsentimientoApiMock[] = [
   {
+    idConsentimiento: 'CDAC-1',
     tipoConsentimiento: 'CDAC',
+    ambito: 'COTITULAR',
+    version: '1',
     textoLegal: 'Texto legal principal del consentimiento CDAC.',
     textoInfo: 'Texto ampliado del consentimiento CDAC.',
-    aceptado: true,
-    swTextoInfo: true,
-    fchNotaria: '2026-07-09T10:00:00Z',
-    obligatorio: true,
-    masInfo: true,
+    fchNotaria: '2026-07-09',
   },
   {
+    idConsentimiento: 'INTERCONEXION-1',
     tipoConsentimiento: 'INTERCONEXION',
+    ambito: 'GENERAL',
+    version: '1',
     textoLegal: 'Texto legal de interconexión.',
     textoInfo: '',
-    aceptado: false,
-    swTextoInfo: false,
-    fchNotaria: '2026-07-10T08:30:00Z',
-    obligatorio: false,
-    masInfo: false,
+    fchNotaria: '2026-07-10',
   },
 ];
 
@@ -181,10 +189,11 @@ export const MOCK_SMS_RESPONSE: { enviado: boolean } = {
 /** Valid OTP request body paired with the generic token flow. */
 export const MOCK_SMS_REQUEST: SmsOtpRequest = {
   nif: MOCK_GENERIC_OPERATION.nif,
+  sociedad: MOCK_GENERIC_OPERATION.sociedad,
   telefono: MOCK_GENERIC_OPERATION.telefono,
-  sociedad: '800',
-  token: MOCK_GENERIC_OPERATION.token,
-  aplicacion: MOCK_GENERIC_OPERATION.aplicacionFk,
-  tipoAutenticacion: MOCK_GENERIC_OPERATION.tipoAutenticacionFk,
-  codigoNotif: MOCK_GENERIC_OPERATION.codigoNotifFk,
+  aplicacionFk: MOCK_GENERIC_OPERATION.aplicacionFk,
+  codigoNotifFk: MOCK_GENERIC_OPERATION.codigoNotifFk,
+  cadenaFk: MOCK_GENERIC_OPERATION.cadenaFk,
+  tipoToken: MOCK_GENERIC_OPERATION.tipoToken,
+  tipoAutenticacionFk: MOCK_GENERIC_OPERATION.tipoAutenticacionFk,
 };

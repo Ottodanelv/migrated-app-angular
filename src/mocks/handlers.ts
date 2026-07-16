@@ -63,33 +63,33 @@ export const handlers = [
     return HttpResponse.json(mockData, { status: 200 });
   }),
 
-  http.get(`${API_BASE}/consentimientos`, () =>
-    HttpResponse.json(MOCK_CONSENTIMIENTOS, { status: 200 }),
-  ),
+  http.post(`${API_BASE}/consentimientos`, async ({ request }) => {
+    const body = (await request.json()) as {
+      consentimientos?: string[];
+      sociedad?: string;
+    };
 
-  http.post(`${API_BASE}/sms/enviar-otp`, async ({ request }) => {
-    const body = (await request.json()) as Partial<SmsOtpRequest>;
-
-    if (!body.token || !body.telefono || !body.nif) {
+    if (!body.consentimientos?.length || !body.sociedad) {
       return HttpResponse.json(
-        { detail: 'Missing SMS OTP request fields', errorCode: 'SMS_REQUEST_INVALID' },
+        { detail: 'consentimientos and sociedad are required', errorCode: 'CONSENTIMIENTOS_REQUEST_INVALID' },
         { status: 400 },
       );
     }
 
-    const tokenData = MOCK_GENERIC_TOKENS[body.token];
+    const consentimientos = MOCK_CONSENTIMIENTOS.filter((c) =>
+      body.consentimientos!.includes(c.tipoConsentimiento),
+    );
 
-    if (!tokenData) {
-      return HttpResponse.json(
-        { detail: 'Unknown generic token', errorCode: 'TOKEN_NOT_FOUND' },
-        { status: 404 },
-      );
-    }
+    return HttpResponse.json({ consentimientos }, { status: 200 });
+  }),
 
-    if (new Date(tokenData.fchFin).getTime() <= Date.now()) {
+  http.post(`${API_BASE}/sms/token-generico`, async ({ request }) => {
+    const body = (await request.json()) as Partial<SmsOtpRequest>;
+
+    if (!body.nif || !body.telefono || !body.aplicacionFk || !body.codigoNotifFk || !body.tipoAutenticacionFk) {
       return HttpResponse.json(
-        { detail: 'Generic token is not valid', errorCode: 'TOKEN_INVALID' },
-        { status: 409 },
+        { detail: 'Missing SMS token-generico request fields', errorCode: 'SMS_REQUEST_INVALID' },
+        { status: 400 },
       );
     }
 

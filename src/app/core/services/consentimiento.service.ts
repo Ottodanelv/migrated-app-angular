@@ -15,8 +15,15 @@
  *
  * ## Migration Decisions
  *
- * - SOAP → REST: Single `HttpClient.get<Consentimiento[]>()` call.
- * - `ConsentimientoConverter` logic → inline mapping (fields already match).
+ * - SOAP → REST: `HttpClient.post<ObtenerConsentimientosResponse>()` call
+ *   against the real backend's `POST /consentimientos`, which requires the
+ *   list of consent types to check and the society — unlike the front's
+ *   original (invented) parameterless `GET`.
+ * - Response envelope (`{ consentimientos: ConsentimientoDto[] }`) is
+ *   unwrapped into a plain array for the front.
+ * - UI-only fields (`aceptado`, `swTextoInfo`, `obligatorio`, `masInfo`) are
+ *   not sent by the backend — they're derived with safe defaults in
+ *   `toConsentimiento()` until a real source for them is defined.
  * - Error handling: `ConsentimientoServiceException` → HTTP error interceptor.
  * - State management: Signal-based for reactive UI updates.
  *
@@ -26,9 +33,48 @@
 
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, finalize, of, tap } from 'rxjs';
+import { map, Observable, catchError, finalize, of, tap } from 'rxjs';
 import { Consentimiento } from '../../models/consentimiento';
 import { environment } from '../../../environments/environment';
+
+/** Raw shape returned by the backend's `ConsentimientoDto`. */
+interface ConsentimientoApiResponse {
+  idConsentimiento: string;
+  tipoConsentimiento: string;
+  ambito: string;
+  version: string;
+  textoLegal: string;
+  textoInfo: string;
+  fchNotaria: string;
+}
+
+/** Envelope returned by the backend's `ObtenerConsentimientosResponse`. */
+interface ObtenerConsentimientosApiResponse {
+  consentimientos: ConsentimientoApiResponse[];
+}
+
+/**
+ * Maps the backend's `ConsentimientoDto` to the front's `Consentimiento`.
+ *
+ * `obligatorio`, `aceptado` and `swTextoInfo` have no backend source yet —
+ * default to `false`. `masInfo` is derived from whether `textoInfo` is
+ * present, preserving the existing "ver más info" UI behavior.
+ */
+function toConsentimiento(response: ConsentimientoApiResponse): Consentimiento {
+  return {
+    tipoConsentimiento: response.tipoConsentimiento,
+    textoLegal: response.textoLegal,
+    textoInfo: response.textoInfo,
+    aceptado: false,
+    swTextoInfo: false,
+    fchNotaria: response.fchNotaria,
+    obligatorio: false,
+    masInfo: Boolean(response.textoInfo),
+    idConsentimiento: response.idConsentimiento,
+    ambito: response.ambito,
+    version: response.version,
+  };
+}
 
 /**
  * Service for managing user consents.
@@ -38,14 +84,9 @@ import { environment } from '../../../environments/environment';
  * private readonly consentimientoService = inject(ConsentimientoService);
  *
  * // Load consents
- * this.consentimientoService.obtenerConsentimientos().subscribe(consentimientos => {
+ * this.consentimientoService.obtenerConsentimientos(['CDAC'], '800').subscribe(consentimientos => {
  *   // Handle consentimientos
  * });
- *
- * // Or use signals for reactive state
- * this.consentimientoService.loadConsentimientos();
- * const consentimientos = this.consentimientoService.consentimientos();
- * const loading = this.consentimientoService.loading();
  * ```
  */
 @Injectable({
@@ -65,12 +106,25 @@ export class ConsentimientoService {
   readonly error = signal<string | null>(null);
 
   /**
-   * Fetches all consents for the current user.
+   * Fetches the consents of the given types for a society.
    *
-   * @returns Observable of Consentimiento array.
+   * Calls the real backend's `POST /consentimientos` (it requires a body —
+   * there's no parameterless read) and unwraps the `{ consentimientos }`
+   * envelope into a plain array mapped to the front's `Consentimiento`.
+   *
+   * @param consentimientos - Consent type ids to check (e.g. `['CDAC']`).
+   * @param sociedad - Society code (`'400'`, `'600'`, `'800'`).
    */
-  obtenerConsentimientos(): Observable<Consentimiento[]> {
-    return this.http.get<Consentimiento[]>(this.apiUrl);
+  obtenerConsentimientos(
+    consentimientos: string[],
+    sociedad: string,
+  ): Observable<Consentimiento[]> {
+    return this.http
+      .post<ObtenerConsentimientosApiResponse>(this.apiUrl, {
+        consentimientos,
+        sociedad,
+      })
+      .pipe(map((response) => response.consentimientos.map(toConsentimiento)));
   }
 
   /**
@@ -78,11 +132,11 @@ export class ConsentimientoService {
    *
    * Updates `consentimientos`, `loading`, and `error` signals.
    */
-  loadConsentimientos(): void {
+  loadConsentimientos(consentimientos: string[], sociedad: string): void {
     this.loading.set(true);
     this.error.set(null);
 
-    this.obtenerConsentimientos()
+    this.obtenerConsentimientos(consentimientos, sociedad)
       .pipe(
         tap((consentimientos) => {
           this.consentimientos.set(consentimientos);

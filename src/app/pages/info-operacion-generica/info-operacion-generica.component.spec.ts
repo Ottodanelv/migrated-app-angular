@@ -6,7 +6,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 
 import { environment } from '../../../environments/environment';
 import { InfoOperacionGenericaComponent } from './info-operacion-generica.component';
-import type { Consentimiento } from '../../models/consentimiento';
 
 describe('InfoOperacionGenericaComponent', () => {
   const genericApiUrl = `${environment.apiBaseUrl}/token/generico/GEN-TOKEN-001`;
@@ -30,18 +29,20 @@ describe('InfoOperacionGenericaComponent', () => {
     tipoAutenticacionFk: 'SMS',
   };
 
-  const mockConsentimientos: Consentimiento[] = [
-    {
-      tipoConsentimiento: 'CDAC',
-      textoLegal: 'Texto legal',
-      textoInfo: 'Texto adicional',
-      aceptado: false,
-      swTextoInfo: true,
-      fchNotaria: '2026-07-09T10:00:00Z',
-      obligatorio: true,
-      masInfo: true,
-    },
-  ];
+  /** Raw envelope returned by the real backend's `ObtenerConsentimientosResponse`. */
+  const mockConsentimientosResponse = {
+    consentimientos: [
+      {
+        idConsentimiento: 'CDAC-1',
+        tipoConsentimiento: 'CDAC',
+        ambito: 'COTITULAR',
+        version: '1',
+        textoLegal: 'Texto legal',
+        textoInfo: 'Texto adicional',
+        fchNotaria: '2026-07-09',
+      },
+    ],
+  };
 
   const mockRoute = {
     snapshot: {
@@ -97,7 +98,11 @@ describe('InfoOperacionGenericaComponent', () => {
     component.ngOnInit();
 
     httpMock.expectOne((r) => r.url === genericApiUrl).flush(mockOperacion);
-    httpMock.expectOne((r) => r.url === consentimientosApiUrl).flush(mockConsentimientos);
+
+    const consentimientosReq = httpMock.expectOne((r) => r.url === consentimientosApiUrl);
+    expect(consentimientosReq.request.method).toBe('POST');
+    expect(consentimientosReq.request.body).toEqual({ consentimientos: ['CDAC'], sociedad: '400' });
+    consentimientosReq.flush(mockConsentimientosResponse);
 
     expect(component['loading']()).toBe(false);
     expect(component['errorMessage']()).toBeNull();
