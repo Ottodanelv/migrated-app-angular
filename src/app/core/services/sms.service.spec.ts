@@ -17,9 +17,11 @@ describe('SmsService', () => {
 
   const mockRequest: SmsOtpRequest = {
     nif: '12345678A',
-    telefono: '+34600000000',
     sociedad: '400',
-    token: 'TOKEN-001',
+    telefono: '+34600000000',
+    aplicacionFk: 'APP01',
+    codigoNotifFk: 'ALERT_CDAT_COT',
+    tipoAutenticacionFk: 'SMS',
   };
 
   beforeEach(() => {
@@ -48,7 +50,7 @@ describe('SmsService', () => {
         expect(enviado).toBe(true);
       });
 
-      const req = httpMock.expectOne(`${service['apiUrl']}/enviar-otp`);
+      const req = httpMock.expectOne(`${service['apiUrl']}/token-generico`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(mockRequest);
       req.flush({ enviado: true });
@@ -59,7 +61,7 @@ describe('SmsService', () => {
         expect(enviado).toBe(false);
       });
 
-      const req = httpMock.expectOne(`${service['apiUrl']}/enviar-otp`);
+      const req = httpMock.expectOne(`${service['apiUrl']}/token-generico`);
       req.flush({ enviado: false });
     });
 
@@ -68,28 +70,30 @@ describe('SmsService', () => {
         expect(enviado).toBe(false);
       });
 
-      const req = httpMock.expectOne(`${service['apiUrl']}/enviar-otp`);
+      const req = httpMock.expectOne(`${service['apiUrl']}/token-generico`);
       req.error(new ProgressEvent('error'));
     });
 
     it('should send correct request body', () => {
       service.enviarSmsOtp(mockRequest).subscribe();
 
-      const req = httpMock.expectOne(`${service['apiUrl']}/enviar-otp`);
+      const req = httpMock.expectOne(`${service['apiUrl']}/token-generico`);
       expect(req.request.body).toEqual(mockRequest);
       req.flush({ enviado: true });
     });
 
-    it('should handle request with optional parameters', () => {
-      const requestWithParams: SmsOtpRequest = {
+    it('should handle request with optional fields', () => {
+      const requestWithOptionalFields: SmsOtpRequest = {
         ...mockRequest,
-        parametros: { key1: 'value1', key2: 'value2' },
+        clienteFk: 'CLI01',
+        cadenaFk: 'CAD01',
+        tipoToken: 'ALERT_CDAT_COT',
       };
 
-      service.enviarSmsOtp(requestWithParams).subscribe();
+      service.enviarSmsOtp(requestWithOptionalFields).subscribe();
 
-      const req = httpMock.expectOne(`${service['apiUrl']}/enviar-otp`);
-      expect(req.request.body).toEqual(requestWithParams);
+      const req = httpMock.expectOne(`${service['apiUrl']}/token-generico`);
+      expect(req.request.body).toEqual(requestWithOptionalFields);
       req.flush({ enviado: true });
     });
   });

@@ -39,9 +39,22 @@ export interface OperacionFinanciera {
   /** Annual Equivalent Rate — TAE (Java BigDecimal → number, e.g. 5.12) */
   readonly tae: number;
 
-  /** Whether the token is valid (not expired). From BO layer. */
+  /**
+   * Whether the token is valid (not expired).
+   * Derived in the front from `fchCaducidad` — the real backend
+   * (`TokenFinancieroResponse`) does not send this boolean.
+   */
   readonly valido: boolean;
 
   /** Token type classifier. From BO layer. Determines which view to render. */
   readonly tipoToken: TokenType;
+
+  /** Token creation timestamp (ISO 8601). From `TokenFinancieroResponse.fchAlta`. */
+  readonly fchAlta?: string;
+
+  /** Token expiry timestamp (ISO 8601) — source of truth for `valido`. */
+  readonly fchCaducidad?: string;
+
+  /** Number of times the token has been used. From `TokenFinancieroResponse.numUsos`. */
+  readonly numUsos?: number;
 }

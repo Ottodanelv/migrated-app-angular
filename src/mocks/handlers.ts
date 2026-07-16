@@ -24,30 +24,24 @@ const API_BASE = environment.apiBaseUrl;
 /**
  * MSW handlers for the migrated integration flows.
  *
- * Endpoint: GET /api/gestion-token/info-sms-financiero?token=xxxx
+ * Endpoint: GET /api/token/financiero/{token}
  *
  * Returns:
- *   - 200 with OperacionFinanciera payload if token exists
- *   - 200 with valido:false if token is expired
- *   - 404 if token is unknown/missing
+ *   - 200 with the raw `TokenFinancieroResponse` shape if the token exists
+ *     (including an expired `fchCaducidad` for the expired-token fixture)
+ *   - 404 if the token is unknown
+ *
+ * Mirrors the real backend's `TokenController` (path-variable reads) so
+ * mocks and the real backend behave the same from the front's point of view.
  */
 export const handlers = [
-  http.get(`${API_BASE}/gestion-token/info-sms-financiero`, ({ request }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get('token');
-
-    if (!token) {
-      return HttpResponse.json(
-        { error: 'Token parameter is required', code: 'TOKEN_MISSING' },
-        { status: 400 },
-      );
-    }
-
+  http.get(`${API_BASE}/token/financiero/:token`, ({ params }) => {
+    const token = params['token'] as string;
     const mockData = MOCK_TOKENS[token];
 
     if (!mockData) {
       return HttpResponse.json(
-        { error: 'Token not found or invalid', code: 'TOKEN_NOT_FOUND' },
+        { detail: 'Token not found or invalid', errorCode: 'TOKEN_NOT_FOUND' },
         { status: 404 },
       );
     }
@@ -55,22 +49,13 @@ export const handlers = [
     return HttpResponse.json(mockData, { status: 200 });
   }),
 
-  http.get(`${API_BASE}/gestion-token/info-sms-generico`, ({ request }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get('token');
-
-    if (!token) {
-      return HttpResponse.json(
-        { error: 'Token parameter is required', code: 'TOKEN_MISSING' },
-        { status: 400 },
-      );
-    }
-
+  http.get(`${API_BASE}/token/generico/:token`, ({ params }) => {
+    const token = params['token'] as string;
     const mockData = MOCK_GENERIC_TOKENS[token];
 
     if (!mockData) {
       return HttpResponse.json(
-        { error: 'Generic token not found', code: 'TOKEN_NOT_FOUND' },
+        { detail: 'Generic token not found', errorCode: 'TOKEN_NOT_FOUND' },
         { status: 404 },
       );
     }
@@ -78,33 +63,33 @@ export const handlers = [
     return HttpResponse.json(mockData, { status: 200 });
   }),
 
-  http.get(`${API_BASE}/consentimientos`, () =>
-    HttpResponse.json(MOCK_CONSENTIMIENTOS, { status: 200 }),
-  ),
+  http.post(`${API_BASE}/consentimientos`, async ({ request }) => {
+    const body = (await request.json()) as {
+      consentimientos?: string[];
+      sociedad?: string;
+    };
 
-  http.post(`${API_BASE}/sms/enviar-otp`, async ({ request }) => {
-    const body = (await request.json()) as Partial<SmsOtpRequest>;
-
-    if (!body.token || !body.telefono || !body.nif) {
+    if (!body.consentimientos?.length || !body.sociedad) {
       return HttpResponse.json(
-        { error: 'Missing SMS OTP request fields', code: 'SMS_REQUEST_INVALID' },
+        { detail: 'consentimientos and sociedad are required', errorCode: 'CONSENTIMIENTOS_REQUEST_INVALID' },
         { status: 400 },
       );
     }
 
-    const tokenData = MOCK_GENERIC_TOKENS[body.token];
+    const consentimientos = MOCK_CONSENTIMIENTOS.filter((c) =>
+      body.consentimientos!.includes(c.tipoConsentimiento),
+    );
 
-    if (!tokenData) {
-      return HttpResponse.json(
-        { error: 'Unknown generic token', code: 'TOKEN_NOT_FOUND' },
-        { status: 404 },
-      );
-    }
+    return HttpResponse.json({ consentimientos }, { status: 200 });
+  }),
 
-    if (!tokenData.valido) {
+  http.post(`${API_BASE}/sms/token-generico`, async ({ request }) => {
+    const body = (await request.json()) as Partial<SmsOtpRequest>;
+
+    if (!body.nif || !body.telefono || !body.aplicacionFk || !body.codigoNotifFk || !body.tipoAutenticacionFk) {
       return HttpResponse.json(
-        { error: 'Generic token is not valid', code: 'TOKEN_INVALID' },
-        { status: 409 },
+        { detail: 'Missing SMS token-generico request fields', errorCode: 'SMS_REQUEST_INVALID' },
+        { status: 400 },
       );
     }
 

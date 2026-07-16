@@ -32,4 +32,13 @@ export interface Consentimiento {
 
   /** Whether supplementary information is available for this consent */
   readonly masInfo: boolean;
+
+  /** Backend consent record id. From `ConsentimientoDto.idConsentimiento`. */
+  readonly idConsentimiento?: string;
+
+  /** Consent scope/ambit. From `ConsentimientoDto.ambito`. */
+  readonly ambito?: string;
+
+  /** Consent text version. From `ConsentimientoDto.version`. */
+  readonly version?: string;
 }

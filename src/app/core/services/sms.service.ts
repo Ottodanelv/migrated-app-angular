@@ -13,7 +13,15 @@
  *
  * ## Migration Decisions
  *
- * - SOAP → REST: `HttpClient.post<{enviado: boolean}>()` call.
+ * - SOAP → REST: `HttpClient.post<{enviado: boolean}>()` call against the
+ *   real backend's `POST /sms/token-generico` (`EmitirTokenGenericoRequest`
+ *   → `EnviarSmsTokenGenericoResponse`), not the front's originally invented
+ *   `/sms/enviar-otp`. This endpoint was chosen over the more generic
+ *   `/sms/otp/datos-genericos` because its fields match what the cotitular
+ *   flow already carries on `OperacionGenerica` almost 1:1 (nif, sociedad,
+ *   telefono, aplicacionFk, codigoNotifFk, cadenaFk, tipoToken,
+ *   tipoAutenticacionFk) and its response shape (`{ enviado: boolean }`)
+ *   requires no UI changes.
  * - Request object → typed function parameters.
  * - Boolean return → Observable<boolean>.
  * - Error handling: `SmsServiceException` → HTTP error interceptor.
@@ -27,25 +35,30 @@ import { Observable, catchError, of, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 /**
- * Request parameters for sending OTP SMS.
+ * Request parameters for sending OTP SMS via the generic token flow.
+ *
+ * Mirrors the real backend's `EmitirTokenGenericoRequest`
+ * (`POST /sms/token-generico`).
  */
 export interface SmsOtpRequest {
   /** User's NIF (tax identification number) */
   readonly nif: string;
-  /** User's phone number */
-  readonly telefono: string;
   /** Society code (400, 600, 800) */
   readonly sociedad: string;
-  /** Token identifier */
-  readonly token: string;
+  /** User's phone number */
+  readonly telefono: string;
+  /** Legacy clienteFk used by the cotitular flow */
+  readonly clienteFk?: string;
   /** Legacy aplicacion FK used by cotitular flow */
-  readonly aplicacion?: string;
-  /** Legacy tipoAutenticacion FK used by cotitular flow */
-  readonly tipoAutenticacion?: string;
+  readonly aplicacionFk: string;
   /** Legacy codigoNotif FK used by cotitular flow */
-  readonly codigoNotif?: string;
-  /** Additional parameters as key-value pairs */
-  readonly parametros?: Record<string, string>;
+  readonly codigoNotifFk: string;
+  /** Legacy cadena FK used by the cotitular flow */
+  readonly cadenaFk?: string;
+  /** Token type classifier */
+  readonly tipoToken?: string;
+  /** Legacy tipoAutenticacion FK used by cotitular flow */
+  readonly tipoAutenticacionFk: string;
 }
 
 /**
@@ -71,13 +84,14 @@ export class SmsService {
   private readonly apiUrl = `${environment.apiBaseUrl}/sms`;
 
   /**
-   * Sends an OTP SMS to the specified phone number.
+   * Emits/refreshes a generic token and sends its OTP SMS to the given
+   * phone number.
    *
    * @param request - SMS request parameters.
    * @returns Observable<boolean> indicating whether the SMS was sent successfully.
    */
   enviarSmsOtp(request: SmsOtpRequest): Observable<boolean> {
-    return this.http.post<{ enviado: boolean }>(`${this.apiUrl}/enviar-otp`, request).pipe(
+    return this.http.post<{ enviado: boolean }>(`${this.apiUrl}/token-generico`, request).pipe(
       map((response) => response.enviado),
       catchError((error) => {
         console.error('[SmsService] Error sending OTP SMS:', error);

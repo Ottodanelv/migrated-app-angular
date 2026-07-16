@@ -128,9 +128,9 @@ describe('App integration flows', () => {
 
   it('should render the generic token error flow when the backend lookup fails', async () => {
     server.use(
-      http.get(`${environment.apiBaseUrl}/gestion-token/info-sms-generico`, () =>
+      http.get(`${environment.apiBaseUrl}/token/generico/:token`, () =>
         HttpResponse.json(
-          { error: 'Unexpected failure', code: 'GENERIC_FLOW_ERROR' },
+          { detail: 'Unexpected failure', errorCode: 'GENERIC_FLOW_ERROR' },
           { status: 500 },
         ),
       ),

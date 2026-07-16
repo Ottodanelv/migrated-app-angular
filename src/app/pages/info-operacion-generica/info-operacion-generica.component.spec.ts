@@ -6,37 +6,43 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 
 import { environment } from '../../../environments/environment';
 import { InfoOperacionGenericaComponent } from './info-operacion-generica.component';
-import type { Consentimiento } from '../../models/consentimiento';
-import type { OperacionGenerica } from '../../models/operacion-generica';
 
 describe('InfoOperacionGenericaComponent', () => {
-  const genericApiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-generico`;
+  const genericApiUrl = `${environment.apiBaseUrl}/token/generico/GEN-TOKEN-001`;
   const consentimientosApiUrl = `${environment.apiBaseUrl}/consentimientos`;
 
-  const mockOperacion: OperacionGenerica = {
+  /** Raw shape returned by the real backend's `TokenGenericoResponse`. */
+  const mockOperacion = {
     token: 'GEN-TOKEN-001',
+    sociedad: '800',
     nif: '12345678A',
     telefono: '600123123',
+    numUsos: 0,
+    fchInicio: '2026-01-01T00:00:00Z',
+    fchFin: '2099-01-01T00:00:00Z',
+    clienteFk: 'CLI01',
     aplicacionFk: 'APP01',
     codigoNotifFk: 'ALERT_CDAT_COT',
     cadenaFk: 'CAD01',
+    impDispMin: 0,
     tipoToken: 'ALERT_CDAT_COT',
     tipoAutenticacionFk: 'SMS',
-    valido: true,
   };
 
-  const mockConsentimientos: Consentimiento[] = [
-    {
-      tipoConsentimiento: 'CDAC',
-      textoLegal: 'Texto legal',
-      textoInfo: 'Texto adicional',
-      aceptado: false,
-      swTextoInfo: true,
-      fchNotaria: '2026-07-09T10:00:00Z',
-      obligatorio: true,
-      masInfo: true,
-    },
-  ];
+  /** Raw envelope returned by the real backend's `ObtenerConsentimientosResponse`. */
+  const mockConsentimientosResponse = {
+    consentimientos: [
+      {
+        idConsentimiento: 'CDAC-1',
+        tipoConsentimiento: 'CDAC',
+        ambito: 'COTITULAR',
+        version: '1',
+        textoLegal: 'Texto legal',
+        textoInfo: 'Texto adicional',
+        fchNotaria: '2026-07-09',
+      },
+    ],
+  };
 
   const mockRoute = {
     snapshot: {
@@ -92,7 +98,11 @@ describe('InfoOperacionGenericaComponent', () => {
     component.ngOnInit();
 
     httpMock.expectOne((r) => r.url === genericApiUrl).flush(mockOperacion);
-    httpMock.expectOne((r) => r.url === consentimientosApiUrl).flush(mockConsentimientos);
+
+    const consentimientosReq = httpMock.expectOne((r) => r.url === consentimientosApiUrl);
+    expect(consentimientosReq.request.method).toBe('POST');
+    expect(consentimientosReq.request.body).toEqual({ consentimientos: ['CDAC'], sociedad: '400' });
+    consentimientosReq.flush(mockConsentimientosResponse);
 
     expect(component['loading']()).toBe(false);
     expect(component['errorMessage']()).toBeNull();

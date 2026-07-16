@@ -10,7 +10,7 @@ import type { OperacionGenerica } from '../../models/operacion-generica';
 import { AceptarCotitularComponent } from './aceptar-cotitular.component';
 
 describe('AceptarCotitularComponent', () => {
-  const smsApiUrl = `${environment.apiBaseUrl}/sms/enviar-otp`;
+  const smsApiUrl = `${environment.apiBaseUrl}/sms/token-generico`;
   const mockOperacion: OperacionGenerica = {
     token: 'GEN-TOKEN-001',
     nif: '12345678A',

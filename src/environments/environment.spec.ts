@@ -60,8 +60,8 @@ describe('Development environment', () => {
     expect(devEnv.production).toBe(false);
   });
 
-  it('should use localhost API base URL', () => {
-    expect(devEnv.apiBaseUrl).toContain('localhost');
+  it('should use a relative API base URL (proxied via proxy.conf.json)', () => {
+    expect(devEnv.apiBaseUrl).toBe('/api');
   });
 
   it('should have generous timeout for local dev (>= 20s)', () => {

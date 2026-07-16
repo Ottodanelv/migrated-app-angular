@@ -22,11 +22,14 @@ import {
 
 import { InfoOperacionComponent } from './info-operacion.component';
 import { environment } from '../../../environments/environment';
-import type { OperacionFinanciera } from '../../models/operacion-financiera';
 
 describe('InfoOperacionComponent', () => {
-  const mockOperacion: OperacionFinanciera = {
+  /** Raw shape returned by the real backend's `TokenFinancieroResponse`. */
+  const mockOperacion = {
     token: 'FIN-TOKEN-001',
+    sociedad: '400',
+    nif: '12345678A',
+    telefono: '600123123',
     importe: 12500.0,
     mensualidad: 347.22,
     meses: 36,
@@ -35,11 +38,14 @@ describe('InfoOperacionComponent', () => {
     fchProximoRecibo: '2026-08-15',
     tin: 4.75,
     tae: 5.12,
-    valido: true,
     tipoToken: 'COMBOCARD',
+    fchAlta: '2026-01-01T00:00:00Z',
+    fchCaducidad: '2099-01-01T00:00:00Z',
+    numUsos: 0,
   };
 
-  const apiUrl = `${environment.apiBaseUrl}/gestion-token/info-sms-financiero`;
+  const apiUrl = (token: string) =>
+    `${environment.apiBaseUrl}/token/financiero/${token}`;
 
   let httpMock: HttpTestingController;
 
@@ -94,7 +100,7 @@ describe('InfoOperacionComponent', () => {
     expect(ctx.errorMessage()).toBeNull();
 
     // Flush the pending request to avoid verify() failure
-    httpMock.expectOne((r) => r.url === apiUrl).flush(mockOperacion);
+    httpMock.expectOne((r) => r.url === apiUrl('FIN-TOKEN-001')).flush(mockOperacion);
   });
 
   it('should show error state when token is missing', () => {
@@ -118,11 +124,7 @@ describe('InfoOperacionComponent', () => {
     const ctx = fixture.componentInstance as any;
     ctx.ngOnInit();
 
-    const req = httpMock.expectOne(
-      (r) =>
-        r.url === apiUrl &&
-        r.params.get('token') === 'FIN-TOKEN-001',
-    );
+    const req = httpMock.expectOne((r) => r.url === apiUrl('FIN-TOKEN-001'));
     expect(req.request.method).toBe('GET');
     req.flush(mockOperacion);
 
@@ -139,7 +141,7 @@ describe('InfoOperacionComponent', () => {
     const fixture = TestBed.createComponent(InfoOperacionComponent);
     fixture.detectChanges();
 
-    const req = httpMock.expectOne((r) => r.url === apiUrl);
+    const req = httpMock.expectOne((r) => r.url === apiUrl('FIN-TOKEN-001'));
     req.flush(mockOperacion);
     fixture.detectChanges();
 
@@ -156,11 +158,7 @@ describe('InfoOperacionComponent', () => {
     const ctx = fixture.componentInstance as any;
     ctx.ngOnInit();
 
-    const req = httpMock.expectOne(
-      (r) =>
-        r.url === apiUrl &&
-        r.params.get('token') === 'UNKNOWN-TOKEN',
-    );
+    const req = httpMock.expectOne((r) => r.url === apiUrl('UNKNOWN-TOKEN'));
     req.flush('Not found', { status: 404, statusText: 'Not Found' });
 
     expect(ctx.loading()).toBe(false);
@@ -174,11 +172,7 @@ describe('InfoOperacionComponent', () => {
     const ctx = fixture.componentInstance as any;
     ctx.ngOnInit();
 
-    const req = httpMock.expectOne(
-      (r) =>
-        r.url === apiUrl &&
-        r.params.get('token') === 'FIN-TOKEN-001',
-    );
+    const req = httpMock.expectOne((r) => r.url === apiUrl('FIN-TOKEN-001'));
     req.flush('Server error', {
       status: 500,
       statusText: 'Internal Server Error',

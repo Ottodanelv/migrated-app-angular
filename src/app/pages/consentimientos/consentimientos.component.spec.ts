@@ -5,34 +5,34 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { environment } from '../../../environments/environment';
-import type { Consentimiento } from '../../models/consentimiento';
 import { ConsentimientosComponent } from './consentimientos.component';
 
 describe('ConsentimientosComponent', () => {
   const consentimientosApiUrl = `${environment.apiBaseUrl}/consentimientos`;
 
-  const mockConsentimientos: Consentimiento[] = [
-    {
-      tipoConsentimiento: 'CDAC',
-      textoLegal: 'Texto legal principal del consentimiento CDAC.',
-      textoInfo: 'Texto ampliado del consentimiento CDAC.',
-      aceptado: true,
-      swTextoInfo: true,
-      fchNotaria: '2026-07-09T10:00:00Z',
-      obligatorio: true,
-      masInfo: true,
-    },
-    {
-      tipoConsentimiento: 'INTERCONEXION',
-      textoLegal: 'Texto legal de interconexión.',
-      textoInfo: '',
-      aceptado: false,
-      swTextoInfo: false,
-      fchNotaria: '2026-07-10T08:30:00Z',
-      obligatorio: false,
-      masInfo: false,
-    },
-  ];
+  /** Raw envelope returned by the real backend's `ObtenerConsentimientosResponse`. */
+  const mockConsentimientosResponse = {
+    consentimientos: [
+      {
+        idConsentimiento: 'CDAC-1',
+        tipoConsentimiento: 'CDAC',
+        ambito: 'COTITULAR',
+        version: '1',
+        textoLegal: 'Texto legal principal del consentimiento CDAC.',
+        textoInfo: 'Texto ampliado del consentimiento CDAC.',
+        fchNotaria: '2026-07-09',
+      },
+      {
+        idConsentimiento: 'INTERCONEXION-1',
+        tipoConsentimiento: 'INTERCONEXION',
+        ambito: 'GENERAL',
+        version: '1',
+        textoLegal: 'Texto legal de interconexión.',
+        textoInfo: '',
+        fchNotaria: '2026-07-10',
+      },
+    ],
+  };
 
   let httpMock: HttpTestingController;
 
@@ -59,7 +59,7 @@ describe('ConsentimientosComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
 
     fixture.detectChanges();
-    httpMock.expectOne((request) => request.url === consentimientosApiUrl).flush([]);
+    httpMock.expectOne((request) => request.url === consentimientosApiUrl).flush({ consentimientos: [] });
   });
 
   it('should load and render consentimientos summary', () => {
@@ -68,13 +68,16 @@ describe('ConsentimientosComponent', () => {
 
     fixture.detectChanges();
 
-    httpMock.expectOne((request) => request.url === consentimientosApiUrl).flush(mockConsentimientos);
+    const req = httpMock.expectOne((request) => request.url === consentimientosApiUrl);
+    expect(req.request.method).toBe('POST');
+    req.flush(mockConsentimientosResponse);
     fixture.detectChanges();
 
     expect(component['loading']()).toBe(false);
     expect(component['errorMessage']()).toBeNull();
     expect(component['consentimientos']().length).toBe(2);
-    expect(component['acceptedCount']()).toBe(1);
+    // `aceptado` has no backend source yet — defaults to false for every consent.
+    expect(component['acceptedCount']()).toBe(0);
     expect(fixture.nativeElement.textContent).toContain('Gestión de consentimientos');
     expect(fixture.nativeElement.textContent).toContain('INTERCONEXION');
   });
@@ -85,7 +88,7 @@ describe('ConsentimientosComponent', () => {
 
     fixture.detectChanges();
 
-    httpMock.expectOne((request) => request.url === consentimientosApiUrl).flush(mockConsentimientos);
+    httpMock.expectOne((request) => request.url === consentimientosApiUrl).flush(mockConsentimientosResponse);
     fixture.detectChanges();
 
     const detailButton = fixture.nativeElement.querySelector('button');
