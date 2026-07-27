@@ -91,13 +91,7 @@ export function deepClone<T>(obj: T): T {
   if (obj === null || obj === undefined) return obj;
   if (typeof obj !== 'object') return obj;
 
-  // Use structuredClone when available (modern environments)
-  if (typeof structuredClone === 'function') {
-    return structuredClone(obj);
-  }
-
-  // Fallback: JSON round-trip for serializable objects
-  return JSON.parse(JSON.stringify(obj)) as T;
+  return structuredClone(obj);
 }
 
 // ---------------------------------------------------------------------------
@@ -128,72 +122,53 @@ export function isEqual(a: unknown, b: unknown): boolean {
   // If either is null/undefined (and not both, caught above)
   if (a == null || b == null) return false;
 
-  // Handle Dates
-  if (a instanceof Date && b instanceof Date) {
-    return a.getTime() === b.getTime();
-  }
+  const knownTypeResult = compareKnownType(a, b);
+  if (knownTypeResult !== undefined) return knownTypeResult;
 
-  // Handle RegExps
-  if (a instanceof RegExp && b instanceof RegExp) {
-    return a.source === b.source && a.flags === b.flags;
-  }
-
-  // Handle Sets — uses recursive deep equality for object items
-  if (a instanceof Set && b instanceof Set) {
-    if (a.size !== b.size) return false;
-    for (const itemA of a) {
-      let found = false;
-      for (const itemB of b) {
-        if (isEqual(itemA, itemB)) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) return false;
-    }
-    return true;
-  }
-
-  // Handle Maps
-  if (a instanceof Map && b instanceof Map) {
-    if (a.size !== b.size) return false;
-    for (const [key, val] of a) {
-      if (!b.has(key) || !isEqual(val, b.get(key))) return false;
-    }
-    return true;
-  }
-
-  // If types don't match
   if (typeof a !== typeof b) return false;
   if (typeof a !== 'object' || typeof b !== 'object') return false;
-
-  // Handle arrays
-  if (Array.isArray(a) && Array.isArray(b)) {
-    if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-      if (!isEqual(a[i], b[i])) return false;
-    }
-    return true;
-  }
-
-  // If one is array and the other isn't
   if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a) && Array.isArray(b)) return isEqualArray(a, b);
 
-  // Plain objects
-  const keysA = Object.keys(a as Record<string, unknown>);
-  const keysB = Object.keys(b as Record<string, unknown>);
+  return isEqualObject(a as Record<string, unknown>, b as Record<string, unknown>);
+}
 
+/** Compares `a`/`b` if both are the same well-known type; `undefined` if neither applies. */
+function compareKnownType(a: unknown, b: unknown): boolean | undefined {
+  if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
+  if (a instanceof RegExp && b instanceof RegExp) return a.source === b.source && a.flags === b.flags;
+  if (a instanceof Set && b instanceof Set) return isEqualSet(a, b);
+  if (a instanceof Map && b instanceof Map) return isEqualMap(a, b);
+  return undefined;
+}
+
+function isEqualSet(a: Set<unknown>, b: Set<unknown>): boolean {
+  if (a.size !== b.size) return false;
+  for (const itemA of a) {
+    if (![...b].some((itemB) => isEqual(itemA, itemB))) return false;
+  }
+  return true;
+}
+
+function isEqualMap(a: Map<unknown, unknown>, b: Map<unknown, unknown>): boolean {
+  if (a.size !== b.size) return false;
+  for (const [key, val] of a) {
+    if (!b.has(key) || !isEqual(val, b.get(key))) return false;
+  }
+  return true;
+}
+
+function isEqualArray(a: unknown[], b: unknown[]): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((item, i) => isEqual(item, b[i]));
+}
+
+function isEqualObject(a: Record<string, unknown>, b: Record<string, unknown>): boolean {
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
   if (keysA.length !== keysB.length) return false;
 
-  for (const key of keysA) {
-    if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
-    if (!isEqual(
-      (a as Record<string, unknown>)[key],
-      (b as Record<string, unknown>)[key],
-    )) return false;
-  }
-
-  return true;
+  return keysA.every((key) => Object.hasOwn(b, key) && isEqual(a[key], b[key]));
 }
 
 // ---------------------------------------------------------------------------

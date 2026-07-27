@@ -266,14 +266,7 @@ html[data-sociedad="800"] .society-footer-logo {
    ========================================================================== */
 
 @layer base {
-  /*
-    Body: matches legacy body from style_xfera.css
-    font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
-    font-size: 13px;
-    background-color: #e2e2e2;
-    color: #505050;
-    line-height: normal;
-  */
+  /* Body: matches legacy body from style_xfera.css (Helvetica family, 13px, #e2e2e2 bg, #505050 text, normal line-height) */
   body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
@@ -284,10 +277,7 @@ html[data-sociedad="800"] .society-footer-logo {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /*
-    Headings: reset Bootstrap 3 overrides (style_xfera.css)
-    h1 { color: #831382; font-size: 25px; font-weight: bold; }
-  */
+  /* Headings: reset Bootstrap 3 overrides from style_xfera.css (h1 was #831382, 25px, bold) */
   h1 {
     font-family: var(--font-display);
     font-weight: 700;
@@ -323,12 +313,7 @@ html[data-sociedad="800"] .society-footer-logo {
     margin-bottom: 0;
   }
 
-  /*
-    Links: from cmcredit.css
-    a { color: #006C79; transition: all ease-out 300ms; }
-    a:hover, a:focus { color: #028C9D; text-decoration: none; }
-    Overridden for Xfera: a, a:hover { text-decoration: underline; }
-  */
+  /* Links: from cmcredit.css (base #006C79, hover/focus #028C9D), Xfera override adds underline */
   a {
     color: var(--color-brand-teal-dark);
     text-decoration: underline;
@@ -341,30 +326,20 @@ html[data-sociedad="800"] .society-footer-logo {
     text-decoration: underline;
   }
 
-  /*
-    Labels (style_xfera.css):
-    label { font-weight: normal; display: block; color: black; }
-  */
+  /* Labels (style_xfera.css): normal weight, block display, black text */
   label {
     font-weight: 400;
     display: block;
     color: #000;
   }
 
-  /*
-    Bold text (cmcredit.css):
-    b, strong { font-weight: 700; }
-  */
+  /* Bold text (cmcredit.css): font-weight 700 */
   b,
   strong {
     font-weight: 700;
   }
 
-  /*
-    Form inputs (style_xfera.css):
-    input { margin-bottom: 10px; border: 1px solid #898989; padding: 0 4px; font-size: 18px; }
-    Note: @tailwindcss/forms provides base reset — we extend here.
-  */
+  /* Form inputs (style_xfera.css): 10px margin-bottom, 1px #898989 border, 4px padding, 18px font — @tailwindcss/forms provides the base reset, we extend here */
   input,
   textarea,
   select {
@@ -390,13 +365,7 @@ html[data-sociedad="800"] .society-footer-logo {
    can happen incrementally. New code should use Tailwind utilities directly.
    ========================================================================== */
 
-/*
-  Buttons (style_xfera.css):
-  button { background: #f2f2f2; border: none; padding: 8px 18px;
-           border-radius: 20px; box-shadow: 4px 4px #e0e0e0; color: #6E106C; }
-  button.continuar { color: white; background: #831382; }
-  button.continuar:hover { background: #BD1CBA; }
-*/
+/* Buttons (style_xfera.css): #f2f2f2 bg, no border, 8px/18px padding, 20px radius, #e0e0e0 shadow, #6E106C text; .continuar variant is white-on-#831382, #BD1CBA on hover */
 @layer components {
   .btn-legacy {
     background-color: var(--color-button-bg);

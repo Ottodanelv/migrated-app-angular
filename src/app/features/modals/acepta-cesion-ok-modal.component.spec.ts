@@ -68,7 +68,7 @@ describe('AceptaCesionOkModalComponent', () => {
     fixture.componentRef.setInput('visible', true);
     fixture.detectChanges();
 
-    const closeSpy = vi.spyOn(fixture.componentInstance.close, 'emit');
+    const closeSpy = vi.spyOn(fixture.componentInstance.closed, 'emit');
     const compiled = fixture.nativeElement as HTMLElement;
     const button = compiled.querySelector('button') as HTMLButtonElement;
 
@@ -82,7 +82,7 @@ describe('AceptaCesionOkModalComponent', () => {
     fixture.componentRef.setInput('visible', true);
     fixture.detectChanges();
 
-    const closeSpy = vi.spyOn(fixture.componentInstance.close, 'emit');
+    const closeSpy = vi.spyOn(fixture.componentInstance.closed, 'emit');
     const compiled = fixture.nativeElement as HTMLElement;
     const backdrop = compiled.querySelector('[aria-hidden="true"]') as HTMLElement;
 
@@ -96,7 +96,7 @@ describe('AceptaCesionOkModalComponent', () => {
     fixture.componentRef.setInput('visible', true);
     fixture.detectChanges();
 
-    const closeSpy = vi.spyOn(fixture.componentInstance.close, 'emit');
+    const closeSpy = vi.spyOn(fixture.componentInstance.closed, 'emit');
     const dialog = fixture.nativeElement.querySelector('[role="dialog"]');
     dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
 

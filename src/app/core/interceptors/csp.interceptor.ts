@@ -63,8 +63,7 @@
  * @module CspInterceptor
  */
 
-import type { HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import type { HttpEvent } from '@angular/common/http';
+import type { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 /**

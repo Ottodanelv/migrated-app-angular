@@ -91,7 +91,7 @@ import { AceptaCesionOkModalComponent } from '../../features/modals/acepta-cesio
 
       <app-acepta-cesion-ok-modal
         [visible]="showSuccessModal()"
-        (close)="showSuccessModal.set(false)"
+        (closed)="showSuccessModal.set(false)"
       />
     </section>
   `,

@@ -1,9 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, computed, effect, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
-import { RouterOutlet } from '@angular/router';
 
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
@@ -31,9 +30,7 @@ export class LayoutComponent {
   private readonly document = inject(DOCUMENT);
   private readonly route = inject(ActivatedRoute);
 
-  readonly societyInput = input<SocietyCode>(environment.society.default, {
-    alias: 'society',
-  });
+  readonly societyInput = input<SocietyCode>(environment.society.default);
   private readonly societyQuery = toSignal(
     this.route.queryParamMap.pipe(
       map((params) => params.get('sociedad')),

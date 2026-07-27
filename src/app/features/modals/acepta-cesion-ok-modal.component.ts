@@ -19,12 +19,12 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-acepta-cesion-ok-title"
-        (keydown.escape)="close.emit()"
+        (keydown.escape)="closed.emit()"
       >
         <!-- Backdrop -->
         <div
           class="fixed inset-0 bg-overlay-dark"
-          (click)="close.emit()"
+          (click)="closed.emit()"
           aria-hidden="true"
         ></div>
 
@@ -34,7 +34,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
             type="button"
             aria-label="Cerrar"
             class="absolute right-5 top-5 text-xl text-text-muted transition hover:text-text-strong"
-            (click)="close.emit()"
+            (click)="closed.emit()"
           >
             <span aria-hidden="true">×</span>
             <span class="sr-only">Cerrar</span>
@@ -55,7 +55,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
             <button
               type="button"
               class="rounded-[14px] bg-brand-secondary px-5 py-2.5 text-md font-bold text-white transition hover:opacity-90"
-              (click)="close.emit()"
+              (click)="closed.emit()"
             >
               Cerrar
             </button>
@@ -71,5 +71,5 @@ export class AceptaCesionOkModalComponent {
   readonly visible = input(false);
 
   /** Evento emitido cuando el usuario cierra el modal. */
-  readonly close = output<void>();
+  readonly closed = output<void>();
 }

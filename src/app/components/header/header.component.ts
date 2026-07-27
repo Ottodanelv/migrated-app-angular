@@ -17,9 +17,9 @@ const HEADER_COPY = {
   standalone: true,
   imports: [FontAwesomeModule],
   template: `
-    <header class="bg-white">
+    <header class="mx-auto w-full max-w-[984px] bg-white">
       <div
-        class="society-header-inner mx-auto flex w-full max-w-[984px] items-center justify-between gap-6 px-4 py-5 sm:px-[30px]"
+        class="society-header-inner flex items-center justify-between gap-6 px-4 py-5 sm:px-[30px]"
       >
         <div class="flex min-w-0 items-center gap-4">
           <div class="flex h-14 min-w-28 items-center justify-center rounded-xl border border-border-light bg-bg-section px-3 py-2">

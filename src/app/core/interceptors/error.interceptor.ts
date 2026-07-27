@@ -31,9 +31,8 @@
  * @module ErrorInterceptor
  */
 
-import type { HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import type { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
-import type { HttpEvent } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import type { Observable } from 'rxjs';
 
@@ -120,7 +119,7 @@ export function errorInterceptor(
         return throwError(() => error);
       }
 
-      const httpError = error as HttpErrorResponse;
+      const httpError = error;
       const status = httpError.status;
       const i18nKey = mapStatusToI18nKey(status);
       const timestamp = new Date().toISOString();
@@ -149,9 +148,9 @@ export function errorInterceptor(
         originalMessage: httpError.message,
         timestamp,
         url,
-        ...(errorCode !== undefined ? { errorCode } : {}),
-        ...(title !== undefined ? { title } : {}),
-        ...(detail !== undefined ? { detail } : {}),
+        ...(errorCode === undefined ? {} : { errorCode }),
+        ...(title === undefined ? {} : { title }),
+        ...(detail === undefined ? {} : { detail }),
       };
 
       // Structured logging consistent with all error paths.
@@ -163,7 +162,7 @@ export function errorInterceptor(
           url,
           message: httpError.message,
           timestamp,
-          ...(errorCode !== undefined ? { errorCode } : {}),
+          ...(errorCode === undefined ? {} : { errorCode }),
         },
       );
 

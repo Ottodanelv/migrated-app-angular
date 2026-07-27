@@ -56,7 +56,7 @@ import type { Consentimiento } from '../../models/consentimiento';
               type="button"
               class="text-text-muted hover:text-text-strong"
               aria-label="Cerrar"
-              (click)="close.emit()"
+              (click)="closed.emit()"
             >
               <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -151,14 +151,14 @@ import type { Consentimiento } from '../../models/consentimiento';
             <button
               type="button"
               class="rounded-[14px] bg-brand-secondary px-5 py-2.5 text-md font-bold text-white transition hover:opacity-90"
-              (click)="close.emit()"
+              (click)="closed.emit()"
             >
               Aceptar
             </button>
             <button
               type="button"
               class="rounded-[14px] border border-border-light bg-white px-5 py-2.5 text-md font-bold text-text-muted transition hover:bg-panel-muted"
-              (click)="close.emit()"
+              (click)="closed.emit()"
             >
               Cerrar
             </button>
@@ -171,7 +171,7 @@ import type { Consentimiento } from '../../models/consentimiento';
 export class ConsentimientosModalComponent {
   readonly consentimiento = input<Consentimiento | null>(null);
   readonly visible = input(false);
-  readonly close = output<void>();
+  readonly closed = output<void>();
 
   protected readonly showInfo = signal(false);
 
@@ -181,7 +181,7 @@ export class ConsentimientosModalComponent {
 
   protected onBackdropClick(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
-      this.close.emit();
+      this.closed.emit();
     }
   }
 }

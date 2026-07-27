@@ -159,7 +159,7 @@ export function formatDate(
 ): string {
   const dateObj = date instanceof Date ? date : new Date(date);
 
-  if (isNaN(dateObj.getTime())) {
+  if (Number.isNaN(dateObj.getTime())) {
     return '';
   }
 
@@ -214,21 +214,31 @@ export function formatRelativeTime(
 
   if (typeof RelativeTimeFormat === 'function') {
     const rtf = new RelativeTimeFormat(locale, { numeric: 'always' });
-
-    if (absDiffSeconds < 60) return rtf.format(diffSeconds, 'second');
-    const diffMinutes = Math.round(diffSeconds / 60);
-    if (Math.abs(diffMinutes) < 60) return rtf.format(diffMinutes, 'minute');
-    const diffHours = Math.round(diffMinutes / 60);
-    if (Math.abs(diffHours) < 24) return rtf.format(diffHours, 'hour');
-    const diffDays = Math.round(diffHours / 24);
-    if (Math.abs(diffDays) < 30) return rtf.format(diffDays, 'day');
-    const diffMonths = Math.round(diffDays / 30);
-    if (Math.abs(diffMonths) < 12) return rtf.format(diffMonths, 'month');
-    const diffYears = Math.round(diffMonths / 12);
-    return rtf.format(diffYears, 'year');
+    return formatRelativeTimeIntl(rtf, diffSeconds, absDiffSeconds);
   }
 
-  // Fallback: basic relative formatting
+  return formatRelativeTimeFallback(diffSeconds, absDiffSeconds);
+}
+
+function formatRelativeTimeIntl(
+  rtf: { format(value: number, unit: string): string },
+  diffSeconds: number,
+  absDiffSeconds: number,
+): string {
+  if (absDiffSeconds < 60) return rtf.format(diffSeconds, 'second');
+  const diffMinutes = Math.round(diffSeconds / 60);
+  if (Math.abs(diffMinutes) < 60) return rtf.format(diffMinutes, 'minute');
+  const diffHours = Math.round(diffMinutes / 60);
+  if (Math.abs(diffHours) < 24) return rtf.format(diffHours, 'hour');
+  const diffDays = Math.round(diffHours / 24);
+  if (Math.abs(diffDays) < 30) return rtf.format(diffDays, 'day');
+  const diffMonths = Math.round(diffDays / 30);
+  if (Math.abs(diffMonths) < 12) return rtf.format(diffMonths, 'month');
+  const diffYears = Math.round(diffMonths / 12);
+  return rtf.format(diffYears, 'year');
+}
+
+function formatRelativeTimeFallback(diffSeconds: number, absDiffSeconds: number): string {
   if (absDiffSeconds < 60) return diffSeconds >= 0 ? 'en unos segundos' : 'hace unos segundos';
   if (absDiffSeconds < 3600) {
     const m = Math.floor(absDiffSeconds / 60);

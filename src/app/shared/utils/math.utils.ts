@@ -214,7 +214,7 @@ export function calculatePercentage(part: number, total: number): number {
     throw new Error('Total must be a positive finite number');
   }
   if (!Number.isFinite(part)) {
-    throw new Error('Part must be a finite number');
+    throw new TypeError('Part must be a finite number');
   }
 
   return part / total;
@@ -234,10 +234,10 @@ export function calculatePercentage(part: number, total: number): number {
  */
 export function applyPercentage(base: number, percentage: number): number {
   if (!Number.isFinite(base)) {
-    throw new Error('Base must be a finite number');
+    throw new TypeError('Base must be a finite number');
   }
   if (!Number.isFinite(percentage)) {
-    throw new Error('Percentage must be a finite number');
+    throw new TypeError('Percentage must be a finite number');
   }
 
   return base * percentage;

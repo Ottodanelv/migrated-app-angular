@@ -31,34 +31,6 @@ const NIF_REGEX_LOOSE = /^\d{8}[A-Za-z]$/;
 const NIE_REGEX_LOOSE = /^[XYZxyz]\d{7}[A-Za-z]$/;
 
 /**
- * Checks whether a string starts with a numeric character (legacy esNIF logic).
- *
- * @param text - The string to check.
- * @returns True if the first character is a digit.
- *
- * @source Legacy: `cetelem.Util.esNIF()` — checks if text starts with a number.
- * @deprecated Use {@link isValidNif} for proper NIF validation.
- */
-export function startsWithDigit(text: string): boolean {
-  if (text.length === 0) return false;
-  return !isNaN(parseInt(text.charAt(0), 10));
-}
-
-/**
- * Checks whether a string starts with a non-numeric character (legacy esNIE logic).
- *
- * @param text - The string to check.
- * @returns True if the first character is NOT a digit.
- *
- * @source Legacy: `cetelem.Util.esNIE()` — checks if text starts with a letter.
- * @deprecated Use {@link isValidNie} for proper NIE validation.
- */
-export function startsWithLetter(text: string): boolean {
-  if (text.length === 0) return false;
-  return isNaN(parseInt(text.charAt(0), 10));
-}
-
-/**
  * Validates a Spanish NIF (Documento Nacional de Identidad).
  *
  * Format: 8 digits + control letter.
@@ -81,7 +53,7 @@ export function isValidNif(nif: string): boolean {
   const normalizedNif = nif.toUpperCase();
   const digits = normalizedNif.substring(0, 8);
   const letter = normalizedNif.charAt(8);
-  const expectedLetter = NIF_LETTERS.charAt(parseInt(digits, 10) % 23);
+  const expectedLetter = NIF_LETTERS.charAt(Number.parseInt(digits, 10) % 23);
 
   return letter === expectedLetter;
 }
@@ -118,7 +90,7 @@ export function isValidNie(nie: string): boolean {
   const digits = normalizedNie.substring(1, 8);
   const letter = normalizedNie.charAt(8);
   const fullDigits = mappedPrefix + digits;
-  const expectedLetter = NIF_LETTERS.charAt(parseInt(fullDigits, 10) % 23);
+  const expectedLetter = NIF_LETTERS.charAt(Number.parseInt(fullDigits, 10) % 23);
 
   return letter === expectedLetter;
 }
@@ -169,7 +141,7 @@ const SPANISH_PHONE_REGEX = /^(\+34)?[679]\d{8}$/;
 export function isValidPhone(phone: string): boolean {
   if (!phone) return false;
 
-  const cleaned = phone.replace(/[\s\-()]/g, '');
+  const cleaned = phone.replaceAll(/[\s\-()]/g, '');
   return SPANISH_PHONE_REGEX.test(cleaned);
 }
 
@@ -188,7 +160,7 @@ export function isValidPhone(phone: string): boolean {
 export function isMobilePhone(phone: string): boolean {
   if (!isValidPhone(phone)) return false;
 
-  const cleaned = phone.replace(/[\s\-()]/g, '').replace(/^\+34/, '');
+  const cleaned = phone.replaceAll(/[\s\-()]/g, '').replace(/^\+34/, '');
   return SPANISH_MOBILE_PREFIXES.some((prefix) => cleaned.startsWith(prefix));
 }
 
@@ -210,7 +182,7 @@ export function isMobilePhone(phone: string): boolean {
  * ```
  */
 export function isPositiveAmount(value: number): boolean {
-  return typeof value === 'number' && isFinite(value) && value > 0;
+  return typeof value === 'number' && Number.isFinite(value) && value > 0;
 }
 
 /**
@@ -232,7 +204,7 @@ export function isAmountInRange(
   min: number = 0,
   max: number = Infinity,
 ): boolean {
-  return typeof value === 'number' && isFinite(value) && value >= min && value <= max;
+  return typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
 }
 
 // ---------------------------------------------------------------------------
@@ -257,7 +229,7 @@ export function isAmountInRange(
 export function isValidIban(iban: string): boolean {
   if (!iban) return false;
 
-  const cleaned = iban.replace(/[\s\-]/g, '').toUpperCase();
+  const cleaned = iban.replaceAll(/[\s-]/g, '').toUpperCase();
   const ibanRegex = /^ES\d{22}$/;
 
   return ibanRegex.test(cleaned);
@@ -277,7 +249,7 @@ export function isValidIban(iban: string): boolean {
  * ```
  */
 export function calculateIbanControl(cuenta: string): string {
-  const cleaned = cuenta.replace(/\D/g, '');
+  const cleaned = cuenta.replaceAll(/\D/g, '');
 
   if (cleaned.length !== 20) {
     return '';
@@ -288,8 +260,8 @@ export function calculateIbanControl(cuenta: string): string {
   const part1 = accountWithCode.substring(0, 13);
   const part2 = accountWithCode.substring(13, 26);
 
-  let resto = parseFloat(part1) % 97;
-  const num2 = resto * 10000000000000 + parseFloat(part2);
+  let resto = Number.parseFloat(part1) % 97;
+  const num2 = resto * 10000000000000 + Number.parseFloat(part2);
   resto = num2 % 97;
 
   let dc = (98 - resto).toString();
@@ -316,6 +288,6 @@ export function calculateIbanControl(cuenta: string): string {
 export function isValidCuenta(cuenta: string): boolean {
   if (!cuenta) return false;
 
-  const cleaned = cuenta.replace(/\D/g, '');
+  const cleaned = cuenta.replaceAll(/\D/g, '');
   return cleaned.length === 20;
 }

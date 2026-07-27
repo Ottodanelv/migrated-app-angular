@@ -33,9 +33,9 @@ describe('GestionTokenService', () => {
     telefono: '600123123',
     meses: 36,
     mensualidad: 347.22,
-    comision: 150.0,
-    importe: 12500.0,
-    impTotalAdeudado: 12000.0,
+    comision: 150,
+    importe: 12500,
+    impTotalAdeudado: 12000,
     tin: 4.75,
     tae: 5.12,
     fchProximoRecibo: '2026-08-15',
@@ -107,7 +107,7 @@ describe('GestionTokenService', () => {
 
       const result = await resultPromise;
       expect(result.token).toBe('FIN-TOKEN-001');
-      expect(result.importe).toBe(12500.0);
+      expect(result.importe).toBe(12500);
       expect(result.valido).toBe(true);
       expect(result.tipoToken).toBe('COMBOCARD');
       expect(result.fchCaducidad).toBe('2099-01-01T00:00:00Z');

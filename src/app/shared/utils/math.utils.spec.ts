@@ -195,7 +195,7 @@ describe('applyPercentage', () => {
   });
 
   it('should throw for non-finite base', () => {
-    expect(() => applyPercentage(NaN, 0.5)).toThrow();
+    expect(() => applyPercentage(Number.NaN, 0.5)).toThrow();
   });
 });
 

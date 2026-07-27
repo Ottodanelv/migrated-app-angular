@@ -121,7 +121,7 @@ import { SOCIETY_CODES } from '../../shared/constants/app.constants';
       <app-consentimientos-modal
         [visible]="showModal()"
         [consentimiento]="selectedConsentimiento()"
-        (close)="closeModal()"
+        (closed)="closeModal()"
       />
     </section>
   `,

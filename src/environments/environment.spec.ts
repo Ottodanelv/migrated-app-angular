@@ -72,9 +72,9 @@ describe('Development environment', () => {
     expect(devEnv.logging.level).toBe('debug');
   });
 
-  it('should have feature flags disabled by default', () => {
-    expect(devEnv.features.consentimientos).toBe(false);
-    expect(devEnv.features.cotitularSms).toBe(false);
+  it('should have feature flags enabled for local development', () => {
+    expect(devEnv.features.consentimientos).toBe(true);
+    expect(devEnv.features.cotitularSms).toBe(true);
   });
 });
 

@@ -123,7 +123,7 @@ describe('isEqual', () => {
   });
 
   it('should return true for NaN', () => {
-    expect(isEqual(NaN, NaN)).toBe(true);
+    expect(isEqual(Number.NaN, Number.NaN)).toBe(true);
   });
 
   it('should compare nested objects deeply', () => {
@@ -268,7 +268,7 @@ describe('pick', () => {
 
   it('should not mutate the original object', () => {
     const original = { a: 1, b: 2 };
-    const result = pick(original, ['a']);
+    pick(original, ['a']);
     expect(original).toEqual({ a: 1, b: 2 });
   });
 });

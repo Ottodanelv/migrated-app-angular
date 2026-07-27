@@ -5,9 +5,9 @@
  * Uses Vitest with Angular testing utilities.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { SmsService, SmsOtpRequest } from './sms.service';
 
@@ -27,7 +27,7 @@ describe('SmsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(withFetch()),
+        provideHttpClient(),
         provideHttpClientTesting(),
       ],
     });

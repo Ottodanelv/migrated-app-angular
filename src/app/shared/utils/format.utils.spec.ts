@@ -42,7 +42,7 @@ describe('formatCurrency', () => {
   });
 
   it('should format negative values', () => {
-    const result = formatCurrency(-500.50);
+    const result = formatCurrency(-500.5);
     expect(result).toContain('500');
     expect(result).toContain('50');
   });

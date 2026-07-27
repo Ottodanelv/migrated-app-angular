@@ -83,32 +83,30 @@ function getBaseParagraphs(operacion: OperacionFinanciera, society: SocietyCode)
   const fecha = formatDate(operacion.fchProximoRecibo);
   const cta = getSocietyTheme(society);
 
-  switch (society) {
-    case SOCIETY_CODES.CAJAMAR:
-      return [
-        paragraph(
-          text(`Ha realizado una utilización de tarjeta por ${importe} € en modo de pago aplazado. A devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} €. Se aplica una comisión de formalización de ${comision} €, a pagar junto con la primera mensualidad. TIN ${tin}, TAE ${tae}. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo ${fecha} se le cobrará su primer recibo.`),
-        ),
-        paragraph(text('En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.')),
-        paragraph(text('Consulte el plan de pagos de su utilización a través de la App '), strong('MoneyGO'), text(', donde podrá ver la cantidad exacta de cada una de las cuotas.')),
-      ];
-    default:
-      return [
-        paragraph(
-          text(`Ha realizado una utilización de tarjeta por ${importe} € en modo de pago aplazado. A devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} €. Se aplica una comisión de formalización de ${comision} €, a pagar junto con la primera mensualidad. TIN ${tin}, TAE ${tae}. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo ${fecha} se le cobrará su primer recibo.`),
-        ),
-        paragraph(text('En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.')),
-        paragraph(
-          text('Consulte el plan de pagos de su utilización a través del '),
-          strong('Espacio Cliente'),
-          text(' de '),
-          link('cetelem.es', cta.portalUrl),
-          text(' o a través de la '),
-          strong('App Cetelem Móvil'),
-          text(', donde podrá ver la cantidad exacta de cada una de las cuotas.'),
-        ),
-      ];
+  if (society === SOCIETY_CODES.CAJAMAR) {
+    return [
+      paragraph(
+        text(`Ha realizado una utilización de tarjeta por ${importe} € en modo de pago aplazado. A devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} €. Se aplica una comisión de formalización de ${comision} €, a pagar junto con la primera mensualidad. TIN ${tin}, TAE ${tae}. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo ${fecha} se le cobrará su primer recibo.`),
+      ),
+      paragraph(text('En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.')),
+      paragraph(text('Consulte el plan de pagos de su utilización a través de la App '), strong('MoneyGO'), text(', donde podrá ver la cantidad exacta de cada una de las cuotas.')),
+    ];
   }
+  return [
+    paragraph(
+      text(`Ha realizado una utilización de tarjeta por ${importe} € en modo de pago aplazado. A devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} €. Se aplica una comisión de formalización de ${comision} €, a pagar junto con la primera mensualidad. TIN ${tin}, TAE ${tae}. El importe de la última cuota podrá diferir del resto en función del día en que se haga efectiva la financiación. El importe total adeudado se corresponde con la suma de las mensualidades. El próximo ${fecha} se le cobrará su primer recibo.`),
+    ),
+    paragraph(text('En el caso de operación pre-autorizada en moneda extranjera, la aplicación del cambio de divisa podría hacer variar el importe final de sus cuotas.')),
+    paragraph(
+      text('Consulte el plan de pagos de su utilización a través del '),
+      strong('Espacio Cliente'),
+      text(' de '),
+      link('cetelem.es', cta.portalUrl),
+      text(' o a través de la '),
+      strong('App Cetelem Móvil'),
+      text(', donde podrá ver la cantidad exacta de cada una de las cuotas.'),
+    ),
+  ];
 }
 
 function getCompraPlazosParagraphs(operacion: OperacionFinanciera, society: SocietyCode): readonly FinancialParagraph[] {
@@ -144,22 +142,20 @@ function getPreautParagraphs(operacion: OperacionFinanciera, society: SocietyCod
 
   const firstParagraphBase = `Su utilización ha sido autorizada por ${importe} € a devolver en ${operacion.meses} cuotas mensuales de ${mensualidad} €. Esta operación aplica ${comision} € de comisión de formalización junto con la primera mensualidad. TIN ${tin}, TAE ${tae}. El próximo ${fecha}`;
 
-  switch (society) {
-    case SOCIETY_CODES.CAJAMAR:
-      return [
-        paragraph(text(`${firstParagraphBase} * se le cobrará su primer recibo.`)),
-        smallParagraph(text('* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.')),
-      ];
-    default:
-      return [
-        paragraph(
-          text(`${firstParagraphBase} * se le cobrará su primer recibo. Recibirá por correo ordinario el cuadro de amortización con todo el detalle; también puede consultarlo a través del Espacio Cliente de `),
-          link(cta.portalUrl.includes('cajamar') ? 'cajamarconsumo.es' : 'cetelem.es', cta.portalUrl),
-          text('.'),
-        ),
-        smallParagraph(text('* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.')),
-      ];
+  if (society === SOCIETY_CODES.CAJAMAR) {
+    return [
+      paragraph(text(`${firstParagraphBase} * se le cobrará su primer recibo.`)),
+      smallParagraph(text('* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.')),
+    ];
   }
+  return [
+    paragraph(
+      text(`${firstParagraphBase} * se le cobrará su primer recibo. Recibirá por correo ordinario el cuadro de amortización con todo el detalle; también puede consultarlo a través del Espacio Cliente de `),
+      link(cta.portalUrl.includes('cajamar') ? 'cajamarconsumo.es' : 'cetelem.es', cta.portalUrl),
+      text('.'),
+    ),
+    smallParagraph(text('* La fecha del primer recibo podrá desplazarse en el tiempo, manteniéndose constante el número de cuotas mensuales, en función de la fecha de la aprobación definitiva de la operación.')),
+  ];
 }
 
 export function resolveSocietyCode(value: string | null | undefined): SocietyCode {

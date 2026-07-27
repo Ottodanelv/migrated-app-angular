@@ -30,11 +30,11 @@ describe('InfoOperacionPreautComponent', () => {
     sociedad: '400',
     nif: '12345678A',
     telefono: '600123123',
-    importe: 8000.0,
+    importe: 8000,
     mensualidad: 333.33,
     meses: 24,
-    impTotalAdeudado: 8000.0,
-    comision: 75.0,
+    impTotalAdeudado: 8000,
+    comision: 75,
     fchProximoRecibo: '2026-08-15',
     tin: 5.5,
     tae: 6.1,
@@ -134,7 +134,7 @@ describe('InfoOperacionPreautComponent', () => {
     expect(ctx.errorMessage()).toBeNull();
     expect(ctx.operacion()).toBeTruthy();
     expect(ctx.operacion()!.token).toBe('COMBO-TOKEN-001');
-    expect(ctx.operacion()!.importe).toBe(8000.0);
+    expect(ctx.operacion()!.importe).toBe(8000);
     expect(ctx.operacion()!.valido).toBe(true);
     expect(ctx.operacion()!.tipoToken).toBe('COMBOCARD');
   });

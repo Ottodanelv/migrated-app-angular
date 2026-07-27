@@ -85,7 +85,7 @@ describe('ConsentimientosModalComponent', () => {
     fixture.componentRef.setInput('consentimiento', mockConsentimiento);
     fixture.detectChanges();
 
-    const closeSpy = vi.spyOn(component.close, 'emit');
+    const closeSpy = vi.spyOn(component.closed, 'emit');
     const closeButton = fixture.nativeElement.querySelector('button[aria-label="Cerrar"]');
     closeButton.click();
 
@@ -97,7 +97,7 @@ describe('ConsentimientosModalComponent', () => {
     fixture.componentRef.setInput('consentimiento', mockConsentimiento);
     fixture.detectChanges();
 
-    const closeSpy = vi.spyOn(component.close, 'emit');
+    const closeSpy = vi.spyOn(component.closed, 'emit');
     const footerButton = fixture.nativeElement.querySelector(
       'div:last-child > button',
     ) as HTMLElement;
@@ -111,7 +111,7 @@ describe('ConsentimientosModalComponent', () => {
     fixture.componentRef.setInput('consentimiento', mockConsentimiento);
     fixture.detectChanges();
 
-    const closeSpy = vi.spyOn(component.close, 'emit');
+    const closeSpy = vi.spyOn(component.closed, 'emit');
     const backdrop = fixture.nativeElement.querySelector('[role="dialog"]');
     backdrop.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 

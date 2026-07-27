@@ -30,11 +30,11 @@ describe('InfoOperacionCompraPlazosComponent', () => {
     sociedad: '400',
     nif: '12345678A',
     telefono: '600123123',
-    importe: 5000.0,
+    importe: 5000,
     mensualidad: 208.33,
     meses: 24,
-    impTotalAdeudado: 5000.0,
-    comision: 50.0,
+    impTotalAdeudado: 5000,
+    comision: 50,
     fchProximoRecibo: '2026-08-15',
     tin: 6.5,
     tae: 7.2,
@@ -132,7 +132,7 @@ describe('InfoOperacionCompraPlazosComponent', () => {
     expect(ctx.errorMessage()).toBeNull();
     expect(ctx.operacion()).toBeTruthy();
     expect(ctx.operacion()!.token).toBe('COMPRA-TOKEN-001');
-    expect(ctx.operacion()!.importe).toBe(5000.0);
+    expect(ctx.operacion()!.importe).toBe(5000);
     expect(ctx.operacion()!.valido).toBe(true);
     expect(ctx.operacion()!.tipoToken).toBe('COMPRA_PLAZO_TARJ');
   });

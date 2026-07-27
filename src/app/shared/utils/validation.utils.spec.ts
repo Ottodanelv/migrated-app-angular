@@ -7,8 +7,6 @@
 import { describe, it, expect } from 'vitest';
 
 import {
-  startsWithDigit,
-  startsWithLetter,
   isValidNif,
   isValidNie,
   isValidTaxId,
@@ -20,42 +18,6 @@ import {
   calculateIbanControl,
   isValidCuenta,
 } from './validation.utils';
-
-// ---------------------------------------------------------------------------
-// startsWithDigit / startsWithLetter (legacy esNIF/esNIE)
-// ---------------------------------------------------------------------------
-
-describe('startsWithDigit', () => {
-  it('should return true for strings starting with a digit', () => {
-    expect(startsWithDigit('12345678A')).toBe(true);
-    expect(startsWithDigit('0test')).toBe(true);
-  });
-
-  it('should return false for strings starting with a letter', () => {
-    expect(startsWithDigit('A1234567')).toBe(false);
-    expect(startsWithDigit('X1234567')).toBe(false);
-  });
-
-  it('should return false for empty string', () => {
-    expect(startsWithDigit('')).toBe(false);
-  });
-});
-
-describe('startsWithLetter', () => {
-  it('should return true for strings starting with a letter', () => {
-    expect(startsWithLetter('X1234567')).toBe(true);
-    expect(startsWithLetter('Y1234567')).toBe(true);
-    expect(startsWithLetter('Z1234567')).toBe(true);
-  });
-
-  it('should return false for strings starting with a digit', () => {
-    expect(startsWithLetter('12345678A')).toBe(false);
-  });
-
-  it('should return false for empty string', () => {
-    expect(startsWithLetter('')).toBe(false);
-  });
-});
 
 // ---------------------------------------------------------------------------
 // isValidNif
@@ -238,7 +200,7 @@ describe('isPositiveAmount', () => {
   });
 
   it('should return false for NaN', () => {
-    expect(isPositiveAmount(NaN)).toBe(false);
+    expect(isPositiveAmount(Number.NaN)).toBe(false);
   });
 
   it('should return false for Infinity', () => {

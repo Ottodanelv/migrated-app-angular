@@ -125,7 +125,7 @@ const HTML_SPECIAL_CHARS_REGEX = /[&<>"']/g;
  */
 export function escapeHtml(str: string): string {
   if (!str) return '';
-  return str.replace(HTML_SPECIAL_CHARS_REGEX, (char) => HTML_ESCAPE_MAP[char] ?? char);
+  return str.replaceAll(HTML_SPECIAL_CHARS_REGEX, (char) => HTML_ESCAPE_MAP[char] ?? char);
 }
 
 // ---------------------------------------------------------------------------
@@ -163,7 +163,7 @@ export function formatCodeRef(code: string, delimiter: string = "'"): string {
  */
 export function stripWhitespace(str: string): string {
   if (!str) return '';
-  return str.replace(/\s+/g, '');
+  return str.replaceAll(/\s+/g, '');
 }
 
 /**
@@ -179,7 +179,7 @@ export function stripWhitespace(str: string): string {
  */
 export function normalizeWhitespace(str: string): string {
   if (!str) return '';
-  return str.trim().replace(/\s+/g, ' ');
+  return str.trim().replaceAll(/\s+/g, ' ');
 }
 
 /**

@@ -16,6 +16,16 @@ import { environment } from '../../../environments/environment';
 import { tokenTypeRouteGuard } from './token-type-route.guard';
 import { ROUTE_PATHS } from '../../shared/constants/app.constants';
 
+/** Minimal `ActivatedRouteSnapshot`-shaped fixture with the given query params. */
+function createRouteSnapshot(token?: string, society?: string): Partial<ActivatedRouteSnapshot> {
+  return {
+    queryParamMap: convertToParamMap({
+      ...(token ? { token } : {}),
+      ...(society ? { sociedad: society } : {}),
+    }),
+  };
+}
+
 describe('tokenTypeRouteGuard', () => {
   const apiUrl = (token: string) =>
     `${environment.apiBaseUrl}/token/financiero/${token}`;
@@ -47,15 +57,6 @@ describe('tokenTypeRouteGuard', () => {
   afterEach(() => {
     httpMock.verify();
   });
-
-  function createRouteSnapshot(token?: string, society?: string): Partial<ActivatedRouteSnapshot> {
-    return {
-      queryParamMap: convertToParamMap({
-        ...(token ? { token } : {}),
-        ...(society ? { sociedad: society } : {}),
-      }),
-    };
-  }
 
   const routerStateSnapshot = {} as RouterStateSnapshot;
 

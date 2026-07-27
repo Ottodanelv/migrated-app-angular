@@ -30,11 +30,11 @@ describe('InfoOperacionComponent', () => {
     sociedad: '400',
     nif: '12345678A',
     telefono: '600123123',
-    importe: 12500.0,
+    importe: 12500,
     mensualidad: 347.22,
     meses: 36,
-    impTotalAdeudado: 12000.0,
-    comision: 150.0,
+    impTotalAdeudado: 12000,
+    comision: 150,
     fchProximoRecibo: '2026-08-15',
     tin: 4.75,
     tae: 5.12,
@@ -132,7 +132,7 @@ describe('InfoOperacionComponent', () => {
     expect(ctx.errorMessage()).toBeNull();
     expect(ctx.operacion()).toBeTruthy();
     expect(ctx.operacion()!.token).toBe('FIN-TOKEN-001');
-    expect(ctx.operacion()!.importe).toBe(12500.0);
+    expect(ctx.operacion()!.importe).toBe(12500);
     expect(ctx.operacion()!.valido).toBe(true);
   });
 

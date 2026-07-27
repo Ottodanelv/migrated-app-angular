@@ -46,12 +46,12 @@ export const environment: AppEnvironment = {
   // Feature Flags
   // -----------------------------------------------------------------------
   features: {
-    consentimientos: false,
-    cotitularSms: false,
+    consentimientos: true,
+    cotitularSms: true,
   },
 
   mocks: {
-    api: true,
+    api: false,
   },
 
   // -----------------------------------------------------------------------

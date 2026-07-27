@@ -9,11 +9,11 @@ describe('Domain Models', () => {
     it('should accept a valid mock object', () => {
       const mock: OperacionFinanciera = {
         token: 'abc123',
-        importe: 10000.50,
+        importe: 10000.5,
         mensualidad: 250.75,
         meses: 48,
-        impTotalAdeudado: 9500.00,
-        comision: 150.00,
+        impTotalAdeudado: 9500,
+        comision: 150,
         fchProximoRecibo: '2026-08-15',
         tin: 4.75,
         tae: 5.12,

@@ -18,7 +18,7 @@ async function bootstrap(): Promise<void> {
           isMockedApiRequest(
             request.url,
             environment.apiBaseUrl,
-            window.location.origin,
+            globalThis.location.origin,
           )
         ) {
           print.error();
