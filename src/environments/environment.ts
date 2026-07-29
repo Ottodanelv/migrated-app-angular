@@ -50,10 +50,6 @@ export const environment: AppEnvironment = {
     cotitularSms: true,
   },
 
-  mocks: {
-    api: false,
-  },
-
   // -----------------------------------------------------------------------
   // Logging
   // @source: logback.xml (simplified)
