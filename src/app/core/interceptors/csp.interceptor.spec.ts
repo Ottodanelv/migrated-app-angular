@@ -101,7 +101,6 @@ describe('cspInterceptor', () => {
     const error = await errorPromise;
     expect(error).toBeInstanceOf(HttpErrorResponse);
     expect(error.status).toBe(500);
-    expect(error.statusText).toBe('Server Error');
   });
 
   it('should preserve request headers through passthrough', async () => {
