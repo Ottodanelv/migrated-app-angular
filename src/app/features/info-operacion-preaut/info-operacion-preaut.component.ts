@@ -101,7 +101,7 @@ import {
 
             <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
               <a
-                class="inline-flex min-w-52 items-center justify-center rounded-[14px] bg-brand-primary px-6 py-3 text-md font-bold text-white transition hover:opacity-90"
+                class="inline-flex min-w-52 items-center justify-center rounded-[14px] bg-[#337F37] px-6 py-3 text-md font-bold text-white transition hover:bg-[#2E7232]"
                 [href]="viewContent().ctaHref"
                 target="_self"
               >
@@ -123,9 +123,9 @@ import {
       }
 
       <ng-template #field let-label="label" let-value="value">
-        <div class="rounded-[18px] border border-border-light bg-white p-5">
+        <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
           <p class="text-xs font-bold uppercase tracking-wide text-text-muted">{{ label }}</p>
-          <p class="mt-2 text-xl font-bold text-text-strong">{{ value }}</p>
+          <p class="text-xl font-bold text-text-strong">{{ value }}</p>
         </div>
       </ng-template>
     </div>
