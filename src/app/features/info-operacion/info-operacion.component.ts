@@ -20,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 
+import { ButtonComponent } from '../../components/button/button.component';
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { GestionTokenService } from '../../core/services/gestion-token.service';
 import { ErrorComponent } from '../error/error.component';
@@ -33,7 +34,7 @@ import {
 @Component({
   selector: 'app-info-operacion',
   standalone: true,
-  imports: [RouterLink, FontAwesomeModule, LoadingOverlayComponent, ErrorComponent],
+  imports: [RouterLink, FontAwesomeModule, LoadingOverlayComponent, ErrorComponent, ButtonComponent],
   template: `
     <div class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
@@ -54,13 +55,9 @@ import {
                 Operación validada correctamente. El usuario debe entender de un vistazo el importe, el plazo y el coste total antes de seguir.
               </p>
             </div>
-            <a
-              class="inline-flex shrink-0 items-center justify-center rounded-full bg-[#337F37] px-6 py-3 text-md font-bold text-white shadow-soft transition hover:bg-[#2E7232]"
-              [href]="viewContent().ctaHref"
-              target="_self"
-            >
+            <app-button variant="primary" [href]="viewContent().ctaHref" target="_self">
               {{ viewContent().ctaLabel }}
-            </a>
+            </app-button>
           </div>
 
           <!-- Summary banner -->
@@ -131,13 +128,9 @@ import {
 
           <!-- Back button -->
           <div class="mt-6">
-            <a
-              routerLink="/"
-              queryParamsHandling="preserve"
-              class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
-            >
+            <app-button variant="secondary" routerLink="/" queryParamsHandling="preserve">
               Volver al inicio
-            </a>
+            </app-button>
           </div>
         } @else {
           <app-error message="El token proporcionado no es válido o ha caducado." />

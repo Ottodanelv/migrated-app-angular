@@ -24,6 +24,7 @@ import { Component, computed, inject, signal, OnDestroy, OnInit } from '@angular
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 
+import { ButtonComponent } from '../../components/button/button.component';
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { GestionTokenService } from '../../core/services/gestion-token.service';
 import { ErrorComponent } from '../error/error.component';
@@ -37,7 +38,7 @@ import {
 @Component({
   selector: 'app-info-operacion-preaut',
   standalone: true,
-  imports: [RouterLink, LoadingOverlayComponent, ErrorComponent, NgTemplateOutlet],
+  imports: [RouterLink, LoadingOverlayComponent, ErrorComponent, NgTemplateOutlet, ButtonComponent],
   template: `
     <div class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
@@ -100,13 +101,9 @@ import {
             }
 
             <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
-              <a
-                class="inline-flex min-w-52 items-center justify-center rounded-[14px] bg-[#337F37] px-6 py-3 text-md font-bold text-white transition hover:bg-[#2E7232]"
-                [href]="viewContent().ctaHref"
-                target="_self"
-              >
+              <app-button variant="primary" [href]="viewContent().ctaHref" target="_self">
                 {{ viewContent().ctaLabel }}
-              </a>
+              </app-button>
             </div>
           </div>
         } @else {
