@@ -16,8 +16,11 @@
 
 import { Component, computed, inject, signal, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 
+import { ButtonComponent } from '../../components/button/button.component';
 import { LoadingOverlayComponent } from '../../components/loading-overlay/loading-overlay.component';
 import { GestionTokenService } from '../../core/services/gestion-token.service';
 import { ErrorComponent } from '../error/error.component';
@@ -31,7 +34,7 @@ import {
 @Component({
   selector: 'app-info-operacion',
   standalone: true,
-  imports: [RouterLink, LoadingOverlayComponent, ErrorComponent],
+  imports: [RouterLink, FontAwesomeModule, LoadingOverlayComponent, ErrorComponent, ButtonComponent],
   template: `
     <div class="animate-fade-in">
       <app-loading-overlay [visible]="loading()" />
@@ -52,56 +55,57 @@ import {
                 Operación validada correctamente. El usuario debe entender de un vistazo el importe, el plazo y el coste total antes de seguir.
               </p>
             </div>
-            <a
-              class="inline-flex shrink-0 items-center justify-center rounded-[14px] bg-brand-primary px-6 py-3 text-md font-bold text-white transition hover:opacity-90"
-              [href]="viewContent().ctaHref"
-              target="_self"
-            >
+            <app-button variant="primary" [href]="viewContent().ctaHref" target="_self">
               {{ viewContent().ctaLabel }}
-            </a>
+            </app-button>
           </div>
 
           <!-- Summary banner -->
-          <div class="mt-6 rounded-3xl bg-panel-soft p-6">
-            <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Resumen de la operación</p>
-            <p class="mt-2 text-md text-text-muted">
-              El detalle financiero se presenta en tarjetas escaneables para facilitar la lectura rápida.
-            </p>
+          <div class="mt-6 flex items-start gap-4 rounded-3xl bg-panel-soft p-6">
+            <div class="flex shrink-0 items-center justify-center rounded-full bg-brand-primary/10 p-2 text-brand-primary">
+              <fa-icon [icon]="faCircleInfo" />
+            </div>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Resumen de la operación</p>
+              <p class="mt-2 text-md text-text-muted">
+                El detalle financiero se presenta en tarjetas escaneables para facilitar la lectura rápida.
+              </p>
+            </div>
           </div>
 
           <!-- Field cards grid -->
-          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Importe</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ formatAmount(op.importe) }} EUR</p>
+              <p class="text-xl font-bold text-text-strong">{{ formatAmount(op.importe) }} EUR</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Plazo</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ op.meses }} meses</p>
+              <p class="text-xl font-bold text-text-strong">{{ op.meses }} meses</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Mensualidad</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ formatAmount(op.mensualidad) }} EUR</p>
+              <p class="text-xl font-bold text-text-strong">{{ formatAmount(op.mensualidad) }} EUR</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Comisión</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ formatAmount(op.comision) }} EUR</p>
+              <p class="text-xl font-bold text-text-strong">{{ formatAmount(op.comision) }} EUR</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">TIN</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ formatPercent(op.tin) }}</p>
+              <p class="text-xl font-bold text-text-strong">{{ formatPercent(op.tin) }}</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">TAE</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ formatPercent(op.tae) }}</p>
+              <p class="text-xl font-bold text-text-strong">{{ formatPercent(op.tae) }}</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5 sm:col-span-2 lg:col-span-2">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft sm:col-span-2 xl:col-span-1">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Próximo recibo</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ formatDate(op.fchProximoRecibo) }}</p>
+              <p class="text-xl font-bold text-text-strong">{{ formatDate(op.fchProximoRecibo) }}</p>
             </div>
-            <div class="rounded-[18px] border border-border-light bg-white p-5">
+            <div class="flex flex-col gap-[6px] rounded-lg border border-border-light bg-white p-8 transition-shadow duration-150 hover:shadow-soft sm:col-span-2 xl:col-span-1">
               <p class="text-xs font-bold uppercase tracking-wide text-text-muted">Tipo de token</p>
-              <p class="mt-2 text-xl font-bold text-text-strong">{{ op.tipoToken }}</p>
+              <p class="text-xl font-bold text-text-strong">{{ op.tipoToken }}</p>
             </div>
           </div>
 
@@ -124,13 +128,9 @@ import {
 
           <!-- Back button -->
           <div class="mt-6">
-            <a
-              routerLink="/"
-              queryParamsHandling="preserve"
-              class="inline-flex items-center justify-center rounded-[14px] border border-border-light bg-white px-6 py-3 text-md font-bold text-text-muted transition hover:bg-panel-muted"
-            >
+            <app-button variant="secondary" routerLink="/" queryParamsHandling="preserve">
               Volver al inicio
-            </a>
+            </app-button>
           </div>
         } @else {
           <app-error message="El token proporcionado no es válido o ha caducado." />
@@ -145,6 +145,8 @@ import {
   `,
 })
 export class InfoOperacionComponent implements OnInit, OnDestroy {
+  protected readonly faCircleInfo = faCircleInfo;
+
   private readonly route = inject(ActivatedRoute);
   private readonly gestionTokenService = inject(GestionTokenService);
 
